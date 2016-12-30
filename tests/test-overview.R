@@ -20,3 +20,15 @@ test_that("can connect to overview", {
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "Overview: /Studies/SDY269")
 })
+
+test_that("'Study Overview' module is present", {
+  webElems <- remDr$findElements(using = "css selector", value = "[id^=ImmuneSpaceStudyOverviewModuleHtmlView]")
+  expect_equal(length(webElems), 1)
+  expect_true(webElems[[1]]$getElementText()[[1]] != "")
+})
+
+test_that("'Publications and Citations' module is present", {
+  webElems <- remDr$findElements(using = "id", value = "reportdiv")
+  expect_equal(length(webElems), 1)
+  expect_true(webElems[[1]]$getElementText()[[1]] != "")
+})
