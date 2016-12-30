@@ -1,6 +1,6 @@
 # UITesting
 
-[![Build Status](https://travis-ci.org/juyeongkim/UITesting.svg?branch=master)](https://travis-ci.org/juyeongkim/UITesting)
+[![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=master)](https://travis-ci.org/RGLab/UITesting)
 
 
 ## Requirments
