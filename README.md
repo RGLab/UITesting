@@ -118,3 +118,5 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
 
 ## To Do
 - [ ] Save logs and screenshots: https://docs.travis-ci.com/user/uploading-artifacts/
+- [ ] Set up dependent builds: https://github.com/travis-ci/travis-ci/issues/249#issuecomment-124136642
+- [ ] Set up cron jobs: https://docs.travis-ci.com/user/cron-jobs/
