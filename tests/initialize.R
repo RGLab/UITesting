@@ -1,6 +1,7 @@
 library(methods)
 library(RSelenium)
 library(testthat)
+library(XML)
 
 ISR_login <- Sys.getenv("ISR_login")
 ISR_pwd <- Sys.getenv("ISR_pwd")
