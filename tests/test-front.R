@@ -16,11 +16,11 @@ test_that("'public data summary' module is present", {
   expect_equal(length(webElems), 13)
   
   parsedTab <- readHTMLTable(htmlParse(remDr$getPageSource()[[1]]), stringsAsFactors = F)[[1]]
-  namesCol <- c("Studies", "Participants", "\u00A0", "CyTOF", "ELISA", "ELISPOT", 
+  namesCol <- c("Studies", "Participants", "CyTOF", "ELISA", "ELISPOT", 
                 "Flow Cytometry", "Gene Expression", "HAI", "HLA Typing", "MBAA", 
                 "Neutralizing Antibody", "PCR")
-  expect_equal(parsedTab[, 1], namesCol)
-  expect_equal(sum(parsedTab[, 2] > 0), 13)
+  expect_equal(parsedTab[-3, 1], namesCol)
+  expect_equal(sum(parsedTab[-3, 2] > 0), 12)
 })
 
 test_that("'recent announcements' module is present", {
