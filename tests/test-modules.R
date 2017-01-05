@@ -20,3 +20,16 @@ test_that("can connect to modules page", {
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "Modules: /Studies/SDY269")
 })
+
+test_that("'Active Modules' module is present", {
+  webElems <- remDr$findElements(using = "id", value = "ext-comp-1003")
+  expect_equal(length(webElems), 1)
+  webElems <- remDr$findElements(using = "css selector", value = "a[href$='/DataExplorer/Studies/SDY269/begin.view']")
+  expect_equal(length(webElems), 1)
+  webElems <- remDr$findElements(using = "css selector", value = "a[href$='/GeneExpressionExplorer/Studies/SDY269/begin.view']")
+  expect_equal(length(webElems), 1)
+  webElems <- remDr$findElements(using = "css selector", value = "a[href$='/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view']")
+  expect_equal(length(webElems), 1)
+  webElems <- remDr$findElements(using = "css selector", value = "a[href$='/ImmuneResponsePredictor/Studies/SDY269/begin.view']")
+  expect_equal(length(webElems), 1)
+})
