@@ -109,15 +109,15 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
 - Participants page ([`test-participants.R`](tests/test-participants.R))
 - Clinical and Assay Data page ([`test-data.R`](tests/test-data.R))
 - Modules page ([`test-modules.R`](tests/test-modules.R))
-    - Data Explorer
-    - Gene Expression Explorer
-    - Gene Set Enrichment Analysis
-    - Immune Response Predictor
+    - Data Explorer ([`test-modules-de.R`](tests/test-modules-de.R))
+    - Gene Expression Explorer ([`test-modules-gee.R`](tests/test-modules-gee.R))
+    - Gene Set Enrichment Analysis ([`test-modules-gsea.R`](tests/test-modules-gsea.R))
+    - Immune Response Predictor ([`test-modules-irp.R`](tests/test-modules-irp.R))
 - Reports page ([`test-reports.R`](tests/test-reports.R))
 
 
 ## To Do
 - [ ] Save logs and screenshots: https://docs.travis-ci.com/user/uploading-artifacts/
 - [ ] Set up dependent builds: https://github.com/travis-ci/travis-ci/issues/249#issuecomment-124136642
-- [ ] Set up cron jobs: https://docs.travis-ci.com/user/cron-jobs/
+- [x] Set up cron jobs: https://docs.travis-ci.com/user/cron-jobs/
 - [ ] Iterate through each study
