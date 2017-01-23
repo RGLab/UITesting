@@ -115,7 +115,7 @@ test_that("loading dataset is working", {
   
   headers <- remDr$findElements(using = "css selector", value = "[id$=-column-header-row]")
   expect_equal(headers[[1]]$getElementText()[[1]], 
-               "  Participant ID\nAge Reported\nGender\nRace\nCohort\nAnalyte\nStudy Time Collected\nStudy Time Collected Unit\nValue Reported\nUnit Reported")
+               "Participant ID\nAge Reported\nGender\nRace\nCohort\nAnalyte\nStudy Time Collected\nStudy Time Collected Unit\nValue Reported\nUnit Reported")
   
   inputView_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1072")
   inputView_tab[[1]]$clickElement()
