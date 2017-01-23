@@ -19,3 +19,4 @@ before_install:
 script: Rscript test.R
 notifications:
   email: false
+  slack: rglab:nw1J95o5FHzq4tsbJrPTvWP7
