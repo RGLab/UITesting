@@ -57,7 +57,7 @@ phantomjs --version
 	
 ### Set environment variables
 
-From the command line:
+From the command lin (or in `.bashrc` file):
 
 ```sh
 export ISR_login=yourImmuneSpace@email.here
@@ -121,3 +121,5 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
 - [ ] Set up dependent builds: https://github.com/travis-ci/travis-ci/issues/249#issuecomment-124136642
 - [x] Set up cron jobs: https://docs.travis-ci.com/user/cron-jobs/
 - [ ] Iterate through each study
+- [x] Add slack notification
+- [ ] Use `Sauce Labs` instead of `phantomjs`: https://saucelabs.com/beta/signup/OSS/None
