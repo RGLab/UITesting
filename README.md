@@ -57,7 +57,7 @@ phantomjs --version
 	
 ### Set environment variables
 
-From the command lin (or in `.bashrc` file):
+From the command line (or in `.bashrc` file):
 
 ```sh
 export ISR_login=yourImmuneSpace@email.here
@@ -105,7 +105,9 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
 ## Tests
 
 - Front page ([`test-front.R`](tests/test-front.R))
-- Overview page ([`test-overview.R`](tests/test-overview.R)) 
+- Home page ([`test-home.R`](tests/test-home.R))
+- Overview page ([`test-overview.R`](tests/test-overview.R))
+- Data Finder page ([`test-datafinder.R`](tests/test-datafinder.R))
 - Participants page ([`test-participants.R`](tests/test-participants.R))
 - Clinical and Assay Data page ([`test-data.R`](tests/test-data.R))
 - Modules page ([`test-modules.R`](tests/test-modules.R))
