@@ -13,4 +13,4 @@ remDr <- remoteDriver(browserName = 'phantomjs')
 remDr$open(silent = TRUE)
 remDr$maxWindowSize()
 
-siteURL <- "https://www.immunespace.org"
+siteURL <- "https://test.immunespace.org"
