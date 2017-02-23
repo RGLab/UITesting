@@ -1,14 +1,14 @@
-context("front page")
+context(paste0("test-front.R: testing 'Front' page (", siteURL, ")"))
 
 if (!exists("ISR_login")) source("initialize.R")
 
-test_that("can connect to website", {
+test_that("can connect to the page", {
   remDr$navigate(siteURL)
   siteTitle <- remDr$getTitle()[[1]]
   expect_equal(siteTitle, "Welcome to ImmuneSpace")
 })
 
-test_that("'public data summary' module is present", {
+test_that("'Public Data Summary' module is present", {
   webElems <- remDr$findElements(using = "id", value = "Summary")
   expect_equal(length(webElems), 1)
   
@@ -23,7 +23,7 @@ test_that("'public data summary' module is present", {
   expect_equal(sum(parsedTab[-3, 2] > 0), 12)
 })
 
-test_that("'recent announcements' module is present", {
+test_that("'Recent Announcements' module is present", {
   webElems <- remDr$findElements(using = "id", value = "News")
   expect_equal(length(webElems), 1)
   expect_true(webElems[[1]]$getElementText()[[1]] != "")

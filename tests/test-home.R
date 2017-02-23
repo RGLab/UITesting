@@ -1,8 +1,10 @@
-context("home page")
+pageURL <- paste0(siteURL, "/project/home/begin.view")
+context(paste0("test-home.R: testing 'Home' page (", pageURL, ")"))
+
 
 if (!exists("ISR_login")) source("initialize.R")
 
-test_that("can connect to home", {
+test_that("can connect to the page", {
   pageURL <- paste0(siteURL, "/project/home/begin.view")
   remDr$navigate(pageURL)
   

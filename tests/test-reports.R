@@ -1,9 +1,9 @@
-context("reports page")
+pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=Reports")
+context(paste0("test-reports.R: testing 'Reports' page (", pageURL, ")"))
 
 if (!exists("ISR_login")) source("initialize.R")
 
-test_that("can connect to reports page", {
-  pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=Reports")
+test_that("can connect to the page", {
   remDr$navigate(pageURL)
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")

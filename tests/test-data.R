@@ -1,9 +1,9 @@
-context("clinical and assay data page")
+pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.DATA_ANALYSIS")
+context(paste0("test-data.R: testing 'Clinical and Assay Data' page (", pageURL, ")"))
 
 if (!exists("ISR_login")) source("initialize.R")
 
-test_that("can connect to clinical and assay data page", {
-  pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.DATA_ANALYSIS")
+test_that("can connect to the page", {
   remDr$navigate(pageURL)
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")

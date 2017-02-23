@@ -1,9 +1,9 @@
-context("gene set enrichment analysis page")
+pageURL <- paste0(siteURL, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
+context(paste0("test-gsea.R: testing 'Gene Set Enrichment Analysis' page (", pageURL, ")"))
 
 if (!exists("ISR_login")) source("initialize.R")
 
-test_that("can connect to gene set enrichment analysis page", {
-  pageURL <- paste0(siteURL, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
+test_that("can connect to the page", {
   remDr$navigate(pageURL)
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")

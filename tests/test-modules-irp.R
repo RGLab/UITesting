@@ -1,9 +1,9 @@
-context("immune response predictor page")
+pageURL <- paste0(siteURL, "/ImmuneResponsePredictor/Studies/SDY269/begin.view")
+context(paste0("test-modules-irp.R: testing 'Immune Response Predictor' page (", pageURL, ")"))
 
 if (!exists("ISR_login")) source("initialize.R")
 
-test_that("can connect to immune response predictor page", {
-  pageURL <- paste0(siteURL, "/ImmuneResponsePredictor/Studies/SDY269/begin.view")
+test_that("can connect to the page", {
   remDr$navigate(pageURL)
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")
