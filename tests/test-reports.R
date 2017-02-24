@@ -5,6 +5,7 @@ if (!exists("ISR_login")) source("initialize.R")
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)
+  remDr$setTimeout()
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")
     id$sendKeysToElement(list(ISR_login))
@@ -15,7 +16,7 @@ test_that("can connect to the page", {
     loginButton <- remDr$findElement(using = "class", value = "labkey-button")
     loginButton$clickElement()
     
-    Sys.sleep(1)
+    Sys.sleep(2)
   }
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "Reports: /Studies/SDY269")

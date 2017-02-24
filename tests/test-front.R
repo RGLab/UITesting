@@ -4,6 +4,7 @@ if (!exists("ISR_login")) source("initialize.R")
 
 test_that("can connect to the page", {
   remDr$navigate(siteURL)
+  remDr$setTimeout()
   siteTitle <- remDr$getTitle()[[1]]
   expect_equal(siteTitle, "Welcome to ImmuneSpace")
 })
@@ -38,8 +39,8 @@ test_that("can log in", {
 
   loginButton <- remDr$findElement(using = "id", value = "submitButton")
   loginButton$clickElement()
-
-  Sys.sleep(1)
+  
+  Sys.sleep(2)
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "News and Updates: /home")
 })
