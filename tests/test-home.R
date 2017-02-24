@@ -30,10 +30,10 @@ test_that("can connect to the page", {
 
 test_that("'Public Data Summary' module is present", {
   summaryTab <- remDr$findElements(using = "css selector", value = "[id^=Summary]")
-  expect_equal(length(summaryTab), 1)
+  expect_equal(length(summaryTab), 1, info = "Does 'Public Data Summary' module exist?")
   
   rows <- summaryTab[[1]]$findElements(using = "css selector", value = "tr")
-  expect_true(length(rows) > 0)
+  expect_gt(length(rows), 0)
 })
 
 test_that("`Studies` tab shows studies properly", {
@@ -42,6 +42,6 @@ test_that("`Studies` tab shows studies properly", {
   Sys.sleep(0.5)
   
   studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
-  expect_equal(length(studyList), 1)
-  expect_true(sum(grepl("SDY\\d+\\*", strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]])) > 0)
+  expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
+  expect_gt(sum(grepl("SDY\\d+\\*", strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]])), 0)
 })

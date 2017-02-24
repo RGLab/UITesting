@@ -30,6 +30,6 @@ test_that("'List of Available Reports' module is present", {
     webElems <- remDr$findElements(using = "class", value = "x4-grid-empty")
     expect_true(webElems[[1]]$getElementText()[[1]] == "0 Matching Results")
   } else {
-    expect_true(length(webElems) > 0)
+    expect_gt(length(webElems), 0)
   }
 })
