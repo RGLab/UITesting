@@ -5,7 +5,6 @@ if (!exists("ISR_login")) source("initialize.R")
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)
-  remDr$setTimeout()
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")
     id$sendKeysToElement(list(ISR_login))
@@ -16,7 +15,7 @@ test_that("can connect to the page", {
     loginButton <- remDr$findElement(using = "class", value = "labkey-button")
     loginButton$clickElement()
     
-    Sys.sleep(2)
+    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
   }
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "Data Explorer: /Studies/SDY269")
@@ -108,8 +107,6 @@ test_that("loading dataset is working", {
   dataset_list <- remDr$findElements(using = "id", value = "ext-gen94")
   dataset_elisa <- dataset_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   dataset_elisa[[1]]$clickElement()
-  
-  Sys.sleep(2)
   
   data_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1082")
   data_tab[[1]]$clickElement()
