@@ -21,8 +21,6 @@ test_that("can connect to the page", {
   expect_equal(pageTitle, "Data Explorer: /Studies/SDY269")
 })
 
-Sys.sleep(3)
-
 test_that("'Data Explorer' module is present", {
   dataExplorer <- remDr$findElements(using = "id", value = "ext-comp-1003")
   expect_equal(length(dataExplorer), 1)
