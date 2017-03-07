@@ -39,7 +39,7 @@ test_that("'Public Data Summary' module is present", {
 test_that("`Studies` tab shows studies properly", {
   studyTab <- remDr$findElements(using = "id", value = "WikiMenu12-Header")
   studyTab[[1]]$clickElement()
-  Sys.sleep(0.5)
+  Sys.sleep(1)
   
   studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
   expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")

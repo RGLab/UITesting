@@ -22,7 +22,7 @@ test_that("can connect to the page", {
 })
 
 test_that("'Data Explorer' module is present", {
-  dataExplorer <- remDr$findElements(using = "id", value = "ext-comp-1003")
+  dataExplorer <- remDr$findElements(using = "id", value = "ext-comp-1094")
   expect_equal(length(dataExplorer), 1)
 })
 
@@ -45,13 +45,15 @@ test_that("tabs are present", {
 })
 
 test_that("parameters are present", {
+  Sys.sleep(3)
+  
   dataset_input <- remDr$findElements(using = "id", value = "ext-comp-1002")
   expect_equal(length(dataset_input), 1)
 
   dataset_arrow <- remDr$findElements(using = "id", value = "ext-gen91")
   expect_equal(length(dataset_arrow), 1)
   dataset_arrow[[1]]$clickElement()
-
+  
   dataset_list <- remDr$findElements(using = "id", value = "ext-gen94")
   expect_equal(dataset_list[[1]]$getElementText()[[1]], 
                "Enzyme-linked immunosorbent assay (ELISA)\nEnzyme-Linked ImmunoSpot (ELISPOT)\nFlow cytometry analyzed results\nHemagglutination inhibition (HAI)\nPolymerisation chain reaction (PCR)\nGene expression")
@@ -66,7 +68,7 @@ test_that("parameters are present", {
   plotType_arrow <- remDr$findElements(using = "id", value = "ext-gen113")
   expect_equal(length(plotType_arrow), 1)
   plotType_arrow[[1]]$clickElement()
-
+  
   plotType_list <- remDr$findElements(using = "id", value = "ext-gen116")
   expect_equal(plotType_list[[1]]$getElementText()[[1]], 
                "Auto\nBoxplot\nViolin plot\nHeatmap\nLineplot")
@@ -106,12 +108,20 @@ test_that("loading dataset is working", {
   dataset_elisa <- dataset_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   dataset_elisa[[1]]$clickElement()
   
+  while (remDr$findElements(using = "id", value = "ext-comp-1025")[[1]]$getElementText()[[1]] == "") {}
+
   data_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1082")
   data_tab[[1]]$clickElement()
   
   headers <- remDr$findElements(using = "css selector", value = "[id$=-column-header-row]")
-  expect_equal(headers[[1]]$getElementText()[[1]], 
-               "Participant ID\nAge Reported\nGender\nRace\nCohort\nAnalyte\nStudy Time Collected\nStudy Time Collected Unit\nValue Reported\nUnit Reported")
+  if (headers[[1]]$getElementText()[[1]] != "") {
+    headers_text <- strsplit(headers[[1]]$getElementText()[[1]], split = "  ")[[1]]
+    headers_text <- strsplit(headers_text[length(headers_text)], split = "\n")[[1]]
+  } else {
+    headers_text <- headers[[1]]$getElementText()[[1]]
+  }
+  expect_equal(headers_text, 
+               c("Participant ID", "Age Reported", "Gender", "Race", "Cohort", "Analyte", "Study Time Collected", "Study Time Collected Unit", "Value Reported", "Unit Reported"))
   
   inputView_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1072")
   inputView_tab[[1]]$clickElement()
