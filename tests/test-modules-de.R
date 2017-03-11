@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/DataExplorer/Studies/SDY269/begin.view")
-context(paste0("test-modules-de.R: testing 'Data Explorer' page (", pageURL, ")"))
+context(paste0("test-modules-de.R: testing 'Data Explorer' page (", pageURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 

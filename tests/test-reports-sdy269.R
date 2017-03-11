@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/reports/Studies/SDY269/runReport.view?reportId=module%3ASDY269%2Freports%2Fschemas%2Fhai_flow_elispot.Rmd")
-context(paste0("test-reports-sdy269.R: testing 'SDY269 Report' page (", pageURL, ")"))
+context(paste0("test-reports-sdy269.R: testing 'SDY269 Report' page (", pageURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 

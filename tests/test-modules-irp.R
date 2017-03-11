@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/ImmuneResponsePredictor/Studies/SDY269/begin.view")
-context(paste0("test-modules-irp.R: testing 'Immune Response Predictor' page (", pageURL, ")"))
+context(paste0("test-modules-irp.R: testing 'Immune Response Predictor' page (", pageURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 

@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/reports/Studies/SDY180/runReport.view?reportId=module%3ASDY180%2Freports%2Fschemas%2Fstudy%2Fdemographics%2Fplasmablast_abundance.Rmd")
-context(paste0("test-reports-sdy180.R: testing 'SDY180 Report' page (", pageURL, ")"))
+context(paste0("test-reports-sdy180.R: testing 'SDY180 Report' page (", pageURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 

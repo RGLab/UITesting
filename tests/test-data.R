@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.DATA_ANALYSIS")
-context(paste0("test-data.R: testing 'Clinical and Assay Data' page (", pageURL, ")"))
+context(paste0("test-data.R: testing 'Clinical and Assay Data' page (", pageURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 

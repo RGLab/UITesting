@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
-context(paste0("test-modules-gsea.R: testing 'Gene Set Enrichment Analysis' page (", pageURL, ")"))
+context(paste0("test-modules-gsea.R: testing 'Gene Set Enrichment Analysis' page (", pageURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 

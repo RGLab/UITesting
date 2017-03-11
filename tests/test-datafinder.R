@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/project/Studies/begin.view")
-context(paste0("test-datafinder.R: testing 'Data Finder' page (", pageURL, ")"))
+context(paste0("test-datafinder.R: testing 'Data Finder' page (", pageURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 

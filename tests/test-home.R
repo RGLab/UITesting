@@ -1,5 +1,5 @@
 pageURL <- paste0(siteURL, "/project/home/begin.view")
-context(paste0("test-home.R: testing 'Home' page (", pageURL, ")"))
+context(paste0("test-home.R: testing 'Home' page (", pageURL, ")\n"))
 
 
 if (!exists("ISR_login")) source("initialize.R")

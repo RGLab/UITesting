@@ -1,4 +1,4 @@
-context(paste0("test-front.R: testing 'Front' page (", siteURL, ")"))
+context(paste0("test-front.R: testing 'Front' page (", siteURL, ")\n"))
 
 if (!exists("ISR_login")) source("initialize.R")
 
