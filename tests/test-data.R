@@ -1,7 +1,9 @@
-pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.DATA_ANALYSIS")
-context(paste0("test-data.R: testing 'Clinical and Assay Data' page (", pageURL, ")\n"))
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.DATA_ANALYSIS")
+context_of(file = "test-data.R", 
+           what = "Clinical and Assay Data", 
+           url = pageURL)
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)
@@ -62,7 +64,10 @@ test_that("Relevant datasets are available", {
 ################################################################################
 
 pageURL <- paste0(siteURL, "/project/Studies/begin.view?pageId=study.DATA_ANALYSIS")
-context(paste0("test-data.R: testing 'Clinical and Assay Data' page - project level (", pageURL, ")\n"))
+context_of(file = "test-data.R", 
+           what = "Clinical and Assay Data", 
+           url = pageURL,
+           level = "project")
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)

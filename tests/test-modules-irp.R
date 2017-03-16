@@ -1,7 +1,9 @@
-pageURL <- paste0(siteURL, "/ImmuneResponsePredictor/Studies/SDY269/begin.view")
-context(paste0("test-modules-irp.R: testing 'Immune Response Predictor' page (", pageURL, ")\n"))
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/ImmuneResponsePredictor/Studies/SDY269/begin.view")
+context_of(file = "test-modules-irp.R", 
+           what = "Immune Response Predictor", 
+           url = pageURL)
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)

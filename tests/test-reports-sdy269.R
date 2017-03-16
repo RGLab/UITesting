@@ -1,7 +1,9 @@
-pageURL <- paste0(siteURL, "/reports/Studies/SDY269/runReport.view?reportId=module%3ASDY269%2Freports%2Fschemas%2Fhai_flow_elispot.Rmd")
-context(paste0("test-reports-sdy269.R: testing 'SDY269 Report' page (", pageURL, ")\n"))
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/reports/Studies/SDY269/runReport.view?reportId=module%3ASDY269%2Freports%2Fschemas%2Fhai_flow_elispot.Rmd")
+context_of(file = "test-reports-sdy269.R", 
+           what = "SDY269 Report", 
+           url = pageURL)
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)

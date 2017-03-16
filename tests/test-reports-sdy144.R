@@ -1,7 +1,9 @@
-pageURL <- paste0(siteURL, "/reports/Studies/SDY144/runReport.view?reportId=module%3ASDY144%2Freports%2Fschemas%2Fstudy%2Fdemographics%2FHAI_VN_vs_plasma_cells.Rmd")
-context(paste0("test-reports-sdy269.R: testing 'SDY144 Report' page (", pageURL, ")\n"))
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/reports/Studies/SDY144/runReport.view?reportId=module%3ASDY144%2Freports%2Fschemas%2Fstudy%2Fdemographics%2FHAI_VN_vs_plasma_cells.Rmd")
+context_of(file = "test-reports-sdy269.R", 
+           what = "SDY144 Report", 
+           url = pageURL)
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)

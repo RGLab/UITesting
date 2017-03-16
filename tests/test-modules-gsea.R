@@ -1,7 +1,9 @@
-pageURL <- paste0(siteURL, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
-context(paste0("test-modules-gsea.R: testing 'Gene Set Enrichment Analysis' page (", pageURL, ")\n"))
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
+context_of(file = "test-modules-gsea.R", 
+           what = "Gene Set Enrichment Analysis", 
+           url = pageURL)
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)

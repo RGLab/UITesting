@@ -1,7 +1,9 @@
-pageURL <- paste0(siteURL, "/project/Studies/begin.view")
-context(paste0("test-datafinder.R: testing 'Data Finder' page (", pageURL, ")\n"))
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/project/Studies/begin.view?")
+context_of(file = "test-datafinder.R", 
+           what = "Data Finder", 
+           url = pageURL)
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)

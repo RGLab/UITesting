@@ -1,8 +1,9 @@
+if (!exists("context_of")) source("initialize.R")
+
 pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.PARTICIPANTS")
-context(paste0("test-participants.R: testing 'Participants' page (", pageURL, ")\n"))
-
-
-if (!exists("ISR_login")) source("initialize.R")
+context_of(file = "test-participants.R", 
+           what = "Participants", 
+           url = pageURL)
 
 test_that("can connect to the page", {
   remDr$navigate(pageURL)

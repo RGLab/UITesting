@@ -1,6 +1,8 @@
-context(paste0("test-0-front.R: testing 'Front' page (", siteURL, ")\n"))
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+context_of(file = "test-0-front.R", 
+           what = "Front", 
+           url = siteURL)
 
 test_that("can connect to the page", {
   remDr$navigate(siteURL)
