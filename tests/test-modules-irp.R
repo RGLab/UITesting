@@ -91,6 +91,7 @@ test_that("parameters are present and working", {
                "Select all\nLAIV group 2008\nTIV Group 2008")
   train_items <- train_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   train_items[[2]]$clickElement()
+  Sys.sleep(1)
   
   train_clear <- remDr$findElements(using = "id", value = "ext-gen117")
   expect_equal(length(train_clear), 1)
