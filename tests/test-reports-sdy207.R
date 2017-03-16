@@ -22,6 +22,8 @@ test_that("can connect to the page", {
 })
 
 test_that("report is generated", {
+  while (length(remDr$findElements(using = "class", value = "x4-mask-msg-text")) != 0) {}
+  
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)
   
