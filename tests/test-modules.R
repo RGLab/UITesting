@@ -1,9 +1,11 @@
-context("modules page")
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=Modules")
+context_of(file = "test-modules.R", 
+           what = "Modules", 
+           url = pageURL)
 
-test_that("can connect to modules page", {
-  pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=Modules")
+test_that("can connect to the page", {
   remDr$navigate(pageURL)
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")
@@ -15,7 +17,7 @@ test_that("can connect to modules page", {
     loginButton <- remDr$findElement(using = "class", value = "labkey-button")
     loginButton$clickElement()
     
-    Sys.sleep(1)
+    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
   }
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "Modules: /Studies/SDY269")

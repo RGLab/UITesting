@@ -1,9 +1,11 @@
-context("reports page")
+if (!exists("context_of")) source("initialize.R")
 
-if (!exists("ISR_login")) source("initialize.R")
+pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=Reports")
+context_of(file = "test-reports.R", 
+           what = "Reports", 
+           url = pageURL)
 
-test_that("can connect to reports page", {
-  pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=Reports")
+test_that("can connect to the page", {
   remDr$navigate(pageURL)
   if (remDr$getTitle()[[1]] == "Sign In") {
     id <- remDr$findElement(using = "id", value = "email")
@@ -15,7 +17,7 @@ test_that("can connect to reports page", {
     loginButton <- remDr$findElement(using = "class", value = "labkey-button")
     loginButton$clickElement()
     
-    Sys.sleep(1)
+    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
   }
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "Reports: /Studies/SDY269")
@@ -30,6 +32,6 @@ test_that("'List of Available Reports' module is present", {
     webElems <- remDr$findElements(using = "class", value = "x4-grid-empty")
     expect_true(webElems[[1]]$getElementText()[[1]] == "0 Matching Results")
   } else {
-    expect_true(length(webElems) > 0)
+    expect_gt(length(webElems), 0)
   }
 })

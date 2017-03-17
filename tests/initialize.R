@@ -12,5 +12,13 @@ Sys.sleep(5)
 remDr <- remoteDriver(browserName = 'phantomjs')
 remDr$open(silent = TRUE)
 remDr$maxWindowSize()
+remDr$setImplicitWaitTimeout(milliseconds = 20000)
 
-siteURL <- "https://www.immunespace.org"
+machine <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
+siteURL <- paste0("https://", machine, ".immunespace.org")
+
+context_of <- function(file, what, url, level = NULL) {
+  level <- ifelse(is.null(level), "", paste0(" (", level, " level) "))
+  msg <- paste0("\n", file, ": testing '", what, "' page", level, "\n", url, "\n")
+  context(msg)
+}
