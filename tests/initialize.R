@@ -14,7 +14,7 @@ remDr$open(silent = TRUE)
 remDr$maxWindowSize()
 remDr$setImplicitWaitTimeout(milliseconds = 20000)
 
-machine <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "wwww", "test")
+machine <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
 siteURL <- paste0("https://", machine, ".immunespace.org")
 
 context_of <- function(file, what, url, level = NULL) {
