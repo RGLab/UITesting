@@ -5,23 +5,9 @@ context_of(file = "test-data.R",
            what = "Clinical and Assay Data", 
            url = pageURL)
 
-test_that("can connect to the page", {
-  remDr$navigate(pageURL)
-  if (remDr$getTitle()[[1]] == "Sign In") {
-    id <- remDr$findElement(using = "id", value = "email")
-    id$sendKeysToElement(list(ISR_login))
-    
-    pw <- remDr$findElement(using = "id", value = "password")
-    pw$sendKeysToElement(list(ISR_pwd))
-    
-    loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-    loginButton$clickElement()
-    
-    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
-  }
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "Clinical and Assay Data: /Studies/SDY269")
-})
+test_connection(remDr = remDr, 
+                pageURL = pageURL, 
+                expectedTitle = "Clinical and Assay Data: /Studies/SDY269")
 
 test_that("List of datasets is present", {
   treeview_table <- remDr$findElements(using = "css selector", value = "table[id^=treeview-]")
@@ -69,23 +55,9 @@ context_of(file = "test-data.R",
            url = pageURL,
            level = "project")
 
-test_that("can connect to the page", {
-  remDr$navigate(pageURL)
-  if (remDr$getTitle()[[1]] == "Sign In") {
-    id <- remDr$findElement(using = "id", value = "email")
-    id$sendKeysToElement(list(ISR_login))
-    
-    pw <- remDr$findElement(using = "id", value = "password")
-    pw$sendKeysToElement(list(ISR_pwd))
-    
-    loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-    loginButton$clickElement()
-    
-    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
-  }
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "Clinical and Assay Data: /Studies")
-})
+test_connection(remDr = remDr, 
+                pageURL = pageURL, 
+                expectedTitle = "Clinical and Assay Data: /Studies")
 
 test_that("List of datasets is present", {
   treeview_table <- remDr$findElements(using = "css selector", value = "table[id^=treeview-]")

@@ -5,23 +5,9 @@ context_of(file = "test-overview.R",
            what = "Overview", 
            url = pageURL)
 
-test_that("can connect to the page", {
-  remDr$navigate(pageURL)
-  if (remDr$getTitle()[[1]] == "Sign In") {
-    id <- remDr$findElement(using = "id", value = "email")
-    id$sendKeysToElement(list(ISR_login))
-
-    pw <- remDr$findElement(using = "id", value = "password")
-    pw$sendKeysToElement(list(ISR_pwd))
-
-    loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-    loginButton$clickElement()
-    
-    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
-  }
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "Overview: /Studies/SDY269")
-})
+test_connection(remDr = remDr, 
+                pageURL = pageURL, 
+                expectedTitle = "Overview: /Studies/SDY269")
 
 test_that("'Study Overview' module is present", {
   webElems <- remDr$findElements(using = "css selector", value = "[id^=ImmuneSpaceStudyOverviewModuleHtmlView]")

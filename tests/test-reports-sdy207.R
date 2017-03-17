@@ -5,23 +5,9 @@ context_of(file = "test-reports-sdy207.R",
            what = "SDY207 Report", 
            url = pageURL)
 
-test_that("can connect to the page", {
-  remDr$navigate(pageURL)
-  if (remDr$getTitle()[[1]] == "Sign In") {
-    id <- remDr$findElement(using = "id", value = "email")
-    id$sendKeysToElement(list(ISR_login))
-    
-    pw <- remDr$findElement(using = "id", value = "password")
-    pw$sendKeysToElement(list(ISR_pwd))
-    
-    loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-    loginButton$clickElement()
-    
-    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
-  }
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "CyTOF Visualization: /Studies/SDY207")
-})
+test_connection(remDr = remDr, 
+                pageURL = pageURL, 
+                expectedTitle = "CyTOF Visualization: /Studies/SDY207")
 
 test_that("report is generated", {
   while (length(remDr$findElements(using = "class", value = "x4-mask-msg-text")) != 0) {}
