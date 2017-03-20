@@ -5,23 +5,9 @@ context_of(file = "test-reports-sdy269.R",
            what = "SDY269 Report", 
            url = pageURL)
 
-test_that("can connect to the page", {
-  remDr$navigate(pageURL)
-  if (remDr$getTitle()[[1]] == "Sign In") {
-    id <- remDr$findElement(using = "id", value = "email")
-    id$sendKeysToElement(list(ISR_login))
-    
-    pw <- remDr$findElement(using = "id", value = "password")
-    pw$sendKeysToElement(list(ISR_pwd))
-    
-    loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-    loginButton$clickElement()
-    
-    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
-  }
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "Correlating HAI with flow cytometry and ELISPOT: /Studies/SDY269")
-})
+test_connection(remDr = remDr, 
+                pageURL = pageURL, 
+                expectedTitle = "Correlating HAI with flow cytometry and ELISPOT: /Studies/SDY269")
 
 test_that("report is generated", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")

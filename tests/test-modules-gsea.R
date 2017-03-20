@@ -5,23 +5,9 @@ context_of(file = "test-modules-gsea.R",
            what = "Gene Set Enrichment Analysis", 
            url = pageURL)
 
-test_that("can connect to the page", {
-  remDr$navigate(pageURL)
-  if (remDr$getTitle()[[1]] == "Sign In") {
-    id <- remDr$findElement(using = "id", value = "email")
-    id$sendKeysToElement(list(ISR_login))
-    
-    pw <- remDr$findElement(using = "id", value = "password")
-    pw$sendKeysToElement(list(ISR_pwd))
-    
-    loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-    loginButton$clickElement()
-    
-    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
-  }
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "Gene Set Enrichment Analysis: /Studies/SDY269")
-})
+test_connection(remDr = remDr, 
+                pageURL = pageURL, 
+                expectedTitle = "Gene Set Enrichment Analysis: /Studies/SDY269")
 
 test_that("'Gene Set Enrichment Analysis' module is present", {
   gsea <- remDr$findElements(using = "id", value = "ext-comp-1038")
