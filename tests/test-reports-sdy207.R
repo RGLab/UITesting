@@ -22,7 +22,7 @@ test_that("report is generated", {
                "Automated Gating and Visualization of Cytometry Time of Flight (CyTOF) Data")
 })
 
-test_that("report is producing 3D plot", {
-  canvas <- remDr$findElements(using = "id", value = "plot3dcanvas")
-  expect_equal(length(canvas), 1)
-})
+# test_that("report is producing 3D plot", {
+#   canvas <- remDr$findElements(using = "id", value = "plot3dcanvas")
+#   expect_equal(length(canvas), 1)
+# })
