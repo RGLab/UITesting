@@ -11,4 +11,5 @@ LazyData: true
 Imports:
     RSelenium,
     testthat,
-    XML
+    XML,
+    digest
