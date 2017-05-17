@@ -22,7 +22,15 @@ test_that("report is generated", {
                "Automated Gating and Visualization of Cytometry Time of Flight (CyTOF) Data")
 })
 
-# test_that("report is producing 3D plot", {
-#   canvas <- remDr$findElements(using = "id", value = "plot3dcanvas")
-#   expect_equal(length(canvas), 1)
-# })
+test_that("report is producing 3D plot", {
+  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for*=htmlwidget-]")
+  expect_equal(length(widget_data), 1)
+  
+  if (length(widget_data) == 2) {
+    plot_data <- widget_data[[1]]$getElementAttribute("innerHTML")[[1]]
+    expect_equal(digest(plot_data, serialize = F), "8e8c3ec3606b51127453e61e6f4e972c")
+    
+    plot_svg <- remDr$findElements(using = "class", value = "plot-container")
+    expect_equal(length(plot_svg), 1)
+  }
+})

@@ -26,7 +26,10 @@ test_that("report is producing plot", {
   expect_equal(length(widget_data), 1)
   
   if (length(widget_data) == 1) {
-    plot1 <- widget_data[[1]]$getElementAttribute("innerHTML")[[1]]
-    expect_equal(digest(plot1, serialize = F), "eb1d92d72062290ef2df064dbb1a174f")
+    plot_data <- widget_data[[1]]$getElementAttribute("innerHTML")[[1]]
+    expect_equal(digest(plot_data, serialize = F), "3f6db2ceab5156cec4017f217151f5a4")
+    
+    plot_svg <- remDr$findElements(using = "class", value = "plot-container")
+    expect_equal(length(plot_svg), 1)
   }
 })

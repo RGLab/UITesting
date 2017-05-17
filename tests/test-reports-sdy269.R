@@ -31,5 +31,8 @@ test_that("report is producing plots", {
     
     plot2 <- widget_data[[2]]$getElementAttribute("innerHTML")[[1]]
     expect_equal(digest(plot2, serialize = F), "1b39b4e62f7c1dfbbf6fd862bf67254a")
+    
+    plot_svg <- remDr$findElements(using = "class", value = "plot-container")
+    expect_equal(length(plot_svg), 2)
   }
 })
