@@ -22,17 +22,14 @@ test_that("report is generated", {
 
 test_that("report is producing plots", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
-  report_images <- labkey_knitr[[1]]$findChildElements(using = "css selector", value = "img")
-  expect_equal(length(report_images), 2)
+  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for*=htmlwidget-]")
+  expect_equal(length(widget_data), 2)
   
-  if (length(report_images) == 2) {
-    image1_url <- report_images[[1]]$getElementAttribute("src")[[1]]
-    image2_url <- report_images[[2]]$getElementAttribute("src")[[1]]
+  if (length(widget_data) == 2) {
+    plot1 <- widget_data[[1]]$getElementAttribute("innerHTML")[[1]]
+    expect_equal(digest(plot1, serialize = F), "7fd78ea51aa0af9c04cbc07b741417ce")
     
-    remDr$navigate(image1_url)
-    expect_true(grepl(strsplit(image1_url, split = "\\&")[[1]][2], remDr$getPageSource()[[1]]))
-
-    remDr$navigate(image2_url)
-    expect_true(grepl(strsplit(image2_url, split = "\\&")[[1]][2], remDr$getPageSource()[[1]]))
+    plot2 <- widget_data[[2]]$getElementAttribute("innerHTML")[[1]]
+    expect_equal(digest(plot2, serialize = F), "02141bb5f0a0643dfb65dc465f5020db")
   }
 })
