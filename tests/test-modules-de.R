@@ -43,8 +43,22 @@ test_that("parameters are present", {
   dataset_arrow[[1]]$clickElement()
   
   dataset_list <- remDr$findElements(using = "id", value = "ext-gen94")
-  expect_equal(dataset_list[[1]]$getElementText()[[1]], 
-               "Enzyme-linked immunosorbent assay (ELISA)\nEnzyme-Linked ImmunoSpot (ELISPOT)\nFlow cytometry analyzed results\nHemagglutination inhibition (HAI)\nPolymerisation chain reaction (PCR)\nGene expression")
+  expect_equal(length(dataset_list), 1)
+  if (length(dataset_list) == 1) {
+    dataset_actual <- strsplit(dataset_list[[1]]$getElementText()[[1]], "\n")[[1]]
+    dataset_expected <- c("Enzyme-linked immunosorbent assay (ELISA)", 
+                          "Enzyme-Linked ImmunoSpot (ELISPOT)", 
+                          "Flow cytometry analyzed results", 
+                          "Hemagglutination inhibition (HAI)", 
+                          "Polymerisation chain reaction (PCR)", 
+                          "Gene expression")
+    
+    expect_equal(setdiff(dataset_actual, dataset_expected), character(0), 
+                 info = paste(c("Unexpected datasets:", setdiff(dataset_actual, dataset_expected)), collapse = "\n"))
+    
+    expect_equal(setdiff(dataset_expected, dataset_actual), character(0), 
+                 info = paste(c("Missing datasets:", setdiff(dataset_expected, dataset_actual)), collapse = "\n"))
+  }
 
   dataset_clear <- remDr$findElements(using = "id", value = "ext-gen92")
   expect_equal(length(dataset_clear), 1)
