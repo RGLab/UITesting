@@ -50,7 +50,7 @@ test_that("parameters are present", {
                           "Enzyme-Linked ImmunoSpot (ELISPOT)", 
                           "Flow cytometry analyzed results", 
                           "Hemagglutination inhibition (HAI)", 
-                          "Polymerisation chain reaction (PCR)", 
+                          # "Polymerisation chain reaction (PCR)", 
                           "Gene expression")
     
     expect_equal(setdiff(dataset_actual, dataset_expected), character(0), 
