@@ -10,26 +10,24 @@ test_connection(remDr = remDr,
                 expectedTitle = "Immune Response Predictor: /Studies/SDY269")
 
 test_that("'Immune Response Predictor' module is present", {
-  IRP <- remDr$findElements(using = "id", value = "ext-comp-1076")
-  expect_equal(length(IRP), 1)
+  module <- remDr$findElements(using = "css selector", value = "div.ISCore")
+  expect_equal(length(module), 1)
+  
+  tab_panel <- remDr$findElements(using = "class", value = "x-tab-panel")
+  expect_equal(length(tab_panel), 1)
 })
 
 test_that("tabs are present", {
-  input_tab <- remDr$findElements(using = "id", value = "ext-comp-1073__ext-comp-1051")
-  expect_equal(length(input_tab), 1)
-  expect_equal(input_tab[[1]]$getElementText()[[1]], "Input")
+  tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
+  expect_equal(length(tab_header), 1)
   
-  data_tab <- remDr$findElements(using = "id", value = "ext-comp-1073__ext-comp-1062")
-  expect_equal(length(data_tab), 1)
-  expect_equal(data_tab[[1]]$getElementText()[[1]], "View")
+  tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
+  expect_equal(length(tabs), 4)
   
-  about_tab <- remDr$findElements(using = "id", value = "ext-comp-1073__ext-comp-1074")
-  expect_equal(length(about_tab), 1)
-  expect_equal(about_tab[[1]]$getElementText()[[1]], "About")
-  
-  help_tab <- remDr$findElements(using = "id", value = "ext-comp-1073__ext-comp-1075")
-  expect_equal(length(help_tab), 1)
-  expect_equal(help_tab[[1]]$getElementText()[[1]], "Help")
+  expect_equal(tabs[[1]]$getElementText()[[1]], "Input")
+  expect_equal(tabs[[2]]$getElementText()[[1]], "View")
+  expect_equal(tabs[[3]]$getElementText()[[1]], "About")
+  expect_equal(tabs[[4]]$getElementText()[[1]], "Help")
 })
 
 test_that("parameters are present and working", {
@@ -128,40 +126,48 @@ test_that("parameters are present and working", {
   expect_equal(length(GDE), 1, 
                info = "'Use gene...' checkbox is not present.")
   
-  
-  run_button <- remDr$findElements(using = "id", value = "ext-gen55")
-  expect_equal(length(run_button), 1)
-  
-  reset_button <- remDr$findElements(using = "id", value = "ext-gen57")
-  expect_equal(length(reset_button), 1)
+  # buttons
+  buttons <- remDr$findElements(using = "class", value = "x-btn-text")
+  expect_equal(length(buttons), 2)
+  expect_equal(buttons[[1]]$getElementText()[[1]], "RUN")
+  expect_equal(buttons[[2]]$getElementText()[[1]], "RESET")
 })
 
 test_that("run button is working", {
-  run_button <- remDr$findElements(using = "id", value = "ext-gen55")
-  run_button[[1]]$clickElement()
+  buttons <- remDr$findElements(using = "class", value = " x-btn-text")
+  buttons[[1]]$clickElement()
   
   # check if output is there
   while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
   
-  labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
-  expect_equal(length(labkey_knitr), 1)
+  active_tab <- remDr$findElements(using = "class", value = "x-tab-strip-active")
+  expect_equal(active_tab[[1]]$getElementText()[[1]], "View")
 })
 
 test_that("report is present", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
-  visualization <- labkey_knitr[[1]]$findChildElements(using = "css selector", value = "img")
-  expect_equal(length(visualization), 2)
+  expect_equal(length(labkey_knitr), 1)
   
-  dataTable <- remDr$findElements(using = "id", value = "res_table_wrapper")
+  report_header <- labkey_knitr[[1]]$findChildElements(using = "id", value = "predicted-response-vs.observed-response-per-participant")
+  expect_equal(length(report_header), 1)
+  
+  widget_data <- labkey_knitr[[1]]$findChildElements(using = "css selector", value = "script[data-for]")
+  expect_equal(length(widget_data), 3)
+  
+  dataTable <- labkey_knitr[[1]]$findChildElements(using = "class", value = "dataTables_wrapper")
   expect_equal(length(dataTable), 1)
+  
+  plot_svg <- labkey_knitr[[1]]$findChildElements(using = "class", value = "plot-container")
+  expect_equal(length(plot_svg), 2)
 })
 
 test_that("reset button is working", {
-  input_tab <- remDr$findElements(using = "id", value = "ext-comp-1073__ext-comp-1051")
-  input_tab[[1]]$clickElement()
+  tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
+  tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
+  tabs[[1]]$clickElement()
   
-  reset_button <- remDr$findElements(using = "id", value = "ext-gen57")
-  reset_button[[1]]$clickElement()
+  buttons <- remDr$findElements(using = "class", value = "x-btn-text")
+  buttons[[2]]$clickElement()
   
   # check if parameters are clear
   pred_input <- remDr$findElements(using = "id", value = "ext-comp-1003")
