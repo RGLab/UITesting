@@ -21,16 +21,17 @@ test_that("report is generated", {
 })
 
 test_that("report is producing plots", {
-  labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
-  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for*=htmlwidget-]")
+  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for]")
   expect_equal(length(widget_data), 2)
   
   if (length(widget_data) == 2) {
-    plot1 <- widget_data[[1]]$getElementAttribute("innerHTML")[[1]]
-    expect_equal(digest(plot1, serialize = F), "7fd78ea51aa0af9c04cbc07b741417ce")
+    plot1 <- jsonlite::fromJSON(widget_data[[1]]$getElementAttribute("innerHTML")[[1]])
+    expect_equal(digest(plot1$x$data$x), "e1f45ba66b86ea386ee1b88da4e30ec3")
+    expect_equal(digest(plot1$x$data$y), "2a71e1aa09880a0195bbbb5fd4033b4e")
     
-    plot2 <- widget_data[[2]]$getElementAttribute("innerHTML")[[1]]
-    expect_equal(digest(plot2, serialize = F), "02141bb5f0a0643dfb65dc465f5020db")
+    plot2 <- jsonlite::fromJSON(widget_data[[2]]$getElementAttribute("innerHTML")[[1]])
+    expect_equal(digest(plot2$x$data$x), "292cf4e072ed3f8e5e0bc2f23d7bd66b")
+    expect_equal(digest(plot2$x$data$y), "6d92fa666790ccc7914e63bfc3c32d89")
     
     plot_svg <- remDr$findElements(using = "class", value = "plot-container")
     expect_equal(length(plot_svg), 2)

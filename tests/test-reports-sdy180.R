@@ -21,13 +21,13 @@ test_that("report is generated", {
 })
 
 test_that("report is producing plot", {
-  labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
-  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for*=htmlwidget-]")
+  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for]")
   expect_equal(length(widget_data), 1)
   
   if (length(widget_data) == 1) {
-    plot_data <- widget_data[[1]]$getElementAttribute("innerHTML")[[1]]
-    expect_equal(digest(plot_data, serialize = F), "3f6db2ceab5156cec4017f217151f5a4")
+    plot_data <- jsonlite::fromJSON(widget_data[[1]]$getElementAttribute("innerHTML")[[1]])
+    expect_is(plot_data, "list")
+    expect_equal(plot_data$x$layout$title, "Plasma cell abundance after vaccination")
     
     plot_svg <- remDr$findElements(using = "class", value = "plot-container")
     expect_equal(length(plot_svg), 1)

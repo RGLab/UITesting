@@ -23,7 +23,7 @@ test_that("report is generated", {
 })
 
 test_that("report is producing 3D plot", {
-  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for*=htmlwidget-]")
+  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for]")
   expect_equal(length(widget_data), 1)
   
   if (length(widget_data) == 2) {
