@@ -10,26 +10,24 @@ test_connection(remDr = remDr,
                 expectedTitle = "Data Explorer: /Studies/SDY269")
 
 test_that("'Data Explorer' module is present", {
-  dataExplorer <- remDr$findElements(using = "id", value = "ext-comp-1094")
-  expect_equal(length(dataExplorer), 1)
+  module <- remDr$findElements(using = "css selector", value = "div.ISCore")
+  expect_equal(length(module), 1)
+  
+  tab_panel <- remDr$findElements(using = "class", value = "x-tab-panel")
+  expect_equal(length(tab_panel), 1)
 })
 
 test_that("tabs are present", {
-  inputView_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1072")
-  expect_equal(length(inputView_tab), 1)
-  expect_equal(inputView_tab[[1]]$getElementText()[[1]], "Input / View")
+  tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
+  expect_equal(length(tab_header), 1)
   
-  data_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1082")
-  expect_equal(length(data_tab), 1)
-  expect_equal(data_tab[[1]]$getElementText()[[1]], "Data")
+  tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
+  expect_equal(length(tabs), 4)
   
-  about_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1087")
-  expect_equal(length(about_tab), 1)
-  expect_equal(about_tab[[1]]$getElementText()[[1]], "About")
-  
-  help_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1092")
-  expect_equal(length(help_tab), 1)
-  expect_equal(help_tab[[1]]$getElementText()[[1]], "Help")
+  expect_equal(tabs[[1]]$getElementText()[[1]], "Input / View")
+  expect_equal(tabs[[2]]$getElementText()[[1]], "Data")
+  expect_equal(tabs[[3]]$getElementText()[[1]], "About")
+  expect_equal(tabs[[4]]$getElementText()[[1]], "Help")
 })
 
 test_that("parameters are present", {
@@ -110,10 +108,11 @@ test_that("loading dataset is working", {
   dataset_elisa <- dataset_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   dataset_elisa[[1]]$clickElement()
   
-  while (remDr$findElements(using = "id", value = "ext-comp-1025")[[1]]$getElementText()[[1]] == "") {}
+  while (remDr$findElements(using = "id", value = "ext-comp-1026")[[1]]$getElementText()[[1]] == "") {}
 
-  data_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1082")
-  data_tab[[1]]$clickElement()
+  tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
+  tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
+  tabs[[2]]$clickElement()
   
   headers <- remDr$findElements(using = "css selector", value = "[id$=-column-header-row]")
   if (headers[[1]]$getElementText()[[1]] != "") {
@@ -125,8 +124,7 @@ test_that("loading dataset is working", {
   expect_equal(headers_text, 
                c("Participant ID", "Age Reported", "Gender", "Race", "Cohort", "Analyte", "Study Time Collected", "Study Time Collected Unit", "Value Reported", "Unit Reported"))
   
-  inputView_tab <- remDr$findElements(using = "id", value = "ext-comp-1093__ext-comp-1072")
-  inputView_tab[[1]]$clickElement()
+  tabs[[1]]$clickElement()
 })
 
 test_that("selecting plot type is working", {
