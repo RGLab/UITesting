@@ -32,95 +32,108 @@ test_that("tabs are present", {
 
 test_that("parameters are present and working", {
   Sys.sleep(3)
-
-  response_input <- remDr$findElements(using = "id", value = "ext-comp-1002")
+  
+  # parameters
+  parameters <- remDr$findElements(using = "class", value = "ui-test-parameters")
+  expect_equal(length(parameters), 1)
+  
+  formItems <- parameters[[1]]$findChildElements(using = "class", value = "x-form-item")
+  expect_equal(length(formItems), 5)
+  
+  # parameters: response
+  response_input <- formItems[[1]]$findChildElements(using = "class", value = "ui-test-response")
   expect_equal(length(response_input), 1)
 
-  response_arrow <- remDr$findElements(using = "id", value = "ext-gen77")
+  response_arrow <- formItems[[1]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
   expect_equal(length(response_arrow), 1)
   response_arrow[[1]]$clickElement()
 
-  response_list <- remDr$findElements(using = "id", value = "ext-gen80")
+  response_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
   expect_equal(response_list[[1]]$getElementText()[[1]], "HAI")
 
-  response_clear <- remDr$findElements(using = "id", value = "ext-gen78")
+  response_clear <- formItems[[1]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(response_clear), 1)
 
-  
-  timePoint_input <- remDr$findElements(using = "id", value = "ext-comp-1003")
+  # parameters: time point
+  timePoint_input <- formItems[[2]]$findChildElements(using = "class", value = "ui-test-timepoint")
   expect_equal(length(timePoint_input), 1)
 
-  timePoint_arrow <- remDr$findElements(using = "id", value = "ext-gen99")
+  timePoint_arrow <- formItems[[2]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
   expect_equal(length(timePoint_arrow), 1)
   timePoint_arrow[[1]]$clickElement()
 
-  timePoint_list <- remDr$findElements(using = "id", value = "ext-gen102")
+  timePoint_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
   expect_equal(timePoint_list[[1]]$getElementText()[[1]],
                "0 days (2 cohorts)\n3 days (2 cohorts)\n7 days (2 cohorts)")
   timePoint_items <- timePoint_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   timePoint_items[[2]]$clickElement()
   Sys.sleep(1)
   
-  timePoint_clear <- remDr$findElements(using = "id", value = "ext-gen100")
+  timePoint_clear <- formItems[[2]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(timePoint_clear), 1)
 
-  
-  cohorts_input <- remDr$findElements(using = "id", value = "ext-comp-1004")
+  # parameters: cohorts
+  cohorts_input <- formItems[[3]]$findChildElements(using = "class", value = "ui-test-cohorts")
   expect_equal(length(cohorts_input), 1)
 
-  cohorts_arrow <- remDr$findElements(using = "id", value = "ext-gen120")
+  cohorts_arrow <- formItems[[3]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
   expect_equal(length(cohorts_arrow), 1)
   
-  cohorts_list <- remDr$findElements(using = "id", value = "ext-gen122")
+  cohorts_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
   expect_equal(cohorts_list[[1]]$getElementText()[[1]], 
                "Select all\nLAIV group 2008 (SDY269)\nTIV Group 2008 (SDY269)")
   cohorts_items <- cohorts_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   cohorts_items[[2]]$clickElement()
   Sys.sleep(1)
   
-  cohorts_clear <- remDr$findElements(using = "id", value = "ext-gen121")
+  cohorts_clear <- formItems[[3]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(cohorts_clear), 1)
 
-  
-  normalize <- remDr$findElements(using = "id", value = "ext-comp-1010")
+  # parameters: normalize
+  normalize <- formItems[[4]]$findChildElements(using = "class", value = "ui-test-normalize")
   expect_equal(length(normalize), 1)
 
-  
-  genes_input <- remDr$findElements(using = "id", value = "ext-gen179")
+  # parameters: genes
+  genes_input <- formItems[[5]]$findChildElements(using = "class", value = "ui-test-genes")
   expect_equal(length(genes_input), 1)
   genes_input[[1]]$clickElement()
   Sys.sleep(1)
   
-  genes_list <- remDr$findElements(using = "id", value = "ext-gen153")
+  genes_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
   expect_equal(length(genes_input), 1)
   
   genes_items <- genes_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   genes_items[[1]]$clickElement()
   
-  
-  additionalOptions <- remDr$findElements(using = "id", value = "ext-gen49")
+  # addiational options
+  additionalOptions <- remDr$findElements(using = "class", value = "ui-test-additional-options")
   expect_equal(length(additionalOptions), 1)
-  additionalOptions[[1]]$clickElement()
+  
+  additionalOptions_header <- additionalOptions[[1]]$findChildElements(using = "class", value = "x-fieldset-header")
+  additionalOptions_header[[1]]$clickElement()
+  
+  interactivePlot <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-interactive")
+  expect_equal(length(interactivePlot), 1)
 
-  textSize <- remDr$findElements(using = "id", value = "ext-comp-1013")
+  textSize <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-textsize")
   expect_equal(length(textSize), 1)
 
-  facet_grid <- remDr$findElements(using = "id", value = "ext-comp-1014")
+  facet_grid <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-facet-grid")
   expect_equal(length(facet_grid), 1)
 
-  facet_wrap <- remDr$findElements(using = "id", value = "ext-comp-1015")
+  facet_wrap <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-facet-wrap")
   expect_equal(length(facet_wrap), 1)
 
-  color <- remDr$findElements(using = "id", value = "ext-comp-1006")
+  color <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-color")
   expect_equal(length(color), 1)
   
-  shape <- remDr$findElements(using = "id", value = "ext-comp-1007")
+  shape <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-shape")
   expect_equal(length(shape), 1)
   
-  size <- remDr$findElements(using = "id", value = "ext-comp-1008")
+  size <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-size")
   expect_equal(length(size), 1)
   
-  alpha <- remDr$findElements(using = "id", value = "ext-comp-1009")
+  alpha <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-alpha")
   expect_equal(length(alpha), 1)
   
   # buttons
