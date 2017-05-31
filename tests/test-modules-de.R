@@ -87,11 +87,11 @@ test_that("parameters are present", {
   plotType_clear[[1]]$clickElement()
 
   # parameters: normalize
-  normalize <- remDr$findElements(using = "class", value = "ui-test-normalize")
+  normalize <- formItems[[3]]$findChildElements(using = "class", value = "ui-test-normalize")
   expect_equal(length(normalize), 1)
   
   # parameters: show strains
-  showStrains <- remDr$findElements(using = "class", value = "ui-test-showstrains")
+  showStrains <- formItems[[4]]$findChildElements(using = "class", value = "ui-test-showstrains")
   expect_equal(length(showStrains), 1)
   
   # additional options
