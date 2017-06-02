@@ -22,15 +22,19 @@ test_that("report is generated", {
 
 test_that("report is producing plots", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
-  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for*=htmlwidget-]")
+  widget_data <- remDr$findElements(using = "css selector", value = "script[data-for]")
   expect_equal(length(widget_data), 2)
   
   if (length(widget_data) == 2) {
-    plot1 <- widget_data[[1]]$getElementAttribute("innerHTML")[[1]]
-    expect_equal(digest(plot1, serialize = F), "ea6d28ce504f7db6adb5c9d575de85a6")
+    plot1_data <- jsonlite::fromJSON(widget_data[[1]]$getElementAttribute("innerHTML")[[1]])
+    expect_is(plot1_data, "list")
+    expect_equal(plot1_data$x$layout$xaxis$title, "Total plasmablasts (%)")
+    expect_equal(plot1_data$x$layout$yaxis$title, "Influenza specific cells (per 10^6 PBMCs)")
     
-    plot2 <- widget_data[[2]]$getElementAttribute("innerHTML")[[1]]
-    expect_equal(digest(plot2, serialize = F), "1b39b4e62f7c1dfbbf6fd862bf67254a")
+    plot2_data <- jsonlite::fromJSON(widget_data[[2]]$getElementAttribute("innerHTML")[[1]])
+    expect_is(plot2_data, "list")
+    expect_equal(plot2_data$x$layout$xaxis$title, "HAI fold")
+    expect_equal(plot2_data$x$layout$yaxis$title, "Influenza specific cells (per 10^6 PBMCs)")
     
     plot_svg <- remDr$findElements(using = "class", value = "plot-container")
     expect_equal(length(plot_svg), 2)
