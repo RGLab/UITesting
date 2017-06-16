@@ -35,14 +35,61 @@ if (length(remDr$findElements(using = "class", value = "error")) == 0) {
 }
 
 test_that("can log in", {
-  id <- remDr$findElement(using = "id", value = "email")
-  id$sendKeysToElement(list(ISR_login))
-
-  pw <- remDr$findElement(using = "id", value = "password")
-  pw$sendKeysToElement(list(ISR_pwd))
-
-  loginButton <- remDr$findElement(using = "id", value = "submitButton")
-  loginButton$clickElement()
+  # check elements
+  id <- remDr$findElements(using = "id", value = "email")
+  expect_equal(length(id), 1)
+  
+  pw <- remDr$findElements(using = "id", value = "password")
+  expect_equal(length(pw), 1)
+  
+  forgotPassword <- remDr$findElements(using = "class", value = "forgotpw")
+  expect_equal(length(forgotPassword), 1)
+  
+  remember <- remDr$findElements(using = "id", value = "remember")
+  expect_equal(length(remember), 1)
+  
+  signInButton <- remDr$findElements(using = "id", value = "submitButton")
+  expect_equal(length(signInButton), 1)
+  
+  registerButton <- remDr$findElements(using = "id", value = "registerButton")
+  expect_equal(length(registerButton), 1)
+  
+  errorMessage <- remDr$findElements(using = "id", value = "errors")
+  expect_equal(length(errorMessage), 1)
+  expect_equal(errorMessage[[1]]$getElementText()[[1]], "")
+  
+  # wrong credentials
+  id[[1]]$sendKeysToElement(list("wrong@email.com"))
+  pw[[1]]$sendKeysToElement(list("wrongPassword"))
+  signInButton[[1]]$clickElement()
+  Sys.sleep(1)
+  expect_equal(errorMessage[[1]]$getElementText()[[1]], 
+               "Invalid Username or Password.\nYou can reset your password via the question mark link above.")
+  
+  # forgot password
+  forgotPassword[[1]]$clickElement()
+  Sys.sleep(1)
+  
+  pageTitle <- remDr$getTitle()[[1]]
+  expect_equal(pageTitle, "")
+  
+  emailInput <- remDr$findElements(using = "id", value = "EmailInput")
+  expect_equal(length(emailInput), 1)
+  
+  if (pageTitle != "Welcome to ImmuneSpace") remDr$goBack()
+  
+  # right credentials
+  id <- remDr$findElements(using = "id", value = "email")
+  id[[1]]$clearElement()
+  id[[1]]$sendKeysToElement(list(ISR_login))
+  
+  pw <- remDr$findElements(using = "id", value = "password")
+  pw[[1]]$clearElement()
+  pw[[1]]$sendKeysToElement(list(ISR_pwd))
+  
+  signInButton <- remDr$findElements(using = "id", value = "submitButton")
+  signInButton[[1]]$clickElement()
+  Sys.sleep(1)
   
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "News and Updates: /home")
