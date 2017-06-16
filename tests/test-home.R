@@ -37,7 +37,7 @@ test_that("'Public Data Summary' module is present", {
 })
 
 test_that("`Studies` tab shows studies properly", {
-  studyTab <- remDr$findElements(using = "id", value = "WikiMenu12-Header")
+  studyTab <- remDr$findElements(using = "id", value = "StudiesMenu12-Header")
   studyTab[[1]]$clickElement()
   Sys.sleep(1)
   
