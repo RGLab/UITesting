@@ -42,11 +42,7 @@ test_that("search box is present", {
   expect_equal(length(studySubsetSelect), 1)
   
   subsetOptions <- studySubsetSelect[[1]]$findChildElements(using = "class", value = "ng-scope")
-  expect_equal(length(subsetOptions), 4)
-  expect_equal(subsetOptions[[1]]$getElementText()[[1]], "ImmuneSpace studies")
-  expect_equal(subsetOptions[[2]]$getElementText()[[1]], "Recently added studies")
-  expect_equal(subsetOptions[[3]]$getElementText()[[1]], "HIPC funded studies")
-  expect_equal(subsetOptions[[4]]$getElementText()[[1]], "Unloaded ImmPort studies")
+  expect_gte(length(subsetOptions), 3)
 })
 
 test_that("selection panel is present", {
@@ -61,16 +57,16 @@ test_that("selection panel is present", {
   
   facets <- facetPanel[[1]]$findChildElements(using = "class", value = "facet")
   expect_equal(length(facets), 10)
-  expect_equal(facets[[1]]$getElementText()[[1]], "  Species")
-  expect_equal(facets[[2]]$getElementText()[[1]], "  Condition")
-  expect_equal(facets[[3]]$getElementText()[[1]], "  Type")
-  expect_equal(facets[[4]]$getElementText()[[1]], "  Research focus")
-  expect_equal(facets[[5]]$getElementText()[[1]], "  Assay")
-  expect_equal(facets[[6]]$getElementText()[[1]], "  Day of Study")
-  expect_equal(facets[[7]]$getElementText()[[1]], "  Gender")
-  expect_equal(facets[[8]]$getElementText()[[1]], "  Race")
-  expect_equal(facets[[9]]$getElementText()[[1]], "  Age")
-  expect_equal(facets[[10]]$getElementText()[[1]], "  Study")
+  expect_match(facets[[1]]$getElementText()[[1]], "Species")
+  expect_match(facets[[2]]$getElementText()[[1]], "Condition")
+  expect_match(facets[[3]]$getElementText()[[1]], "Type")
+  expect_match(facets[[4]]$getElementText()[[1]], "Research focus")
+  expect_match(facets[[5]]$getElementText()[[1]], "Assay")
+  expect_match(facets[[6]]$getElementText()[[1]], "Day of Study")
+  expect_match(facets[[7]]$getElementText()[[1]], "Gender")
+  expect_match(facets[[8]]$getElementText()[[1]], "Race")
+  expect_match(facets[[9]]$getElementText()[[1]], "Age")
+  expect_match(facets[[10]]$getElementText()[[1]], "Study")
 })
 
 test_that("study panel is present", {
