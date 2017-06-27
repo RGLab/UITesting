@@ -73,6 +73,9 @@ test_that("parameters are present and working", {
   train_clear <- formItems[[3]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(train_clear), 1)
   
+  train_arrow[[1]]$clickElement()
+  Sys.sleep(1)
+  
   # parameters: testing
   test_input <- formItems[[4]]$findChildElements(using = "class", value = "ui-test-testing")
   expect_equal(length(test_input), 1)
@@ -86,9 +89,13 @@ test_that("parameters are present and working", {
                "Select all\nTIV Group 2008")
   test_items <- test_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   test_items[[2]]$clickElement()
+  Sys.sleep(1)
   
   test_clear <- formItems[[4]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(test_clear), 1)
+  
+  test_arrow[[1]]$clickElement()
+  Sys.sleep(1)
   
   # parameters: dichotomize
   dich <- formItems[[5]]$findChildElements(using = "class", value = "ui-test-dichotomize")

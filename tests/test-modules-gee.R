@@ -72,6 +72,9 @@ test_that("parameters are present and working", {
   cohorts_clear <- formItems[[3]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(cohorts_clear), 1)
 
+  cohorts_arrow[[1]]$clickElement()
+  Sys.sleep(1)
+  
   # parameters: normalize
   normalize <- formItems[[4]]$findChildElements(using = "class", value = "ui-test-normalize")
   expect_equal(length(normalize), 1)
