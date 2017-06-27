@@ -9,26 +9,9 @@ test_connection(remDr = remDr,
                 pageURL = pageURL, 
                 expectedTitle = "Gene Expression Explorer: /Studies/SDY269")
 
-test_that("'Gene Expression Explorer' module is present", {
-  module <- remDr$findElements(using = "css selector", value = "div.ISCore")
-  expect_equal(length(module), 1)
-  
-  tab_panel <- remDr$findElements(using = "class", value = "x-tab-panel")
-  expect_equal(length(tab_panel), 1)
-})
+test_module("'Gene Expression Explorer'")
 
-test_that("tabs are present", {
-  tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
-  expect_equal(length(tab_header), 1)
-  
-  tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
-  expect_equal(length(tabs), 4)
-  
-  expect_equal(tabs[[1]]$getElementText()[[1]], "Input / View")
-  expect_equal(tabs[[2]]$getElementText()[[1]], "Data")
-  expect_equal(tabs[[3]]$getElementText()[[1]], "About")
-  expect_equal(tabs[[4]]$getElementText()[[1]], "Help")
-})
+test_tabs(c("Input / View", "Data", "About", "Help"))
 
 test_that("parameters are present and working", {
   Sys.sleep(3)
