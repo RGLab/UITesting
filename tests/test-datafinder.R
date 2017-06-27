@@ -9,6 +9,8 @@ test_connection(remDr = remDr,
                 pageURL = pageURL, 
                 expectedTitle = "Overview: /Studies")
 
+Sys.sleep(3)
+
 test_that("'Data Finder' module is present", {
   module <- remDr$findElements(using = "id", value = "dataFinderApp")
   expect_equal(length(module), 1)
@@ -74,5 +76,17 @@ test_that("study panel is present", {
   expect_equal(length(studyPanel), 1)
   
   studyCards<- studyPanel[[1]]$findChildElements(using = "class", value = "labkey-study-card")
-  expect_gt(length(studyCards), 1)
+  expect_gt(length(studyCards), 0)
+  
+  if (length(studyCards) > 0) {
+    cardSummary <- studyCards[[1]]$findChildElements(using = "class", value = "labkey-study-card-summary")
+    cardSummary[[1]]$clickElement()
+    Sys.sleep(1)
+    
+    studyDetail <- remDr$findElements(using = "class", value = "labkey-study-detail")
+    expect_equal(length(studyDetail), 1)
+    
+    studyDemographics <- studyDetail[[1]]$findChildElements(using = "class", value = "study-demographics")
+    expect_equal(length(studyDemographics), 1)
+  }
 })
