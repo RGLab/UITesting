@@ -43,5 +43,12 @@ test_that("`Studies` tab shows studies properly", {
   
   studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
   expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
-  expect_gt(sum(grepl("SDY\\d+\\*", strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]])), 0)
+  
+  studyElems <- strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]]
+  studies <- studyElems[grepl("SDY\\d+", studyElems)]
+  studyNumber <- as.integer(sub("\\*", "", sub("SDY", "", studies)))
+  expect_equal(studyNumber, sort(studyNumber), info = "Are studies in order?")
+  
+  HIPC <- grepl("\\*", studies)
+  expect_gt(sum(HIPC), 0)
 })
