@@ -8,6 +8,12 @@ cache:
 addons:
   sauce_connect: true
 script: Rscript test.R
+after_script:
+  - . ./SAUCE
+after_success:
+  - curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/immunespace/jobs/$SAUCE_JOB
+after_failure:
+  - curl -X PUT -s -d '{"passed": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/immunespace/jobs/$SAUCE_JOB
 notifications:
   email: false
   slack:

@@ -15,7 +15,9 @@ build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
 name <- ifelse(machine == "TRAVIS", 
                paste0(server, ": ", machine, " (#", build, ")"), 
                paste0(server, ": ", machine, " (", Sys.info()["nodename"], ")"))
-ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@localhost")
+url <- ifelse(machine == "TRAVIS", "localhost", "ondemand.saucelabs.com")
+ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@", url)
+port <- ifelse(machine == "TRAVIS", 4445, 80)
 extraCapabilities <- list(name = name, 
                           build = build,
                           username = SAUCE_USERNAME, 
@@ -29,6 +31,8 @@ remDr <- remoteDriver$new(remoteServerAddr = ip,
                           platform = "Windows 10", 
                           extraCapabilities = extraCapabilities)
 remDr$open()
+write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
+
 remDr$maxWindowSize()
 remDr$setImplicitWaitTimeout(milliseconds = 20000)
 
