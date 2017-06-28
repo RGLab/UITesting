@@ -11,11 +11,14 @@ SAUCE_ACCESS_KEY <- Sys.getenv("SAUCE_ACCESS_KEY")
 
 machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
 server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
+
 build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
+buildURL <- paste0("https://travis-ci.org/RGLab/UITesting/builds/", Sys.getenv("TRAVIS_BUILD_ID"))
 name <- ifelse(machine == "TRAVIS", 
-               paste0(server, ": ", machine, " (#", build, ")"), 
-               paste0(server, ": ", machine, " (", Sys.info()["nodename"], ")"))
+               paste0("UI testing `", server, "` by TRAVIS #", build, " (", buildURL, ")"), 
+               paste0("UI testing `", server, "` by ", Sys.info()["nodename"]))
 url <- ifelse(machine == "TRAVIS", "localhost", "ondemand.saucelabs.com")
+
 ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@", url)
 port <- ifelse(machine == "TRAVIS", 4445, 80)
 extraCapabilities <- list(name = name, 
@@ -25,7 +28,7 @@ extraCapabilities <- list(name = name,
                           tags = list(machine, server))
 
 remDr <- remoteDriver$new(remoteServerAddr = ip, 
-                          port = 4445, 
+                          port = port, 
                           browserName = "chrome", 
                           version = "latest", 
                           platform = "Windows 10", 
@@ -37,6 +40,7 @@ remDr$maxWindowSize()
 remDr$setImplicitWaitTimeout(milliseconds = 20000)
 
 siteURL <- paste0("https://", server, ".immunespace.org")
+
 
 # helper functions ----
 context_of <- function(file, what, url, level = NULL) {
