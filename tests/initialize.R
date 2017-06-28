@@ -15,7 +15,7 @@ build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
 name <- ifelse(machine == "TRAVIS", 
                paste0(server, ": ", machine, " (#", build, ")"), 
                paste0(server, ": ", machine, " (", Sys.info()["nodename"], ")"))
-ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@ondemand.saucelabs.com")
+ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@localhost")
 extraCapabilities <- list(name = name, 
                           build = build,
                           username = SAUCE_USERNAME, 
@@ -23,7 +23,7 @@ extraCapabilities <- list(name = name,
                           tags = list(machine, server))
 
 remDr <- remoteDriver$new(remoteServerAddr = ip, 
-                          port = 80, 
+                          port = 4445, 
                           browserName = "chrome", 
                           version = "latest", 
                           platform = "Windows 10", 
