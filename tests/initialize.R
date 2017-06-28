@@ -6,17 +6,33 @@ library(digest)
 
 ISR_login <- Sys.getenv("ISR_login")
 ISR_pwd <- Sys.getenv("ISR_pwd")
+SAUCE_USERNAME <- Sys.getenv("SAUCE_USERNAME")
+SAUCE_ACCESS_KEY <- Sys.getenv("SAUCE_ACCESS_KEY")
 
-pJS <- phantom()
-Sys.sleep(5)
+machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
+server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
+build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
+name <- ifelse(machine == "TRAVIS", 
+               paste0(server, ": ", machine, " (#", build, ")"), 
+               paste0(server, ": ", machine, " (", Sys.info()["nodename"], ")"))
+ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@ondemand.saucelabs.com")
+extraCapabilities <- list(name = name, 
+                          build = build,
+                          username = SAUCE_USERNAME, 
+                          accessKey = SAUCE_ACCESS_KEY, 
+                          tags = list(machine, server))
 
-remDr <- remoteDriver(browserName = 'phantomjs')
-remDr$open(silent = TRUE)
+remDr <- remoteDriver$new(remoteServerAddr = ip, 
+                          port = 80, 
+                          browserName = "chrome", 
+                          version = "latest", 
+                          platform = "Windows 10", 
+                          extraCapabilities = extraCapabilities)
+remDr$open()
 remDr$maxWindowSize()
 remDr$setImplicitWaitTimeout(milliseconds = 20000)
 
-machine <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
-siteURL <- paste0("https://", machine, ".immunespace.org")
+siteURL <- paste0("https://", server, ".immunespace.org")
 
 # helper functions ----
 context_of <- function(file, what, url, level = NULL) {
