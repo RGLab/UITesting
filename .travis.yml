@@ -9,11 +9,11 @@ addons:
   sauce_connect: true
 script: Rscript test.R
 after_success:
-  - . ./SAUCE
-  - curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+  - ". ./SAUCE"
+  - "curl -X PUT -s -d '{\"passed\": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB"
 after_failure:
-  - . ./SAUCE
-  - curl -X PUT -s -d '{"passed": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+  - ". ./SAUCE"
+  - "curl -X PUT -s -d '{\"passed\": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB"
 notifications:
   email: false
   slack:
