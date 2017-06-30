@@ -21,6 +21,9 @@ url <- ifelse(machine == "TRAVIS", "localhost", "ondemand.saucelabs.com")
 
 ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@", url)
 port <- ifelse(machine == "TRAVIS", 4445, 80)
+browserName <- ifelse(Sys.getenv("SAUCE_BROWSER") == "", 
+                      "chrome", 
+                      Sys.getenv("SAUCE_BROWSER"))
 extraCapabilities <- list(name = name, 
                           build = build,
                           username = SAUCE_USERNAME, 
@@ -29,7 +32,7 @@ extraCapabilities <- list(name = name,
 
 remDr <- remoteDriver$new(remoteServerAddr = ip, 
                           port = port, 
-                          browserName = "chrome", 
+                          browserName = browserName, 
                           version = "latest", 
                           platform = "Windows 10", 
                           extraCapabilities = extraCapabilities)
