@@ -37,7 +37,8 @@ remDr <- remoteDriver$new(remoteServerAddr = ip,
                           version = "latest", 
                           platform = "Windows 10", 
                           extraCapabilities = extraCapabilities)
-remDr$open()
+remDr$open(silent = TRUE)
+ptm <- proc.time()
 write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
 
 remDr$maxWindowSize()
@@ -48,8 +49,16 @@ siteURL <- paste0("https://", server, ".immunespace.org")
 
 # helper functions ----
 context_of <- function(file, what, url, level = NULL) {
+  elapsed <- proc.time() - ptm
+  timeStamp <- paste0("At ", floor(elapsed[3]/60), " minutes ", 
+                      round(elapsed[3]%%60), " seconds")
   level <- ifelse(is.null(level), "", paste0(" (", level, " level) "))
-  msg <- paste0("\n", file, ": testing '", what, "' page", level, "\n", url, "\n")
+  
+  msg <- paste0("\n", file, ": testing '", what, "' page", level, 
+                "\n", url, 
+                "\n", timeStamp,
+                "\n")
+  
   context(msg)
 }
 
