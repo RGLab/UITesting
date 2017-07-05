@@ -13,9 +13,10 @@ machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
 server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
 
 build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
-buildURL <- paste0("https://travis-ci.org/RGLab/UITesting/builds/", Sys.getenv("TRAVIS_BUILD_ID"))
+job <- Sys.getenv("TRAVIS_JOB_NUMBER")
+jobURL <- paste0("https://travis-ci.org/RGLab/UITesting/jobs/", Sys.getenv("TRAVIS_JOB_ID"))
 name <- ifelse(machine == "TRAVIS", 
-               paste0("UI testing `", server, "` by TRAVIS #", build, " (", buildURL, ")"), 
+               paste0("UI testing `", server, "` by TRAVIS #", job, " (", jobURL, ")"), 
                paste0("UI testing `", server, "` by ", Sys.info()["nodename"]))
 url <- ifelse(machine == "TRAVIS", "localhost", "ondemand.saucelabs.com")
 
