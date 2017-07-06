@@ -23,6 +23,9 @@ test_that("subject group controller is present", {
   groupLabel <- filterArea[[1]]$findChildElements(using = "class", value = "labkey-group-label")
   expect_equal(length(groupLabel), 1)
   
+  manageMenu <- filterArea[[1]]$findChildElements(using = "id", value = "manageMenu")
+  expect_equal(length(manageMenu), 1)
+  
   loadMenu <- filterArea[[1]]$findChildElements(using = "id", value = "loadMenu")
   expect_equal(length(loadMenu), 1)
   
