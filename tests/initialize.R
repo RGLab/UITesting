@@ -16,7 +16,7 @@ build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
 job <- Sys.getenv("TRAVIS_JOB_NUMBER")
 jobURL <- paste0("https://travis-ci.org/RGLab/UITesting/jobs/", Sys.getenv("TRAVIS_JOB_ID"))
 name <- ifelse(machine == "TRAVIS", 
-               paste0("UI testing `", server, "` by TRAVIS #", job, " (", jobURL, ")"), 
+               paste0("UI testing `", server, "` by TRAVIS #", job, " ", jobURL), 
                paste0("UI testing `", server, "` by ", Sys.info()["nodename"]))
 url <- ifelse(machine == "TRAVIS", "localhost", "ondemand.saucelabs.com")
 
@@ -39,7 +39,9 @@ remDr <- remoteDriver$new(remoteServerAddr = ip,
                           extraCapabilities = extraCapabilities)
 remDr$open(silent = TRUE)
 ptm <- proc.time()
-write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
+
+cat("\nhttps://saucelabs.com/beta/tests/", remDr@.xData$sessionid, "\n", sep = "")
+if (machine == "TRAVIS") write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
 
 remDr$maxWindowSize()
 remDr$setImplicitWaitTimeout(milliseconds = 20000)
@@ -49,9 +51,13 @@ siteURL <- paste0("https://", server, ".immunespace.org")
 
 # helper functions ----
 context_of <- function(file, what, url, level = NULL) {
-  elapsed <- proc.time() - ptm
-  timeStamp <- paste0("At ", floor(elapsed[3]/60), " minutes ", 
-                      round(elapsed[3]%%60), " seconds")
+  if (exists("ptm")) {
+    elapsed <- proc.time() - ptm
+    timeStamp <- paste0("At ", floor(elapsed[3]/60), " minutes ", 
+                        round(elapsed[3]%%60), " seconds")
+  } else {
+    timeStamp <- ""
+  }
   level <- ifelse(is.null(level), "", paste0(" (", level, " level) "))
   
   msg <- paste0("\n", file, ": testing '", what, "' page", level, 
