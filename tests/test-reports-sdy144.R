@@ -26,12 +26,12 @@ test_that("report is producing plots", {
   
   if (length(widget_data) == 2) {
     plot1 <- jsonlite::fromJSON(widget_data[[1]]$getElementAttribute("innerHTML")[[1]])
-    expect_equal(digest(plot1$x$data$x), "e1f45ba66b86ea386ee1b88da4e30ec3")
-    expect_equal(digest(plot1$x$data$y), "2a71e1aa09880a0195bbbb5fd4033b4e")
+    expect_length(plot1$x$data$x, 27)
+    expect_length(plot1$x$data$y, 27)
     
     plot2 <- jsonlite::fromJSON(widget_data[[2]]$getElementAttribute("innerHTML")[[1]])
-    expect_equal(digest(plot2$x$data$x), "292cf4e072ed3f8e5e0bc2f23d7bd66b")
-    expect_equal(digest(plot2$x$data$y), "aa1336283e27a70e25c9a237d87bf642")
+    expect_length(plot2$x$data$x, 27)
+    expect_length(plot2$x$data$y, 27)
     
     plot_svg <- remDr$findElements(using = "class", value = "plot-container")
     expect_equal(length(plot_svg), 2)
