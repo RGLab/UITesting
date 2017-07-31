@@ -134,7 +134,7 @@ test_that("parameters are present and working", {
 })
 
 test_that("run button is working", {
-  buttons <- remDr$findElements(using = "class", value = " x-btn-text")
+  buttons <- remDr$findElements(using = "class", value = "x-btn-text")
   buttons[[1]]$clickElement()
   
   # check if output is there

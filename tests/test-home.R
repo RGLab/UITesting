@@ -28,6 +28,44 @@ test_that("can connect to the page", {
   expect_equal(pageTitle, "News and Updates: /home")
 })
 
+test_that("'Quick Help' is present", {
+  remDr$executeScript("LABKEY.help.Tour.show('immport-home-tour')")
+  
+  quickHelp <- remDr$findElements(using = "css selector", 
+                                  value = "div[class='hopscotch-bubble animated']")
+  expect_equal(length(quickHelp), 1)
+  
+  if (length(quickHelp) == 1) {
+    titles <- c("Welcome to ImmuneSpace", 
+                "Announcements", 
+                "Quick Links", 
+                "Tools", 
+                "Tutorials", 
+                "About", 
+                "Video Tutorials Menu", 
+                "Studies Navigation")
+    for (i in seq_along(titles)) {
+      helpTitle <- quickHelp[[1]]$findChildElements(using = "class", 
+                                                    value = "hopscotch-title")
+      expect_equal(helpTitle[[1]]$getElementText()[[1]], titles[i])
+      
+      nextButton <- quickHelp[[1]]$findChildElements(using = "class", 
+                                                     value = "hopscotch-next")
+      expect_equal(length(nextButton), 1)
+
+      closeButton <- quickHelp[[1]]$findChildElements(using = "class", 
+                                                      value = "hopscotch-close")
+      expect_equal(length(closeButton), 1)
+      
+      if (i == length(titles)) {
+        closeButton[[1]]$clickElement()
+      } else {
+        nextButton[[1]]$clickElement()
+      }
+    }
+  }
+})
+
 test_that("'Public Data Summary' module is present", {
   summaryTab <- remDr$findElements(using = "css selector", value = "[id^=Summary]")
   expect_equal(length(summaryTab), 1, info = "Does 'Public Data Summary' module exist?")

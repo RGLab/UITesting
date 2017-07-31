@@ -13,14 +13,18 @@ machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
 server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
 
 build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
-buildURL <- paste0("https://travis-ci.org/RGLab/UITesting/builds/", Sys.getenv("TRAVIS_BUILD_ID"))
+job <- Sys.getenv("TRAVIS_JOB_NUMBER")
+jobURL <- paste0("https://travis-ci.org/RGLab/UITesting/jobs/", Sys.getenv("TRAVIS_JOB_ID"))
 name <- ifelse(machine == "TRAVIS", 
-               paste0("UI testing `", server, "` by TRAVIS #", build, " (", buildURL, ")"), 
+               paste0("UI testing `", server, "` by TRAVIS #", job, " ", jobURL), 
                paste0("UI testing `", server, "` by ", Sys.info()["nodename"]))
 url <- ifelse(machine == "TRAVIS", "localhost", "ondemand.saucelabs.com")
 
 ip <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@", url)
 port <- ifelse(machine == "TRAVIS", 4445, 80)
+browserName <- ifelse(Sys.getenv("SAUCE_BROWSER") == "", 
+                      "chrome", 
+                      Sys.getenv("SAUCE_BROWSER"))
 extraCapabilities <- list(name = name, 
                           build = build,
                           username = SAUCE_USERNAME, 
@@ -29,12 +33,15 @@ extraCapabilities <- list(name = name,
 
 remDr <- remoteDriver$new(remoteServerAddr = ip, 
                           port = port, 
-                          browserName = "chrome", 
+                          browserName = browserName, 
                           version = "latest", 
                           platform = "Windows 10", 
                           extraCapabilities = extraCapabilities)
-remDr$open()
-write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
+remDr$open(silent = TRUE)
+ptm <- proc.time()
+
+cat("\nhttps://saucelabs.com/beta/tests/", remDr@.xData$sessionid, "\n", sep = "")
+if (machine == "TRAVIS") write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
 
 remDr$maxWindowSize()
 remDr$setImplicitWaitTimeout(milliseconds = 20000)
@@ -44,8 +51,20 @@ siteURL <- paste0("https://", server, ".immunespace.org")
 
 # helper functions ----
 context_of <- function(file, what, url, level = NULL) {
+  if (exists("ptm")) {
+    elapsed <- proc.time() - ptm
+    timeStamp <- paste0("At ", floor(elapsed[3]/60), " minutes ", 
+                        round(elapsed[3]%%60), " seconds")
+  } else {
+    timeStamp <- ""
+  }
   level <- ifelse(is.null(level), "", paste0(" (", level, " level) "))
-  msg <- paste0("\n", file, ": testing '", what, "' page", level, "\n", url, "\n")
+  
+  msg <- paste0("\n", file, ": testing '", what, "' page", level, 
+                "\n", url, 
+                "\n", timeStamp,
+                "\n")
+  
   context(msg)
 }
 

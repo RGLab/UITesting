@@ -31,7 +31,7 @@ test_that("report is producing plots", {
     
     plot2 <- jsonlite::fromJSON(widget_data[[2]]$getElementAttribute("innerHTML")[[1]])
     expect_equal(digest(plot2$x$data$x), "292cf4e072ed3f8e5e0bc2f23d7bd66b")
-    expect_equal(digest(plot2$x$data$y), "6d92fa666790ccc7914e63bfc3c32d89")
+    expect_equal(digest(plot2$x$data$y), "aa1336283e27a70e25c9a237d87bf642")
     
     plot_svg <- remDr$findElements(using = "class", value = "plot-container")
     expect_equal(length(plot_svg), 2)
