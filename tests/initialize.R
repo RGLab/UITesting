@@ -53,8 +53,8 @@ siteURL <- paste0("https://", server, ".immunespace.org")
 context_of <- function(file, what, url, level = NULL) {
   if (exists("ptm")) {
     elapsed <- proc.time() - ptm
-    timeStamp <- paste0("At ", floor(elapsed[3]/60), " minutes ", 
-                        round(elapsed[3]%%60), " seconds")
+    timeStamp <- paste0("At ", floor(elapsed[3] / 60), " minutes ", 
+                        round(elapsed[3] %% 60), " seconds")
   } else {
     timeStamp <- ""
   }
@@ -69,7 +69,7 @@ context_of <- function(file, what, url, level = NULL) {
 }
 
 
-# tests ----
+# test functions ----
 test_connection <- function(remDr, pageURL, expectedTitle) {
   test_that("can connect to the page", {
     remDr$navigate(pageURL)
