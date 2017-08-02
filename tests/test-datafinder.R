@@ -26,22 +26,28 @@ test_that("subject group controller is present", {
   manageMenu <- filterArea[[1]]$findChildElements(using = "id", value = "manageMenu")
   expect_length(manageMenu, 1)
   if (length(manageMenu) == 1) {
-    menuItems <- manageMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
-    expect_length(menuItems, 1)
+    manageMenu[[1]]$clickElement()
+    Sys.sleep(1)
+    manageItems <- manageMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
+    expect_length(manageItems, 1)
   }
   
   loadMenu <- filterArea[[1]]$findChildElements(using = "id", value = "loadMenu")
   expect_length(loadMenu, 1)
   if (length(loadMenu) == 1) {
-    menuItems <- loadMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
-    expect_gt(length(menuItems), 0)
+    loadMenu[[1]]$clickElement()
+    Sys.sleep(1)
+    loadItems <- loadMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
+    expect_gt(length(loadItems), 0)
   }
   
   saveMenu <- filterArea[[1]]$findChildElements(using = "id", value = "saveMenu")
   expect_length(saveMenu, 1)
   if (length(saveMenu) == 1) {
-    menuItems <- saveMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
-    expect_length(menuItems, 2)
+    saveMenu[[1]]$clickElement()
+    Sys.sleep(1)
+    saveItems <- saveMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
+    expect_length(saveItems, 2)
   }
   
   sendMenu <- filterArea[[1]]$findChildElements(using = "id", value = "sendMenu")
