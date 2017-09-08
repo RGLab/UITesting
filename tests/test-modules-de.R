@@ -95,6 +95,8 @@ test_that("parameters are present", {
 
   vertical <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-vertical")
   expect_equal(length(vertical), 1)
+  
+  additionalOptions_header[[1]]$clickElement()
 
   # buttons
   buttons_bar <- remDr$findElements(using = "class", value = "ui-test-buttons")
