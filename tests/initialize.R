@@ -101,7 +101,6 @@ sleep_for <- function(seconds, condition = NULL) {
     while (!result) {
       Sys.sleep(1)
       counter <- counter + 1
-      print(counter)
       result <- eval(condition, envir = parent.frame())
 
       if (counter == seconds) {
