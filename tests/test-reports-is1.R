@@ -28,7 +28,7 @@ test_that("report is producing figures and tables", {
                                                  value = "img")
   expect_length(figures, 9)
   
-  if (length(imgs) > 0) {
+  if (length(figures) > 0) {
     fig1 <- figures[[1]]$getElementAttribute("src")
     expect_equal(fig1[[1]], paste0(siteURL, "/ImmuneSignatures/images/fig1.png"))
   }
