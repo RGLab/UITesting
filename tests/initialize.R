@@ -4,13 +4,15 @@ library(testthat)
 library(XML)
 library(digest)
 
-# Get credentials
+
+# Get credentials ----
 ISR_login <- Sys.getenv("ISR_login")
 ISR_pwd <- Sys.getenv("ISR_pwd")
 SAUCE_USERNAME <- Sys.getenv("SAUCE_USERNAME")
 SAUCE_ACCESS_KEY <- Sys.getenv("SAUCE_ACCESS_KEY")
 
-# Get environment variables to determine test path
+
+# Get environment variables to determine test path ----
 seleniumServer <- ifelse(Sys.getenv("SELENIUM_SERVER") == "", "SAUCELABS", "LOCAL")
 machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
 server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
@@ -19,11 +21,12 @@ browserName <- ifelse(Sys.getenv("TEST_BROWSER") == "",
                       "chrome",
                       Sys.getenv("TEST_BROWSER"))
 
-# Initiate Selenium server
+
+# Initiate Selenium server ----
 if (seleniumServer == "SAUCELABS") {
   # With SauceLabs on Travis or local machine
   
-  # 
+  # Set SauceLabs meta info
   build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
   
   job <- Sys.getenv("TRAVIS_JOB_NUMBER")
@@ -54,7 +57,7 @@ if (seleniumServer == "SAUCELABS") {
   # Timer to match with SauceLabs browser (it's not so accurate)
   ptm <- proc.time()
   
-  #
+  # For sending pass/fail info to SauceLabs session
   cat("\nhttps://saucelabs.com/beta/tests/", remDr@.xData$sessionid, "\n", sep = "")
   if (machine == "TRAVIS") write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
   
@@ -64,7 +67,8 @@ if (seleniumServer == "SAUCELABS") {
   remDr <- rs$client
 }
 
-# 
+
+# Set browser condition ----
 remDr$maxWindowSize()
 remDr$setTimeout(type = "implicit", milliseconds = 20000)
 
@@ -93,12 +97,13 @@ sleep_for <- function(seconds, condition = NULL) {
     Sys.sleep(seconds)
   } else {
     counter <- 0
-    result <- eval(condition)
+    result <- eval(condition, envir = parent.frame())
     while (!result) {
       Sys.sleep(1)
       counter <- counter + 1
-      result <- eval(condition)
-      
+      print(counter)
+      result <- eval(condition, envir = parent.frame())
+
       if (counter == seconds) {
         warning("can't wait for the condition to be true.")
         break
@@ -106,6 +111,14 @@ sleep_for <- function(seconds, condition = NULL) {
     }
   }
   NULL
+}
+
+sign_out <- function() {
+  userMenu <- remDr$findElements(using = "id", value = "userMenuPopupLink")
+  userMenu[[1]]$clickElement()
+  
+  signOut <- remDr$findElements(using = "id", value = "__lk-usermenu-signout")
+  signOut[[1]]$clickElement()
 }
 
 

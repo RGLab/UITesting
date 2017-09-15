@@ -1,118 +1,159 @@
 if (!exists("context_of")) source("initialize.R")
 
 
+# study info ----
+studies <- list(
+  SDY269 = list(
+    datasets = c(
+      "Enzyme-linked immunosorbent assay (ELISA)",
+      "Enzyme-Linked ImmunoSpot (ELISPOT)",
+      "Flow cytometry analyzed results",
+      "Hemagglutination inhibition (HAI)",
+      "Polymerisation chain reaction (PCR)"
+    ),
+    raw_files = c(
+      "FCS sample files",
+      "Gene expression microarray data files"
+    ),
+    organization = "NIAID",
+    GEO = c(
+      "GSE29615",
+      "GSE29617"
+    ),
+    assoc_studies = c(
+      "SDY270",
+      "SDY61"
+    )
+  ),
+  SDY212 = list(
+    datasets = c(
+      "Hemagglutination inhibition (HAI)",
+      "Multiplex bead array asssay"
+    ),
+    raw_files = c(
+      "FCS control files",
+      "FCS sample files",
+      "Gene expression microarray data files"
+    ),
+    organization = "NIAID (HIPC funded)",
+    GEO = "GSE41080",
+    assoc_studies = c(
+      "SDY215",
+      "SDY312",
+      "SDY460",
+      "SDY773",
+      "SDY887"
+    )
+  ),
+  SDY887 = list(
+    datasets = "Flow cytometry analyzed results",
+    raw_files = "None",
+    organization = "Ellison Foundation (HIPC funded)",
+    assoc_studies = c(
+      "SDY212",
+      "SDY312"
+    )
+  ),
+  SDY1097 = list(
+    datasets = "None",
+    raw_files = c(
+      "FCS control files",
+      "FCS sample files"
+    ),
+    organization = "NIAID, NIA, NCRR, BD Bioscience (HIPC funded)"
+  )
+)
+
+
 # test functions ----
-test_overview <- function(sdy, hipc) {
-  pageURL <- paste0(siteURL, "/project/Studies/", sdy, "/begin.view?")
+test_section <- function(key, label) {
+  sdy <- get("sdy", envir = parent.frame())
+  
+  if (key %in% names(studies[[sdy]])) {
+    test_that(paste0("'", label, "' section shows correct information"), {
+      section <- remDr$findElements(using = "css selector",
+                                    value = paste0("[id^=", key, "ModuleHtmlView]"))
+      expect_length(section, 1)
+      
+      if (length(section) == 1) {
+        sleep_for(10, condition = expression(section[[1]]$isElementDisplayed()[[1]]))
+        
+        displayed <- section[[1]]$getElementText()[[1]]
+        expected <- studies[[sdy]][[key]]
+        
+        if (key %in% c("GEO", "assoc_studies")) {
+          displayed <- sub(paste0(label, ": "), "", displayed)
+        }
+        
+        if (length(expected) > 1) {
+          displayed <- strsplit(displayed, ", ")[[1]]
+        }
+        
+        expect_equal(displayed, expected)
+      }
+    })
+  }
+}
+
+test_overview <- function(sdy, public = FALSE) {
+  if (public) {
+    pageURL <- paste0(siteURL, "/project/home/Public/begin.view?SDY=", sdy)
+    what <- paste0("Overview of ", sdy, " (public)")
+    expectedTitle <- "Overview: /home/Public"
+  } else {
+    pageURL <- paste0(siteURL, "/project/Studies/", sdy, "/begin.view?")
+    what <- paste0("Overview of ", sdy)
+    expectedTitle <- paste0("Overview: /Studies/", sdy)
+  }
+  
   context_of(file = "test-overview.R",
-             what = paste0("Overview of ", sdy),
+             what = what,
              url = pageURL)
   
   test_connection(remDr = remDr,
                   pageURL = pageURL,
-                  expectedTitle = paste0("Overview: /Studies/", sdy))
+                  expectedTitle = expectedTitle)
   
   test_that("'Study Overview' module is present", {
     study_overview <- remDr$findElements(using = "css selector",
-                                         value = "[id^=ImmuneSpaceStudyOverviewModuleHtmlView]")
+                                         value = "[id*=StudyOverviewModuleHtmlView]")
     expect_length(study_overview, 1)
     expect_true(study_overview[[1]]$getElementText()[[1]] != "")
   })
   
-  test_that("'Sponsoring organization' section shows correct information", {
-    Sys.sleep(1)
+  test_section("datasets", "Available datasets")
+  test_section("raw_files", "Available raw data files")
+  test_section("organization", "Sponsoring organization")
+  test_section("GEO", "GEO accession")
+
+  if (!public) {
+    test_section("assoc_studies", "Associated ImmuneSpace studies")
     
-    sponsor <- remDr$findElements(using = "css selector",
-                                  value = "[id^=organizationModuleHtmlView]")
-    expect_length(sponsor, 1)
-    
-    sponsor_text <- sponsor[[1]]$getElementText()[[1]]
-    #sponsor_expected <- ifelse(hipc, "NIAID (HIPC funded)", "NIAID")
-    if (! hipc) {
-      sponsor_expected <- "NIAID"
-    } else if (sdy == "SDY1097") {
-      sponsor_expected <- "NIAID, NIA, NCRR, BD Bioscience (HIPC funded)"
-    } else if (sdy == "SDY887") {
-      sponsor_expected <- "Ellison Foundation (HIPC funded)"
-    }
-    expect_equal(sponsor_text, sponsor_expected)
-  })
-  
-  #My test methods
-  test_that("'GEO accession' present", {
-    Sys.sleep(1)
-    
-    geo <- remDr$findElements(using = "css selector",
-                              value = "[id^=GEOModuleHtmlView]")
-    geo_text <- geo[[1]]$getElementText()[[1]]
-    
-    if (sdy == "SDY887" || sdy == "SDY1097") {
-      expect_equal(geo_text, "")
-    } else {
-      expect_equal(geo_text, "GEO accession: GSE29615, GSE29617")
-    }
-  })
-  
-  test_that("'Associated ImmuneSpace studies' present", {
-    Sys.sleep(1)
-    
-    assoc <- remDr$findElements(using = "css selector",
-                                value = "[id^=assoc_studiesModuleHtmlView]")
-    assoc_text <- assoc[[1]]$getElementText()[[1]]
-    
-    if (sdy == "SDY887") {
-      expect_equal(assoc_text, "Associated ImmuneSpace studies: SDY212, SDY312")
-    } else if (sdy == "SDY1097") {
-      expect_equal(assoc_text, "")
-    } else {
-      expect_equal(assoc_text, "Associated ImmuneSpace studies: SDY270, SDY61")
-    } 
-    
-  })
-  
-  test_that("'Available datasets' present", {
-    Sys.sleep(1)
-    
-    datasets <- remDr$findElements(using = "css selector",
-                                   value = "[id^=datasetsModuleHtmlView]")
-    datasets_text <- datasets[[1]]$getElementText()[[1]]
-    
-    if (sdy == "SDY887") {
-      expect_equal(datasets_text, "Flow cytometry analyzed results")
-    } else if (sdy == "SDY1097") {
-      expect_equal(datasets_text, "None")
-    } else {
-      expect_equal(datasets_text, "Enzyme-linked immunosorbent assay (ELISA), Enzyme-Linked ImmunoSpot (ELISPOT), Flow cytometry analyzed results, Hemagglutination inhibition (HAI), Polymerisation chain reaction (PCR)")
-    } 
-  })
-  
-  test_that("'Available raw data files' present", {
-    Sys.sleep(1)
-    
-    raw <- remDr$findElements(using = "css selector",
-                              value = "[id^=raw_filesModuleHtmlView]")
-    raw_text <- raw[[1]]$getElementText()[[1]]
-    
-    if (sdy == "SDY887") {
-      expect_equal(raw_text, "None")
-    } else if (sdy == "SDY1097") {
-      expect_equal(raw_text, "FCS control files, FCS sample files")
-    } else {
-      expect_equal(raw_text, "FCS sample files, Gene expression microarray data files")
-    } 
-  })
-  #End of my test methods
-  
-  test_that("'Publications and Citations' module is present", {
-    refs <- remDr$findElements(using = "id", value = "reportdiv")
-    expect_equal(length(refs), 1)
-    expect_true(refs[[1]]$getElementText()[[1]] != "")
-  })
+    test_that("'Publications and Citations' module is present", {
+      refs <- remDr$findElements(using = "id", value = "reportdiv")
+      expect_length(refs, 1)
+      
+      if (length(refs) == 1) {
+        expect_true(refs[[1]]$getElementText()[[1]] != "")
+      }
+    })
+  }
 }
 
 
-# tests ----
-test_overview("SDY269", FALSE)
-#test_overview("SDY212", TRUE)
-test_overview("SDY887", TRUE)
-test_overview("SDY1097", TRUE)
+# test private overview ----
+test_overview("SDY269")
+test_overview("SDY212")
+test_overview("SDY887")
+test_overview("SDY1097")
+
+
+# sign out ----
+sign_out()
+
+
+# tests public overview ----
+test_overview("SDY269", public = TRUE)
+test_overview("SDY212", public = TRUE)
+test_overview("SDY887", public = TRUE)
+test_overview("SDY1097", public = TRUE)
