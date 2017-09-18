@@ -6,23 +6,47 @@
 
 ## Requirments
 
-- [R](https://cran.r-project.org/) (>= 3.3.2)
+- [R](https://cran.r-project.org/) (>= 3.4.1)
     - [testthat](https://cran.r-project.org/web/packages/testthat/index.html) (>= 1.0.2)
-    - [RSelenium](https://cran.r-project.org/web/packages/RSelenium/index.html) (>= 1.6.2)
+    - [RSelenium](https://cran.r-project.org/web/packages/RSelenium/index.html) (>= 1.7.1)
 - [Sauce Labs](https://saucelabs.com/)
-
+- [chrome](https://www.google.com/chrome/)
+- [firefox](https://www.mozilla.org/en-US/firefox/)
 
 ## Setup in Ubuntu
 
 ### Set environment variables
 
-From the command line (or in `.bashrc` file):
+From the command line:
 
 ```sh
+# ImmuneSpace login info
 export ISR_login=yourImmuneSpace@email.here
 export ISR_pwd=yourImmuneSpacePasswordHere
+
+# SauceLabs login info
 export SAUCE_USERNAME=yourUsername
 export SAUCE_ACCESS_KEY=yourAccessKey
+
+# optional
+export SELENIUM_SERVER=LOCAL # if not set, it uses `SAUCELABS`
+export TEST_BROWSER=firefox # if not set, default is `chrome`
+```
+
+Or in `.Renviron` file on your **home** directory:
+
+```sh
+# ImmuneSpace login info
+ISR_login=yourImmuneSpace@email.here
+ISR_pwd=yourImmuneSpacePasswordHere
+
+# SauceLabs login info
+SAUCE_USERNAME=yourUsername
+SAUCE_ACCESS_KEY=yourAccessKey
+
+# optional
+SELENIUM_SERVER=LOCAL # if not set, it uses `SAUCELABS`
+TEST_BROWSER=firefox # if not set, default is `chrome`
 ```
 
 ### Run tests
@@ -84,12 +108,4 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
     - SDY180 ([`test-reports-sdy180.R`](tests/test-reports-sdy180.R))
     - SDY207 ([`test-reports-sdy207.R`](tests/test-reports-sdy207.R))
     - SDY269 ([`test-reports-sdy269.R`](tests/test-reports-sdy269.R))
-
-
-## To Do
-- [x] Save logs and screenshots: https://docs.travis-ci.com/user/uploading-artifacts/
-- [ ] Set up dependent builds: https://github.com/travis-ci/travis-ci/issues/249#issuecomment-124136642
-- [x] Set up cron jobs: https://docs.travis-ci.com/user/cron-jobs/
-- [ ] Iterate through each study
-- [x] Add slack notification
-- [x] Use `Sauce Labs` instead of `phantomjs`: https://saucelabs.com/beta/signup/OSS/None
+    - IS1 ([`test-reports-is1.R`](tests/test-reports-is1.R))

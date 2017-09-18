@@ -3,8 +3,8 @@
 dist: trusty
 language: R
 env:
- - SAUCE_BROWSER=chrome
- - SAUCE_BROWSER=firefox
+ - TEST_BROWSER=chrome
+ - TEST_BROWSER=firefox
 sudo: false
 cache:
   packages: true
