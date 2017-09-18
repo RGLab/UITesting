@@ -126,6 +126,8 @@ test_that("parameters are present and working", {
   expect_equal(length(GDE), 1, 
                info = "'Use gene...' checkbox is not present.")
   
+  additionalOptions_header[[1]]$clickElement()
+  
   # buttons
   buttons <- remDr$findElements(using = "class", value = "x-btn-text")
   expect_equal(length(buttons), 2)

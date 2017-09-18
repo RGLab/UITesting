@@ -122,6 +122,8 @@ test_that("parameters are present and working", {
   alpha <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-alpha")
   expect_equal(length(alpha), 1)
   
+  additionalOptions_header[[1]]$clickElement()
+  
   # buttons
   buttons <- remDr$findElements(using = "class", value = "x-btn-noicon")
   expect_equal(length(buttons), 2)
