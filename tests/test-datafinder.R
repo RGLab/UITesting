@@ -26,6 +26,8 @@ test_that("subject group controller is present", {
   manageMenu <- filterArea[[1]]$findChildElements(using = "id", value = "manageMenu")
   expect_length(manageMenu, 1)
   if (length(manageMenu) == 1) {
+    sleep_for(10, condition = expression(manageMenu[[1]]$isElementDisplayed()[[1]]))
+    
     manageMenu[[1]]$clickElement()
     Sys.sleep(1)
     manageItems <- manageMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
