@@ -43,7 +43,8 @@ if (seleniumServer == "SAUCELABS") {
                             build = build,
                             username = SAUCE_USERNAME,
                             accessKey = SAUCE_ACCESS_KEY,
-                            tags = list(machine, server))
+                            tags = list(machine, server),
+                            public = "public restricted")
   
   # Initiate a browser
   remDr <- remoteDriver$new(remoteServerAddr = remoteServerAddr,
