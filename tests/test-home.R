@@ -1,4 +1,6 @@
 test_home <- function() {
+  sleep_for(2)
+  
   test_that("'Quick Help' is present", {
     remDr$executeScript(script = "LABKEY.help.Tour.show('immport-home-tour');",
                         args = list("dummy"))
@@ -33,6 +35,7 @@ test_home <- function() {
           closeButton[[1]]$clickElement()
         } else {
           nextButton[[1]]$clickElement()
+          sleep_for(1)
         }
       }
     }
@@ -48,22 +51,7 @@ test_home <- function() {
     }
   })
   
-  test_that("`Studies` tab shows studies properly", {
-    studyTab <- remDr$findElements(using = "id", value = "StudiesMenu12-Header")
-    studyTab[[1]]$clickElement()
-    Sys.sleep(1)
-    
-    studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
-    expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
-    
-    studyElems <- strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]]
-    studies <- studyElems[grepl("SDY\\d+", studyElems)]
-    studyNumber <- as.integer(sub("\\*", "", sub("SDY", "", studies)))
-    expect_equal(studyNumber, sort(studyNumber), info = "Are studies in order?")
-    
-    HIPC <- grepl("\\*", studies)
-    expect_gt(sum(HIPC), 0)
-  })
+  test_studiesTab()
 }
 
 if (!exists("context_of")) source("initialize.R")
