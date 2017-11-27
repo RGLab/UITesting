@@ -11,6 +11,45 @@ test_connection(remDr = remDr,
 
 Sys.sleep(3)
 
+test_that("'Quick Help' is present", {
+  remDr$executeScript(script = "start_tutorial();",
+                      args = list("dummy"))
+  
+  quickHelp <- remDr$findElements(using = "css selector", 
+                                  value = "div[class='hopscotch-bubble animated']")
+  expect_equal(length(quickHelp), 1)
+  
+  if (length(quickHelp) == 1) {
+    titles <- c("Data Finder", 
+                "Study Panel", 
+                "Summary", 
+                "Filters", 
+                "Quick Search")
+    for (i in seq_along(titles)) {
+      helpTitle <- quickHelp[[1]]$findChildElements(using = "class", 
+                                                    value = "hopscotch-title")
+      expect_equal(helpTitle[[1]]$getElementText()[[1]], titles[i])
+      
+      nextButton <- quickHelp[[1]]$findChildElements(using = "class", 
+                                                     value = "hopscotch-next")
+      expect_equal(length(nextButton), 1)
+      
+      closeButton <- quickHelp[[1]]$findChildElements(using = "class", 
+                                                      value = "hopscotch-close")
+      expect_equal(length(closeButton), 1)
+      
+      if (i == length(titles)) {
+        closeButton[[1]]$clickElement()
+      } else {
+        nextButton[[1]]$clickElement()
+        sleep_for(1)
+      }
+    }
+  }
+})
+
+test_studiesTab()
+
 test_that("'Data Finder' module is present", {
   module <- remDr$findElements(using = "id", value = "dataFinderApp")
   expect_equal(length(module), 1)

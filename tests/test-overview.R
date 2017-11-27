@@ -60,7 +60,7 @@ studies <- list(
       "FCS control files",
       "FCS sample files"
     ),
-    organization = "NIAID, NIA, NCRR, BD Bioscience (HIPC funded)"
+    organization = "NIAID, NIA, NCRR, BD Bioscience"
   )
 )
 

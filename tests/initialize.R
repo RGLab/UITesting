@@ -110,7 +110,7 @@ sleep_for <- function(seconds, condition = NULL) {
       }
     }
   }
-  NULL
+  invisible(NULL)
 }
 
 sign_out <- function() {
@@ -165,5 +165,38 @@ test_tabs <- function(x) {
     expect_equal(tabs[[2]]$getElementText()[[1]], x[2])
     expect_equal(tabs[[3]]$getElementText()[[1]], x[3])
     expect_equal(tabs[[4]]$getElementText()[[1]], x[4])
+  })
+}
+
+test_studiesTab <- function() {
+  test_that("`Studies` tab shows studies properly", {
+    studyTab <- remDr$findElements(using = "css selector", value = "li[id^=StudiesMenu]")
+    expect_length(studyTab, 1)
+    
+    if (length(studyTab) == 1) {
+      studyTab[[1]]$clickElement()
+      
+      studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
+      expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
+      
+      sleep_for(5, condition = expression(studyList[[1]]$isElementDisplayed()[[1]]))
+      
+      studyListDisplayed <- studyList[[1]]$isElementDisplayed()[[1]]
+      expect_true(studyListDisplayed)
+      
+      if (studyListDisplayed) {
+        studyElems <- strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]]
+        studies <- studyElems[grepl("SDY\\d+", studyElems)]
+        expect_gt(length(studies), 0)
+        
+        if (length(studies) > 0) {
+          studyNumber <- as.integer(sub("\\*", "", sub("SDY", "", studies)))
+          expect_equal(studyNumber, sort(studyNumber), info = "Are studies in order?")
+          
+          HIPC <- grepl("\\*", studies)
+          expect_gt(sum(HIPC), 0)
+        }
+      }
+    }
   })
 }
