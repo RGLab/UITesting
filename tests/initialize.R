@@ -175,6 +175,7 @@ test_studiesTab <- function() {
     
     if (length(studyTab) == 1) {
       studyTab[[1]]$clickElement()
+      studyTab[[1]]$clickElement()
       
       studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
       expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
