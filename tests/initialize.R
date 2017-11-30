@@ -64,7 +64,7 @@ if (seleniumServer == "SAUCELABS") {
   
 } else {
   # With local machine
-  rs <- rsDriver(browser = browserName)
+  rs <- rsDriver(browser = browserName, version = "3.2.0")
   remDr <- rs$client
 }
 
@@ -185,6 +185,7 @@ test_studiesTab <- function() {
       expect_true(studyListDisplayed)
       
       if (studyListDisplayed) {
+        sleep_for(1)
         studyElems <- strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]]
         studies <- studyElems[grepl("SDY\\d+", studyElems)]
         expect_gt(length(studies), 0)
