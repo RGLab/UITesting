@@ -175,6 +175,7 @@ test_studiesTab <- function() {
     
     if (length(studyTab) == 1) {
       studyTab[[1]]$clickElement()
+      studyTab[[1]]$clickElement()
       
       studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
       expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
@@ -185,7 +186,6 @@ test_studiesTab <- function() {
       expect_true(studyListDisplayed)
       
       if (studyListDisplayed) {
-        sleep_for(1)
         studyElems <- strsplit(studyList[[1]]$getElementText()[[1]], "\n")[[1]]
         studies <- studyElems[grepl("SDY\\d+", studyElems)]
         expect_gt(length(studies), 0)
