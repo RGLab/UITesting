@@ -14,6 +14,7 @@ Sys.sleep(3)
 test_that("'Quick Help' is present", {
   remDr$executeScript(script = "start_tutorial();",
                       args = list("dummy"))
+  sleep_for(1)
   
   quickHelp <- remDr$findElements(using = "css selector", 
                                   value = "div[class='hopscotch-bubble animated']")
