@@ -32,7 +32,7 @@ test_that("parameters are present and working", {
   resp_arrow[[1]]$clickElement()
   
   resp_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
-  expect_equal(resp_list[[1]]$getElementText()[[1]], "HAI")
+  expect_equal(resp_list[[1]]$getElementText()[[1]], "Hemagglutination inhibition (HAI)")
   resp_items <- resp_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   resp_items[[1]]$clickElement()
   Sys.sleep(1)
