@@ -64,7 +64,7 @@ if (seleniumServer == "SAUCELABS") {
   
 } else {
   # With local machine
-  rs <- rsDriver(browser = browserName, version = "3.2.0")
+  rs <- rsDriver(browser = browserName)
   remDr <- rs$client
 }
 
