@@ -4,8 +4,23 @@ context_of(file = "test-0-front.R",
            what = "Front", 
            url = siteURL)
 
+dismiss_alert <- function() {
+  if (browserName == "chrome") {
+    sleep_for(31)
+  } else {
+    alertTxt <- try(remDr$getAlertText(), silent = TRUE)
+    if (class(alertTxt) == "list") {
+      remDr$dismissAlert()
+    }
+  }
+}
+
 test_that("can connect to the page", {
   remDr$navigate(siteURL)
+  
+  # if admin mode, dismiss alert message
+  dismiss_alert()
+  
   siteTitle <- remDr$getTitle()[[1]]
   expect_equal(siteTitle, "Welcome to ImmuneSpace")
 })
@@ -77,7 +92,10 @@ test_that("can log in", {
   expect_equal(length(emailInput), 1)
   
   if (pageTitle != "Welcome to ImmuneSpace") remDr$goBack()
-  
+
+  # if admin mode, dismiss alert message
+  dismiss_alert()
+    
   # right credentials
   id <- remDr$findElements(using = "id", value = "email")
   id[[1]]$clearElement()
@@ -89,7 +107,7 @@ test_that("can log in", {
   
   signInButton <- remDr$findElements(using = "id", value = "submitButton")
   signInButton[[1]]$clickElement()
-  Sys.sleep(1)
+  Sys.sleep(2)
   
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "News and Updates: /home")
