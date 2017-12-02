@@ -44,7 +44,8 @@ if (seleniumServer == "SAUCELABS") {
                             username = SAUCE_USERNAME,
                             accessKey = SAUCE_ACCESS_KEY,
                             tags = list(machine, server),
-                            public = "public restricted")
+                            public = "public restricted",
+                            screenResolution = "1280x1024")
   
   # Initiate a browser
   remDr <- remoteDriver$new(remoteServerAddr = remoteServerAddr,
