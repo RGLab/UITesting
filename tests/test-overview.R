@@ -112,31 +112,34 @@ test_overview <- function(sdy, public = FALSE) {
   
   test_connection(remDr = remDr,
                   pageURL = pageURL,
-                  expectedTitle = expectedTitle)
+                  expectedTitle = expectedTitle,
+                  public = public)
   
-  test_that("'Study Overview' module is present", {
-    study_overview <- remDr$findElements(using = "css selector",
-                                         value = "[id*=StudyOverviewModuleHtmlView]")
-    expect_length(study_overview, 1)
-    expect_true(study_overview[[1]]$getElementText()[[1]] != "")
-  })
-  
-  test_section("datasets", "Available datasets")
-  test_section("raw_files", "Available raw data files")
-  test_section("organization", "Sponsoring organization")
-  test_section("GEO", "GEO accession")
-
-  if (!public) {
-    test_section("assoc_studies", "Associated ImmuneSpace studies")
-    
-    test_that("'Publications and Citations' module is present", {
-      refs <- remDr$findElements(using = "id", value = "reportdiv")
-      expect_length(refs, 1)
-      
-      if (length(refs) == 1) {
-        expect_true(refs[[1]]$getElementText()[[1]] != "")
-      }
+  if (!(public && ADMIN_MODE)) {
+    test_that("'Study Overview' module is present", {
+      study_overview <- remDr$findElements(using = "css selector",
+                                           value = "[id*=StudyOverviewModuleHtmlView]")
+      expect_length(study_overview, 1)
+      expect_true(study_overview[[1]]$getElementText()[[1]] != "")
     })
+    
+    test_section("datasets", "Available datasets")
+    test_section("raw_files", "Available raw data files")
+    test_section("organization", "Sponsoring organization")
+    test_section("GEO", "GEO accession")
+  
+    if (!public) {
+      test_section("assoc_studies", "Associated ImmuneSpace studies")
+      
+      test_that("'Publications and Citations' module is present", {
+        refs <- remDr$findElements(using = "id", value = "reportdiv")
+        expect_length(refs, 1)
+        
+        if (length(refs) == 1) {
+          expect_true(refs[[1]]$getElementText()[[1]] != "")
+        }
+      })
+    }
   }
 }
 
@@ -150,7 +153,7 @@ test_overview("SDY1097")
 
 # sign out ----
 sign_out()
-
+dismiss_alert()
 
 # tests public overview ----
 test_overview("SDY269", public = TRUE)

@@ -26,7 +26,8 @@ test_that("can connect to the page", {
 })
 
 # only run these tests when not in admin mode
-if (length(remDr$findElements(using = "class", value = "error")) == 0) {
+errorElems <- remDr$findElements(using = "class", value = "error")
+if (length(errorElems) == 0) {
   test_that("'Public Data Summary' module is present", {
     webElems <- remDr$findElements(using = "id", value = "Summary")
     expect_equal(length(webElems), 1)
@@ -47,6 +48,8 @@ if (length(remDr$findElements(using = "class", value = "error")) == 0) {
     expect_equal(length(webElems), 1)
     expect_true(webElems[[1]]$getElementText()[[1]] != "")
   })
+} else {
+  assign("ADMIN_MODE", TRUE, envir = globalenv())
 }
 
 test_that("can log in", {
