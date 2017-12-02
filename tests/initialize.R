@@ -74,6 +74,10 @@ remDr$maxWindowSize()
 remDr$setTimeout(type = "implicit", milliseconds = 20000)
 
 
+# global variables ----
+ADMIN_MODE <- FALSE
+
+
 # helper functions ----
 context_of <- function(file, what, url, level = NULL) {
   if (exists("ptm")) {
@@ -121,25 +125,63 @@ sign_out <- function() {
   signOut[[1]]$clickElement()
 }
 
+dismiss_alert <- function() {
+  if (browserName == "chrome") {
+    sleep_for(31)
+  } else {
+    alertTxt <- try(remDr$getAlertText(), silent = TRUE)
+    if (class(alertTxt) == "list") {
+      assign("ADMIN_MODE", TRUE, envir = globalenv())
+      remDr$dismissAlert()
+    }
+  }
+}
+
+check_admin_mode <- function() {
+  temp <- grepl("This site is currently undergoing maintenance", remDr$getPageSource())
+  assign("ADMIN_MODE", temp, envir = globalenv())
+}
+
 
 # test functions ----
-test_connection <- function(remDr, pageURL, expectedTitle) {
+test_connection <- function(remDr, pageURL, expectedTitle, public = FALSE) {
   test_that("can connect to the page", {
     remDr$navigate(pageURL)
-    if (remDr$getTitle()[[1]] == "Sign In") {
-      id <- remDr$findElement(using = "id", value = "email")
-      id$sendKeysToElement(list(ISR_login))
-      
-      pw <- remDr$findElement(using = "id", value = "password")
-      pw$sendKeysToElement(list(ISR_pwd))
-      
-      loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-      loginButton$clickElement()
-      
-      while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+    
+    if (!ADMIN_MODE) check_admin_mode()
+    
+    if (!(public && ADMIN_MODE)) {
+      if (remDr$getTitle()[[1]] == "Sign In") {
+        id <- remDr$findElement(using = "id", value = "email")
+        id$sendKeysToElement(list(ISR_login))
+        
+        pw <- remDr$findElement(using = "id", value = "password")
+        pw$sendKeysToElement(list(ISR_pwd))
+        
+        loginButton <- remDr$findElement(using = "class", value = "labkey-button")
+        loginButton$clickElement()
+        
+        while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+      } else if (remDr$getTitle()[[1]] != expectedTitle) {
+        loginButton <- remDr$findElement(using = "class", value = "labkey-button")
+        loginButton$clickElement()
+        
+        while(remDr$getTitle()[[1]] != "Sign In") Sys.sleep(1)
+        
+        id <- remDr$findElement(using = "id", value = "email")
+        id$sendKeysToElement(list(ISR_login))
+        
+        pw <- remDr$findElement(using = "id", value = "password")
+        pw$sendKeysToElement(list(ISR_pwd))
+        
+        loginButton <- remDr$findElement(using = "class", value = "labkey-button")
+        loginButton$clickElement()
+        
+        while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+      }
+      pageTitle <- remDr$getTitle()[[1]]
+      expect_equal(pageTitle, expectedTitle)
     }
-    pageTitle <- remDr$getTitle()[[1]]
-    expect_equal(pageTitle, expectedTitle)
   })
 }
 

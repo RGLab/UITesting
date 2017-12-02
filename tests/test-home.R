@@ -61,45 +61,48 @@ context_of(file = "test-home.R",
            what = "Home", 
            url = pageURL)
 
-test_that("can connect to the page", {
-  remDr$navigate(pageURL)
-  
-  signinURL <- paste0(siteURL, "/login/home/login.view?returnUrl=%2Fproject%2Fhome%2Fbegin.view%3F")
-  headermenu <- remDr$findElements(using = "class", value = "headermenu")
-  if (headermenu[[1]]$getElementText()[[1]] == "Sign In") {
-    remDr$navigate(signinURL)
+test_connect_home <- function() {
+  test_that("can connect to the page", {
+    remDr$navigate(pageURL)
     
-    id <- remDr$findElement(using = "id", value = "email")
-    id$sendKeysToElement(list(ISR_login))
-    
-    pw <- remDr$findElement(using = "id", value = "password")
-    pw$sendKeysToElement(list(ISR_pwd))
-    
-    loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-    loginButton$clickElement()
-    
-    while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
-  }
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "News and Updates: /home")
-})
+    signinURL <- paste0(siteURL, "/login/home/login.view?returnUrl=%2Fproject%2Fhome%2Fbegin.view%3F")
+    headermenu <- remDr$findElements(using = "class", value = "headermenu")
+    if (headermenu[[1]]$getElementText()[[1]] == "Sign In") {
+      remDr$navigate(signinURL)
+      
+      id <- remDr$findElement(using = "id", value = "email")
+      id$sendKeysToElement(list(ISR_login))
+      
+      pw <- remDr$findElement(using = "id", value = "password")
+      pw$sendKeysToElement(list(ISR_pwd))
+      
+      loginButton <- remDr$findElement(using = "class", value = "labkey-button")
+      loginButton$clickElement()
+      
+      while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+    }
+    pageTitle <- remDr$getTitle()[[1]]
+    expect_equal(pageTitle, "News and Updates: /home")
+  })
+}
+
+test_connect_home()
 
 test_home()
 
-test_that("can sign out and navigate back", {
-  userMenu <- remDr$findElements(using = "id", value = "userMenuPopupLink")
-  userMenu[[1]]$clickElement()
+test_that("can sign out", {
+  sign_out()
   
-  signOut <- remDr$findElements(using = "id", value = "__lk-usermenu-signout")
-  signOut[[1]]$clickElement()
+  dismiss_alert()
   
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "Welcome to ImmuneSpace")
-  
-  remDr$navigate(pageURL)
-  
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "News and Updates: /home")
 })
 
-test_home()
+if (remDr$getTitle()[[1]] == "Welcome to ImmuneSpace") {
+  if (!ADMIN_MODE) {
+    test_connect_home()
+    
+    test_home()
+  }
+}
