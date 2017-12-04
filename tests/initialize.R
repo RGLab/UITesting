@@ -130,7 +130,7 @@ dismiss_alert <- function() {
   if (browserName == "chrome") {
     sleep_for(31)
   } else {
-    alertTxt <- try(remDr$getAlertText(), silent = TRUE)
+    suppressWarnings(alertTxt <- try(remDr$getAlertText(), silent = TRUE))
     if (class(alertTxt) == "list") {
       assign("ADMIN_MODE", TRUE, envir = globalenv())
       remDr$dismissAlert()
