@@ -14,6 +14,7 @@ test_open <- function(button) {
   
   # open rstudio server
   button[[1]]$clickElement()
+  sleep_for(5)
   
   tabs <- remDr$getWindowHandles()
   expect_equal(length(tabs), 2, info = "Couldn't open RStudio Server")
@@ -21,9 +22,9 @@ test_open <- function(button) {
   if (length(tabs) == 2) {
     # switch to rstudio tab
     remDr$switchToWindow(tabs[[2]])
-    expect_equal(remDr$getTitle()[[1]], "RStudio")
+    expect_match(remDr$getTitle()[[1]], "^RStudio")
     
-    if (remDr$getTitle()[[1]] == "RStudio") {
+    if (grepl("^RStudio", remDr$getTitle()[[1]])) {
       # close rstudio tab
       remDr$closeWindow()
       
