@@ -24,7 +24,7 @@ test_parameter <- function(param, formItem, paramConfig) {
   clear <- formItem$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(clear), 1, info = param)
   
-  if (param %in% c("training", "tests")) {
+  if (param %in% c("training", "testing")) {
     arrow[[1]]$clickElement()
     sleep_for(1)
   }
