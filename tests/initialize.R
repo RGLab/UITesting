@@ -244,3 +244,31 @@ test_studiesTab <- function() {
     }
   })
 }
+
+test_filtering <- function() {
+  gender <- remDr$findElements(using = "css selector", value = "[title$=gender]")[[1]]
+  expect_equal(length(gender), 1)
+  gender$clickElement()
+  sleep_for(1)
+  
+  target <- remDr$findElements(using = "class", value = "x4-box-target")
+  expect_equal(length(target), 1)
+  
+  fa_filter <- target[[1]]$findChildElements(using = "class", value = "fa-filter")
+  expect_equal(length(fa_filter), 1)
+  fa_filter[[1]]$clickElement()
+  sleep_for(1)
+  
+  filter_dialog <- remDr$findElements(using = "class", value = "labkey-filter-dialog")
+  expect_equal(length(filter_dialog), 1)
+  
+  female <- filter_dialog[[1]]$findChildElements(using = "css selector", value = "[title=Female]")
+  expect_equal(length(female), 1)
+  female[[1]]$clickElement()
+  sleep_for(1)
+  
+  buttons <- filter_dialog[[1]]$findChildElements(using = "css selector", value = "button")
+  expect_equal(length(buttons), 4)
+  buttons[[1]]$clickElement()
+  sleep_for(2)
+}
