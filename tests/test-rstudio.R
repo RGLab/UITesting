@@ -10,7 +10,7 @@ test_connection(remDr = remDr,
                 expectedTitle = "Launch RStudio")
 
 test_open <- function(button) {
-  expect_equal(button[[1]]$getElementText()[[1]], "OPEN RSTUDIO SERVER")
+  expect_equal(button[[1]]$getElementText()[[1]], "Open RStudio Server")
   
   # open rstudio server
   button[[1]]$clickElement()
@@ -36,7 +36,7 @@ test_open <- function(button) {
 }
 
 test_that("'RStudio' is working", {
-  module <- remDr$findElements(using = "css selector", value = "table.labkey-proj")
+  module <- remDr$findElements(using = "css selector", value = "div.lk-body-ct")
   expect_equal(length(module), 1)
   
   if (length(module) == 1) {
@@ -45,7 +45,7 @@ test_that("'RStudio' is working", {
     
     if (length(button) == 1) {
       buttonText <- button[[1]]$getElementText()[[1]]
-      if (buttonText == "START RSTUDIO SERVER") {
+      if (buttonText == "Start RStudio Server") {
         # start rstudio server
         button[[1]]$clickElement()
         

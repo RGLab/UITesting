@@ -131,10 +131,10 @@ test_gee <- function(applyFilter = FALSE) {
     expect_equal(length(buttons), 2)
     
     plot_button <- buttons[[1]]$findChildElements(using = "class", value = "x-btn-text")
-    expect_equal(plot_button[[1]]$getElementText()[[1]], "PLOT")
+    expect_equal(plot_button[[1]]$getElementText()[[1]], "Plot")
     
     reset_button <- buttons[[2]]$findChildElements(using = "class", value = "x-btn-text")
-    expect_equal(reset_button[[1]]$getElementText()[[1]], "RESET")
+    expect_equal(reset_button[[1]]$getElementText()[[1]], "Reset")
   })
   
   test_that("loading dataset is working", {

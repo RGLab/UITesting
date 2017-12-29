@@ -66,8 +66,8 @@ test_connect_home <- function() {
     remDr$navigate(pageURL)
     
     signinURL <- paste0(siteURL, "/login/home/login.view?returnUrl=%2Fproject%2Fhome%2Fbegin.view%3F")
-    headermenu <- remDr$findElements(using = "class", value = "headermenu")
-    if (headermenu[[1]]$getElementText()[[1]] == "Sign In") {
+    headermenu <- remDr$findElements(using = "class", value = "header-link")
+    if (length(headermenu) == 1) {
       remDr$navigate(signinURL)
       
       id <- remDr$findElement(using = "id", value = "email")
@@ -79,7 +79,7 @@ test_connect_home <- function() {
       loginButton <- remDr$findElement(using = "class", value = "labkey-button")
       loginButton$clickElement()
       
-      while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+      while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
     }
     pageTitle <- remDr$getTitle()[[1]]
     expect_equal(pageTitle, "News and Updates: /home")

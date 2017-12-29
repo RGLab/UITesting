@@ -105,8 +105,8 @@ test_irp <- function(config) {
   test_that("buttons are present", {
     buttons <- remDr$findElements(using = "class", value = "x-btn-text")
     expect_equal(length(buttons), 2)
-    expect_equal(buttons[[1]]$getElementText()[[1]], "RUN")
-    expect_equal(buttons[[2]]$getElementText()[[1]], "RESET")
+    expect_equal(buttons[[1]]$getElementText()[[1]], "Run")
+    expect_equal(buttons[[2]]$getElementText()[[1]], "Reset")
   })
   
   test_that("run button is working", {
