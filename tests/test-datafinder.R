@@ -14,13 +14,13 @@ Sys.sleep(3)
 test_that("'Quick Help' is present", {
   remDr$executeScript(script = "start_tutorial();",
                       args = list("dummy"))
-  sleep_for(1)
+  sleep_for(3)
   
   quickHelp <- remDr$findElements(using = "class", 
                                   value = "hopscotch-bubble")
-  expect_equal(length(quickHelp), 1)
+  expect_gte(length(quickHelp), 1)
   
-  if (length(quickHelp) == 1) {
+  if (length(quickHelp) >= 1) {
     titles <- c("Data Finder", 
                 "Study Panel", 
                 "Summary", 
