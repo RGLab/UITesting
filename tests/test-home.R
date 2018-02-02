@@ -5,11 +5,11 @@ test_home <- function() {
     remDr$executeScript(script = "LABKEY.help.Tour.show('immport-home-tour');",
                         args = list("dummy"))
     
-    quickHelp <- remDr$findElements(using = "css selector", 
-                                    value = "div[class='hopscotch-bubble animated']")
-    expect_equal(length(quickHelp), 1)
+    quickHelp <- remDr$findElements(using = "class", 
+                                    value = "hopscotch-bubble")
+    expect_gte(length(quickHelp), 1)
     
-    if (length(quickHelp) == 1) {
+    if (length(quickHelp) >= 1) {
       titles <- c("Welcome to ImmuneSpace", 
                   "Announcements", 
                   "Quick Links", 
@@ -51,6 +51,7 @@ test_home <- function() {
     }
   })
   
+  test_tutorialsTab()
   test_studiesTab()
 }
 
@@ -101,7 +102,7 @@ test_that("can sign out", {
 
 if (remDr$getTitle()[[1]] == "Welcome to ImmuneSpace") {
   if (!ADMIN_MODE) {
-    test_connect_home()
+    remDr$navigate(pageURL)
     
     test_home()
   }

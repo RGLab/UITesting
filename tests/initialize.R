@@ -121,6 +121,7 @@ sleep_for <- function(seconds, condition = NULL) {
 sign_out <- function() {
   userMenu <- remDr$findElements(using = "id", value = "headerUserPopup")
   userMenu[[1]]$clickElement()
+  sleep_for(2)
   
   signOut <- remDr$findElements(using = "css selector", value = "a[href$='logout.view?']")
   signOut[[1]]$clickElement()
@@ -222,7 +223,7 @@ test_studiesTab <- function() {
       studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
       expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
       
-      sleep_for(5, condition = expression(studyList[[1]]$isElementDisplayed()[[1]]))
+      sleep_for(3)
       
       studyListDisplayed <- studyList[[1]]$isElementDisplayed()[[1]]
       expect_true(studyListDisplayed)
@@ -239,6 +240,46 @@ test_studiesTab <- function() {
           HIPC <- grepl("\\*", studies)
           expect_gt(sum(HIPC), 0)
         }
+        
+        studyTab[[1]]$clickElement()
+        sleep_for(1)
+      }
+    }
+  })
+}
+
+test_tutorialsTab <- function() {
+  test_that("`Tutorials` tab shows studies properly", {
+    tutorialTab <- remDr$findElements(using = "css selector", value = "li[data-name='Wiki Menu']")
+    expect_length(tutorialTab, 1)
+    
+    if (length(tutorialTab) == 1) {
+      tutorialTab[[1]]$clickElement()
+      
+      tutorialList <- remDr$findElements(using = "css selector", value = "div[id=tutorials]")
+      expect_equal(length(tutorialList), 1, info = "Does 'Tutorials' tab exist?")
+      
+      sleep_for(3)
+      
+      tutorialListDisplayed <- tutorialList[[1]]$isElementDisplayed()[[1]]
+      expect_true(tutorialListDisplayed)
+      
+      if (tutorialListDisplayed) {
+        tutorialElems <- strsplit(tutorialList[[1]]$getElementText()[[1]], "\n")[[1]]
+        expect_length(tutorialElems, 7)
+        
+        if (length(tutorialElems) == 7) {
+          expect_equal(tutorialElems[1], "Overall introduction to ImmuneSpace")
+          expect_equal(tutorialElems[2], "Exploring a study in ImmuneSpace")
+          expect_equal(tutorialElems[3], "Identifying data of interest using the Data Finder")
+          expect_equal(tutorialElems[4], "Working with tabular data in ImmuneSpace")
+          expect_equal(tutorialElems[5], "Visualizing immunological data using the Data Explorer")
+          expect_equal(tutorialElems[6], "Correlating gene expression and immunological data")
+          expect_equal(tutorialElems[7], "Performing a gene set enrichment analysis in ImmuneSpace")
+        }
+        
+        tutorialTab[[1]]$clickElement()
+        sleep_for(1)
       }
     }
   })
