@@ -109,14 +109,14 @@ test_de <- function(applyFilter = FALSE) {
     
     plot_button <- plot_button_table[[1]]$findChildElements(using = "class", value = "x-btn-text")
     expect_equal(length(plot_button), 1)
-    expect_equal(plot_button[[1]]$getElementText()[[1]], "PLOT")
+    expect_equal(plot_button[[1]]$getElementText()[[1]], "Plot")
   
     reset_button_table <- buttons_bar[[1]]$findChildElements(using = "class", value = "ui-test-reset")
     expect_equal(length(reset_button_table), 1)
     
     reset_button <- reset_button_table[[1]]$findChildElements(using = "class", value = "x-btn-text")
     expect_equal(length(reset_button), 1)
-    expect_equal(reset_button[[1]]$getElementText()[[1]], "RESET")
+    expect_equal(reset_button[[1]]$getElementText()[[1]], "Reset")
   })
   
   test_that("loading dataset is working", {

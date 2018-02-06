@@ -5,11 +5,11 @@ test_home <- function() {
     remDr$executeScript(script = "LABKEY.help.Tour.show('immport-home-tour');",
                         args = list("dummy"))
     
-    quickHelp <- remDr$findElements(using = "css selector", 
-                                    value = "div[class='hopscotch-bubble animated']")
-    expect_equal(length(quickHelp), 1)
+    quickHelp <- remDr$findElements(using = "class", 
+                                    value = "hopscotch-bubble")
+    expect_gte(length(quickHelp), 1)
     
-    if (length(quickHelp) == 1) {
+    if (length(quickHelp) >= 1) {
       titles <- c("Welcome to ImmuneSpace", 
                   "Announcements", 
                   "Quick Links", 
@@ -51,6 +51,7 @@ test_home <- function() {
     }
   })
   
+  test_tutorialsTab()
   test_studiesTab()
 }
 
@@ -66,8 +67,8 @@ test_connect_home <- function() {
     remDr$navigate(pageURL)
     
     signinURL <- paste0(siteURL, "/login/home/login.view?returnUrl=%2Fproject%2Fhome%2Fbegin.view%3F")
-    headermenu <- remDr$findElements(using = "class", value = "headermenu")
-    if (headermenu[[1]]$getElementText()[[1]] == "Sign In") {
+    headermenu <- remDr$findElements(using = "class", value = "header-link")
+    if (length(headermenu) == 1) {
       remDr$navigate(signinURL)
       
       id <- remDr$findElement(using = "id", value = "email")
@@ -79,7 +80,7 @@ test_connect_home <- function() {
       loginButton <- remDr$findElement(using = "class", value = "labkey-button")
       loginButton$clickElement()
       
-      while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+      while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
     }
     pageTitle <- remDr$getTitle()[[1]]
     expect_equal(pageTitle, "News and Updates: /home")
@@ -101,7 +102,7 @@ test_that("can sign out", {
 
 if (remDr$getTitle()[[1]] == "Welcome to ImmuneSpace") {
   if (!ADMIN_MODE) {
-    test_connect_home()
+    remDr$navigate(pageURL)
     
     test_home()
   }

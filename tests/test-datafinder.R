@@ -14,13 +14,13 @@ Sys.sleep(3)
 test_that("'Quick Help' is present", {
   remDr$executeScript(script = "start_tutorial();",
                       args = list("dummy"))
-  sleep_for(1)
+  sleep_for(3)
   
-  quickHelp <- remDr$findElements(using = "css selector", 
-                                  value = "div[class='hopscotch-bubble animated']")
-  expect_equal(length(quickHelp), 1)
+  quickHelp <- remDr$findElements(using = "class", 
+                                  value = "hopscotch-bubble")
+  expect_gte(length(quickHelp), 1)
   
-  if (length(quickHelp) == 1) {
+  if (length(quickHelp) >= 1) {
     titles <- c("Data Finder", 
                 "Study Panel", 
                 "Summary", 
@@ -63,14 +63,14 @@ test_that("subject group controller is present", {
   groupLabel <- filterArea[[1]]$findChildElements(using = "class", value = "labkey-group-label")
   expect_length(groupLabel, 1)
   
-  manageMenu <- filterArea[[1]]$findChildElements(using = "id", value = "manageMenu")
+  manageMenu <- filterArea[[1]]$findChildElements(using = "id", value = "df-manageMenu")
   expect_length(manageMenu, 1)
   if (length(manageMenu) == 1) {
     sleep_for(10, condition = expression(manageMenu[[1]]$isElementDisplayed()[[1]]))
     
     manageMenu[[1]]$clickElement()
     Sys.sleep(1)
-    manageItems <- manageMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
+    manageItems <- manageMenu[[1]]$findChildElements(using = "class", value = "df-menu-item-link")
     expect_length(manageItems, 1)
   }
   
@@ -79,7 +79,7 @@ test_that("subject group controller is present", {
   if (length(loadMenu) == 1) {
     loadMenu[[1]]$clickElement()
     Sys.sleep(1)
-    loadItems <- loadMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
+    loadItems <- loadMenu[[1]]$findChildElements(using = "class", value = "df-menu-item-link")
     expect_gt(length(loadItems), 0)
   }
   
@@ -88,7 +88,7 @@ test_that("subject group controller is present", {
   if (length(saveMenu) == 1) {
     saveMenu[[1]]$clickElement()
     Sys.sleep(1)
-    saveItems <- saveMenu[[1]]$findChildElements(using = "class", value = "menu-item-link")
+    saveItems <- saveMenu[[1]]$findChildElements(using = "class", value = "df-menu-item-link")
     expect_length(saveItems, 2)
   }
   
@@ -120,7 +120,7 @@ test_that("selection panel is present", {
   facetPanel <- selectionPanel[[1]]$findChildElements(using = "id", value = "facetPanel")
   expect_length(facetPanel, 1)
   
-  facets <- facetPanel[[1]]$findChildElements(using = "class", value = "facet")
+  facets <- facetPanel[[1]]$findChildElements(using = "class", value = "df-facet")
   expect_length(facets, 10)
   expect_match(facets[[1]]$getElementText()[[1]], "Species")
   expect_match(facets[[2]]$getElementText()[[1]], "Condition")

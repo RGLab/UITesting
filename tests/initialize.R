@@ -119,10 +119,11 @@ sleep_for <- function(seconds, condition = NULL) {
 }
 
 sign_out <- function() {
-  userMenu <- remDr$findElements(using = "id", value = "userMenuPopupLink")
+  userMenu <- remDr$findElements(using = "id", value = "headerUserPopup")
   userMenu[[1]]$clickElement()
+  sleep_for(2)
   
-  signOut <- remDr$findElements(using = "id", value = "__lk-usermenu-signout")
+  signOut <- remDr$findElements(using = "css selector", value = "a[href$='logout.view?']")
   signOut[[1]]$clickElement()
 }
 
@@ -152,7 +153,7 @@ test_connection <- function(remDr, pageURL, expectedTitle, public = FALSE) {
     if (!ADMIN_MODE) check_admin_mode()
     
     if (!(public && ADMIN_MODE)) {
-      if (remDr$getTitle()[[1]] == "Sign In") {
+      if (grepl("Sign In", remDr$getTitle()[[1]])) {
         id <- remDr$findElement(using = "id", value = "email")
         id$sendKeysToElement(list(ISR_login))
         
@@ -162,12 +163,12 @@ test_connection <- function(remDr, pageURL, expectedTitle, public = FALSE) {
         loginButton <- remDr$findElement(using = "class", value = "labkey-button")
         loginButton$clickElement()
         
-        while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+        while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
       } else if (remDr$getTitle()[[1]] != expectedTitle) {
         loginButton <- remDr$findElement(using = "class", value = "labkey-button")
         loginButton$clickElement()
         
-        while(remDr$getTitle()[[1]] != "Sign In") Sys.sleep(1)
+        while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
         
         id <- remDr$findElement(using = "id", value = "email")
         id$sendKeysToElement(list(ISR_login))
@@ -178,7 +179,7 @@ test_connection <- function(remDr, pageURL, expectedTitle, public = FALSE) {
         loginButton <- remDr$findElement(using = "class", value = "labkey-button")
         loginButton$clickElement()
         
-        while(remDr$getTitle()[[1]] == "Sign In") Sys.sleep(1)
+        while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
       }
       pageTitle <- remDr$getTitle()[[1]]
       expect_equal(pageTitle, expectedTitle)
@@ -213,17 +214,16 @@ test_tabs <- function(x) {
 
 test_studiesTab <- function() {
   test_that("`Studies` tab shows studies properly", {
-    studyTab <- remDr$findElements(using = "css selector", value = "li[id^=StudiesMenu]")
+    studyTab <- remDr$findElements(using = "css selector", value = "li[data-name=StudiesMenu]")
     expect_length(studyTab, 1)
     
     if (length(studyTab) == 1) {
-      studyTab[[1]]$clickElement()
       studyTab[[1]]$clickElement()
       
       studyList <- remDr$findElements(using = "css selector", value = "div[id=studies]")
       expect_equal(length(studyList), 1, info = "Does 'Studies' tab exist?")
       
-      sleep_for(5, condition = expression(studyList[[1]]$isElementDisplayed()[[1]]))
+      sleep_for(3)
       
       studyListDisplayed <- studyList[[1]]$isElementDisplayed()[[1]]
       expect_true(studyListDisplayed)
@@ -240,21 +240,61 @@ test_studiesTab <- function() {
           HIPC <- grepl("\\*", studies)
           expect_gt(sum(HIPC), 0)
         }
+        
+        studyTab[[1]]$clickElement()
+        sleep_for(1)
+      }
+    }
+  })
+}
+
+test_tutorialsTab <- function() {
+  test_that("`Tutorials` tab shows studies properly", {
+    tutorialTab <- remDr$findElements(using = "css selector", value = "li[data-name='Wiki Menu']")
+    expect_length(tutorialTab, 1)
+    
+    if (length(tutorialTab) == 1) {
+      tutorialTab[[1]]$clickElement()
+      
+      tutorialList <- remDr$findElements(using = "css selector", value = "div[id=tutorials]")
+      expect_equal(length(tutorialList), 1, info = "Does 'Tutorials' tab exist?")
+      
+      sleep_for(3)
+      
+      tutorialListDisplayed <- tutorialList[[1]]$isElementDisplayed()[[1]]
+      expect_true(tutorialListDisplayed)
+      
+      if (tutorialListDisplayed) {
+        tutorialElems <- strsplit(tutorialList[[1]]$getElementText()[[1]], "\n")[[1]]
+        expect_length(tutorialElems, 7)
+        
+        if (length(tutorialElems) == 7) {
+          expect_equal(tutorialElems[1], "Overall introduction to ImmuneSpace")
+          expect_equal(tutorialElems[2], "Exploring a study in ImmuneSpace")
+          expect_equal(tutorialElems[3], "Identifying data of interest using the Data Finder")
+          expect_equal(tutorialElems[4], "Working with tabular data in ImmuneSpace")
+          expect_equal(tutorialElems[5], "Visualizing immunological data using the Data Explorer")
+          expect_equal(tutorialElems[6], "Correlating gene expression and immunological data")
+          expect_equal(tutorialElems[7], "Performing a gene set enrichment analysis in ImmuneSpace")
+        }
+        
+        tutorialTab[[1]]$clickElement()
+        sleep_for(1)
       }
     }
   })
 }
 
 test_filtering <- function() {
-  gender <- remDr$findElements(using = "css selector", value = "[title$=gender]")[[1]]
-  expect_equal(length(gender), 1)
-  gender$clickElement()
+  gender <- remDr$findElements(using = "css selector", value = "th[title$=gender]")
+  expect_equal(length(gender), 2)
+  gender[[1]]$clickElement()
   sleep_for(1)
   
-  target <- remDr$findElements(using = "class", value = "x4-box-target")
-  expect_equal(length(target), 1)
+  dropdown <- gender[[1]]$findChildElements(using = "class", value = "dropdown-menu")
+  expect_equal(length(dropdown), 1)
   
-  fa_filter <- target[[1]]$findChildElements(using = "class", value = "fa-filter")
+  fa_filter <- dropdown[[1]]$findChildElements(using = "class", value = "fa-filter")
   expect_equal(length(fa_filter), 1)
   fa_filter[[1]]$clickElement()
   sleep_for(1)

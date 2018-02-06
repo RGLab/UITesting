@@ -105,8 +105,8 @@ test_irp <- function(config) {
   test_that("buttons are present", {
     buttons <- remDr$findElements(using = "class", value = "x-btn-text")
     expect_equal(length(buttons), 2)
-    expect_equal(buttons[[1]]$getElementText()[[1]], "RUN")
-    expect_equal(buttons[[2]]$getElementText()[[1]], "RESET")
+    expect_equal(buttons[[1]]$getElementText()[[1]], "Run")
+    expect_equal(buttons[[2]]$getElementText()[[1]], "Reset")
   })
   
   test_that("run button is working", {
@@ -130,11 +130,44 @@ test_irp <- function(config) {
     widget_data <- labkey_knitr[[1]]$findChildElements(using = "css selector", value = "script[data-for]")
     expect_equal(length(widget_data), 3)
     
+    plot_svg <- labkey_knitr[[1]]$findChildElements(using = "class", value = "plot-container")
+    expect_equal(length(plot_svg), 2)
+    
     dataTable <- labkey_knitr[[1]]$findChildElements(using = "class", value = "dataTables_wrapper")
     expect_equal(length(dataTable), 1)
     
-    plot_svg <- labkey_knitr[[1]]$findChildElements(using = "class", value = "plot-container")
-    expect_equal(length(plot_svg), 2)
+    if (length(dataTable) == 1) {
+      links <- dataTable[[1]]$findChildElements(using = "css selector", value = "a[href]")
+      expect_gte(length(links), 0)
+      
+      if (length(links) > 0) {
+        i <- sample(1:length(links), 1)
+        
+        links[[i]]$clickElement()
+        sleep_for(1)
+        
+        tabs <- remDr$getWindowHandles()
+        expect_equal(length(tabs), 2, info = "Couldn't open the link")
+        
+        if (length(tabs) == 2) {
+          # switch to the new tab
+          remDr$switchToWindow(tabs[[2]])
+          sleep_for(1)
+          expect_match(remDr$getTitle()[[1]], "ImmuNet")
+          
+          if (grepl("ImmuNet", remDr$getTitle()[[1]])) {
+            # close the new tab
+            remDr$closeWindow()
+            sleep_for(1)
+            
+            # switchback to the original tab
+            remDr$switchToWindow(tabs[[1]])
+            sleep_for(1)
+            expect_match(remDr$getTitle()[[1]], "Immune Response Predictor")
+          }
+        }
+      }
+    }
   })
   
   test_that("reset button is working", {
