@@ -53,7 +53,7 @@ test_that("'RStudio' is working", {
         sleep_for(5)
         
         # loaded
-        module <- remDr$findElements(using = "css selector", value = "table.labkey-proj")
+        module <- remDr$findElements(using = "css selector", value = "div.lk-body-ct")
         
         button <- module[[1]]$findChildElements(using = "css selector", value = "a.labkey-button")
         expect_equal(length(button), 1, info = "Couldn't start RStudio Server")
