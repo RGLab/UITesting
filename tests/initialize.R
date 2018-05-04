@@ -119,7 +119,7 @@ sleep_for <- function(seconds, condition = NULL) {
 }
 
 sign_out <- function() {
-  userMenu <- remDr$findElements(using = "id", value = "headerUserPopup")
+  userMenu <- remDr$findElements(using = "id", value = "headerUserDropdown")
   userMenu[[1]]$clickElement()
   sleep_for(2)
   
