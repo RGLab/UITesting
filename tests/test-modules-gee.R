@@ -16,7 +16,7 @@ test_gee <- function(applyFilter = FALSE) {
   test_tabs(c("Input / View", "Data", "About", "Help"))
   
   test_that("parameters are present and working", {
-    Sys.sleep(3)
+    sleep_for(3)
     
     # parameters
     parameters <- remDr$findElements(using = "class", value = "ui-test-parameters")
@@ -32,6 +32,7 @@ test_gee <- function(applyFilter = FALSE) {
     response_arrow <- formItems[[1]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
     expect_equal(length(response_arrow), 1)
     response_arrow[[1]]$clickElement()
+    sleep_for(1)
   
     response_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
     expect_equal(response_list[[1]]$getElementText()[[1]], "HAI")
@@ -46,13 +47,14 @@ test_gee <- function(applyFilter = FALSE) {
     timePoint_arrow <- formItems[[2]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
     expect_equal(length(timePoint_arrow), 1)
     timePoint_arrow[[1]]$clickElement()
+    sleep_for(1)
   
     timePoint_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
     expect_equal(timePoint_list[[1]]$getElementText()[[1]],
                  "0 days (2 cohorts)\n3 days (2 cohorts)\n7 days (2 cohorts)")
     timePoint_items <- timePoint_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
     timePoint_items[[2]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     
     timePoint_clear <- formItems[[2]]$findChildElements(using = "class", value = "x-form-clear-trigger")
     expect_equal(length(timePoint_clear), 1)
@@ -69,13 +71,13 @@ test_gee <- function(applyFilter = FALSE) {
                  "Select all\nLAIV group 2008 (SDY269)\nTIV Group 2008 (SDY269)")
     cohorts_items <- cohorts_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
     cohorts_items[[2]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     
     cohorts_clear <- formItems[[3]]$findChildElements(using = "class", value = "x-form-clear-trigger")
     expect_equal(length(cohorts_clear), 1)
   
     cohorts_arrow[[1]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     
     # parameters: normalize
     normalize <- formItems[[4]]$findChildElements(using = "class", value = "ui-test-normalize")
@@ -85,13 +87,14 @@ test_gee <- function(applyFilter = FALSE) {
     genes_input <- formItems[[5]]$findChildElements(using = "class", value = "ui-test-genes")
     expect_equal(length(genes_input), 1)
     genes_input[[1]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     
     genes_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
     expect_equal(length(genes_input), 1)
     
     genes_items <- genes_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
     genes_items[[1]]$clickElement()
+    sleep_for(1)
     
     # addiational options
     additionalOptions <- remDr$findElements(using = "class", value = "ui-test-additional-options")
@@ -99,6 +102,7 @@ test_gee <- function(applyFilter = FALSE) {
     
     additionalOptions_header <- additionalOptions[[1]]$findChildElements(using = "class", value = "x-fieldset-header")
     additionalOptions_header[[1]]$clickElement()
+    sleep_for(1)
     
     interactivePlot <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-interactive")
     expect_equal(length(interactivePlot), 1)
@@ -125,6 +129,7 @@ test_gee <- function(applyFilter = FALSE) {
     expect_equal(length(alpha), 1)
     
     additionalOptions_header[[1]]$clickElement()
+    sleep_for(1)
     
     # buttons
     buttons <- remDr$findElements(using = "class", value = "x-btn-noicon")
@@ -170,6 +175,7 @@ test_gee <- function(applyFilter = FALSE) {
     buttons <- remDr$findElements(using = "class", value = "x-btn-noicon")
     plot_button <- buttons[[1]]$findChildElements(using = "class", value = "x-btn-text")
     plot_button[[1]]$clickElement()
+    sleep_for(1)
   
     # check if output is there
     while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
@@ -178,6 +184,7 @@ test_gee <- function(applyFilter = FALSE) {
   
     reset_button <- buttons[[2]]$findChildElements(using = "class", value = "x-btn-text")
     reset_button[[1]]$clickElement()
+    sleep_for(1)
   
     # check if plot is clear
     no_visualization <- remDr$findElements(using = "css selector", value = "img[id*=imgModuleHtmlView_]")

@@ -80,13 +80,13 @@ test_that("can log in", {
   id[[1]]$sendKeysToElement(list("wrong@email.com"))
   pw[[1]]$sendKeysToElement(list("wrongPassword"))
   signInButton[[1]]$clickElement()
-  Sys.sleep(1)
+  sleep_for(1)
   expect_equal(errorMessage[[1]]$getElementText()[[1]], 
                "Invalid Username or Password.\nYou can reset your password via the question mark link above.")
   
   # forgot password
   forgotPassword[[1]]$clickElement()
-  Sys.sleep(1)
+  sleep_for(1)
   
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "")
@@ -110,7 +110,7 @@ test_that("can log in", {
   
   signInButton <- remDr$findElements(using = "id", value = "submitButton")
   signInButton[[1]]$clickElement()
-  Sys.sleep(2)
+  sleep_for(2)
   
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(pageTitle, "News and Updates: /home")

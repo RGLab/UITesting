@@ -80,7 +80,7 @@ test_connect_home <- function() {
       loginButton <- remDr$findElement(using = "class", value = "labkey-button")
       loginButton$clickElement()
       
-      while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
+      while(grepl("Sign In", remDr$getTitle()[[1]])) sleep_for(1)
     }
     pageTitle <- remDr$getTitle()[[1]]
     expect_equal(pageTitle, "News and Updates: /home")

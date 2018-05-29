@@ -114,7 +114,7 @@ test_irp <- function(config) {
     buttons[[1]]$clickElement()
     
     # check if output is there
-    while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
+    while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) sleep_for(1)
     
     active_tab <- remDr$findElements(using = "class", value = "x-tab-strip-active")
     expect_equal(active_tab[[1]]$getElementText()[[1]], "View")
@@ -174,9 +174,11 @@ test_irp <- function(config) {
     tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
     tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
     tabs[[1]]$clickElement()
+    sleep_for(1)
     
     buttons <- remDr$findElements(using = "class", value = "x-btn-text")
     buttons[[2]]$clickElement()
+    sleep_for(1)
     
     # check if parameters are clear
     pred_input <- remDr$findElements(using = "class", value = "ui-test-timepoint")

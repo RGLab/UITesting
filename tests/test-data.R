@@ -19,25 +19,27 @@ test_that("Relevant datasets are available", {
   expect_gt(length(rows), 0)
   
   rows_text <- unlist(lapply(rows, function(x) x$getElementText()[[1]]))
-  expected_text <- c("Assays",
-                     "Differential gene expression analysis results",
-                     "Enzyme-linked immunosorbent assay (ELISA)",
-                     "Enzyme-Linked ImmunoSpot (ELISPOT)",
-                     "Flow cytometry analyzed results",
-                     "Hemagglutination inhibition (HAI)",
-                     # "Human leukocyte antigen (HLA) typing",
-                     # "Killer cell immunoglobulin-like receptors (KIR) typing",
-                     # "Multiplex bead array assay",
-                     # "Neutralizing antibody titer",
-                     "Polymerisation chain reaction (PCR)",
-                     "Gene expression matrices",
-                     "Raw data files",
-                     # "FCS control files",
-                     "FCS sample files",
-                     "Gene expression microarray data files",
-                     "Subject",
-                     "Cohort membership",
-                     "Demographics")
+  expected_text <- c(
+    "Assays",
+    "Differential gene expression analysis results",
+    "Enzyme-linked immunosorbent assay (ELISA)",
+    "Enzyme-Linked ImmunoSpot (ELISPOT)",
+    "Flow cytometry analyzed results",
+    "Hemagglutination inhibition (HAI)",
+    # "Human leukocyte antigen (HLA) typing",
+    # "Killer cell immunoglobulin-like receptors (KIR) typing",
+    # "Multiplex bead array assay",
+    # "Neutralizing antibody titer",
+    "Polymerisation chain reaction (PCR)",
+    "Gene expression matrices",
+    "Raw data files",
+    # "FCS control files",
+    "FCS sample files",
+    "Gene expression microarray data files",
+    "Subject",
+    "Cohort membership",
+    "Demographics"
+    )
   
   expect_equal(setdiff(rows_text, expected_text), character(0), 
                info = paste(c("Unexpected datasets:", setdiff(rows_text, expected_text)), collapse = "\n"))
@@ -68,25 +70,27 @@ test_that("Relevant datasets are available", {
   expect_gt(length(rows), 0)
   
   rows_text <- unlist(lapply(rows, function(x) x$getElementText()[[1]]))
-  expected_text <- c("Assays",
-                     "Differential gene expression analysis results",
-                     "Enzyme-linked immunosorbent assay (ELISA)",
-                     "Enzyme-Linked ImmunoSpot (ELISPOT)",
-                     "Flow cytometry analyzed results",
-                     "Hemagglutination inhibition (HAI)",
-                     "Human leukocyte antigen (HLA) typing",
-                     "Killer cell immunoglobulin-like receptors (KIR) typing",
-                     "Multiplex bead array assay",
-                     "Neutralizing antibody titer",
-                     "Polymerisation chain reaction (PCR)",
-                     "Gene expression matrices",
-                     "Raw data files",
-                     "FCS control files",
-                     "FCS sample files",
-                     "Gene expression microarray data files",
-                     "Subject",
-                     "Cohort membership",
-                     "Demographics")
+  expected_text <- c(
+    "Assays",
+    "Differential gene expression analysis results",
+    "Enzyme-linked immunosorbent assay (ELISA)",
+    "Enzyme-Linked ImmunoSpot (ELISPOT)",
+    "Flow cytometry analyzed results",
+    "Hemagglutination inhibition (HAI)",
+    "Human leukocyte antigen (HLA) typing",
+    "Killer cell immunoglobulin-like receptors (KIR) typing",
+    "Multiplex bead array assay",
+    "Neutralizing antibody titer",
+    "Polymerisation chain reaction (PCR)",
+    "Gene expression matrices",
+    "Raw data files",
+    "FCS control files",
+    "FCS sample files",
+    "Gene expression microarray data files",
+    "Subject",
+    "Cohort membership",
+    "Demographics"
+    )
   
   expect_equal(setdiff(rows_text, expected_text), character(0), 
                info = paste(c("Unexpected datasets:", setdiff(rows_text, expected_text)), collapse = "\n"))

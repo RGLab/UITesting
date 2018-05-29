@@ -16,7 +16,7 @@ test_de <- function(applyFilter = FALSE) {
   test_tabs(c("Input / View", "Data", "About", "Help"))
   
   test_that("parameters are present", {
-    Sys.sleep(3)
+    sleep_for(3)
     
     # parameters
     parameters <- remDr$findElements(using = "class", value = "ui-test-parameters")
@@ -32,6 +32,7 @@ test_de <- function(applyFilter = FALSE) {
     dataset_arrow <- formItems[[1]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
     expect_equal(length(dataset_arrow), 1)
     dataset_arrow[[1]]$clickElement()
+    sleep_for(1)
     
     dataset_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
     expect_equal(length(dataset_list), 1)
@@ -54,6 +55,7 @@ test_de <- function(applyFilter = FALSE) {
     dataset_clear <- formItems[[1]]$findChildElements(using = "class", value = "x-form-clear-trigger")
     expect_equal(length(dataset_clear), 1)
     dataset_clear[[1]]$clickElement()
+    sleep_for(1)
   
     # parameters: plot type
     plotType <- formItems[[2]]$findChildElements(using = "class", value = "ui-test-plottype")
@@ -62,6 +64,7 @@ test_de <- function(applyFilter = FALSE) {
     plotType_arrow <- formItems[[2]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
     expect_equal(length(plotType_arrow), 1)
     plotType_arrow[[1]]$clickElement()
+    sleep_for(1)
     
     plotType_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
     expect_equal(plotType_list[[1]]$getElementText()[[1]], 
@@ -70,6 +73,7 @@ test_de <- function(applyFilter = FALSE) {
     plotType_clear <- formItems[[2]]$findChildElements(using = "class", value = "x-form-clear-trigger")
     expect_equal(length(plotType_clear), 1)
     plotType_clear[[1]]$clickElement()
+    sleep_for(1)
   
     # parameters: normalize
     normalize <- formItems[[3]]$findChildElements(using = "class", value = "ui-test-normalize")
@@ -85,6 +89,7 @@ test_de <- function(applyFilter = FALSE) {
     
     additionalOptions_header <- additionalOptions[[1]]$findChildElements(using = "class", value = "x-fieldset-header")
     additionalOptions_header[[1]]$clickElement()
+    sleep_for(1)
   
     interactivePlot <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-interactive")
     expect_equal(length(interactivePlot), 1)
@@ -99,6 +104,7 @@ test_de <- function(applyFilter = FALSE) {
     expect_equal(length(vertical), 1)
     
     additionalOptions_header[[1]]$clickElement()
+    sleep_for(1)
   
     # buttons
     buttons_bar <- remDr$findElements(using = "class", value = "ui-test-buttons")
@@ -125,10 +131,12 @@ test_de <- function(applyFilter = FALSE) {
   
     dataset_arrow <- formItems[[1]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
     dataset_arrow[[1]]$clickElement()
+    sleep_for(1)
     
     dataset_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
     dataset_elisa <- dataset_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
     dataset_elisa[[1]]$clickElement()
+    sleep_for(1)
     
     while (remDr$findElements(using = "class", value = "ui-test-cmpstatus")[[1]]$getElementText()[[1]] == "") {}
   
@@ -166,10 +174,12 @@ test_de <- function(applyFilter = FALSE) {
     
     plotType_arrow <- formItems[[2]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
     plotType_arrow[[1]]$clickElement()
+    sleep_for(1)
     
     plotType_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
     plotType_heatmap <- plotType_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
     plotType_heatmap[[4]]$clickElement()
+    sleep_for(1)
     
     plotType <- formItems[[2]]$findChildElements(using = "class", value = "ui-test-plottype")
     expect_equal(plotType[[1]]$getElementAttribute("value")[[1]], "Heatmap")
@@ -181,6 +191,7 @@ test_de <- function(applyFilter = FALSE) {
     plot_button_table <- buttons_bar[[1]]$findChildElements(using = "class", value = "ui-test-plot")
     plot_button <- plot_button_table[[1]]$findChildElements(using = "class", value = "x-btn-text")
     plot_button[[1]]$clickElement()
+    sleep_for(1)
   
     # check if output is there
     while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
@@ -190,6 +201,7 @@ test_de <- function(applyFilter = FALSE) {
     reset_button_table <- buttons_bar[[1]]$findChildElements(using = "class", value = "ui-test-reset")
     reset_button <- reset_button_table[[1]]$findChildElements(using = "class", value = "x-btn-text")
     reset_button[[1]]$clickElement()
+    sleep_for(1)
   
     # check if plot is clear
     no_visualization <- remDr$findElements(using = "css selector", value = "img[id*=imgModuleHtmlView_]")
