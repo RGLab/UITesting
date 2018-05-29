@@ -2,7 +2,7 @@
 
 [`prod`](https://www.immunespace.org/): [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=master)](https://travis-ci.org/RGLab/UITesting)
 
-[`test`](https://test.immunespace.org/): [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=test)](https://travis-ci.org/RGLab/UITesting)
+[`test`](https://test.immunespace.org/): [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=dev)](https://travis-ci.org/RGLab/UITesting)
 
 
 ## Requirments
@@ -79,7 +79,7 @@ source("test.R")
 To run a test file in R:
 
 ```R
-testthat::test_file("tests/test-front.R")
+testthat::test_file("tests/test-0-front.R", reporter = c("summary", "fail"))
 ```
 
 
@@ -122,3 +122,4 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
     - SDY207 ([`test-reports-sdy207.R`](tests/test-reports-sdy207.R))
     - SDY269 ([`test-reports-sdy269.R`](tests/test-reports-sdy269.R))
     - IS1 ([`test-reports-is1.R`](tests/test-reports-is1.R))
+- RStudio session ([`test-rstudio.R`](tests/test-rstudio.R))
