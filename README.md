@@ -4,6 +4,7 @@
 
 [`test`](https://test.immunespace.org/): [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=test)](https://travis-ci.org/RGLab/UITesting)
 
+
 ## Requirments
 
 - [R](https://cran.r-project.org/) (>= 3.4.1)
@@ -12,6 +13,18 @@
 - [Sauce Labs](https://saucelabs.com/)
 - [chrome](https://www.google.com/chrome/)
 - [firefox](https://www.mozilla.org/en-US/firefox/)
+
+
+## Install `RSelenium`
+
+Currently, `Rselenium` and related packages are not availabe on CRAN, so we need to install them from GitHub repos:
+
+```R
+devtools::install_github("johndharrison/binman")
+devtools::install_github("johndharrison/wdman")
+devtools::install_github("ropensci/RSelenium")
+```
+
 
 ## Setup in Ubuntu
 
