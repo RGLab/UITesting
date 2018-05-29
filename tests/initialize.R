@@ -163,12 +163,12 @@ test_connection <- function(remDr, pageURL, expectedTitle, public = FALSE) {
         loginButton <- remDr$findElement(using = "class", value = "labkey-button")
         loginButton$clickElement()
         
-        while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
+        while(grepl("Sign In", remDr$getTitle()[[1]])) sleep_for(1)
       } else if (remDr$getTitle()[[1]] != expectedTitle) {
         loginButton <- remDr$findElement(using = "class", value = "labkey-button")
         loginButton$clickElement()
         
-        while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
+        while(grepl("Sign In", remDr$getTitle()[[1]])) sleep_for(1)
         
         id <- remDr$findElement(using = "id", value = "email")
         id$sendKeysToElement(list(ISR_login))
@@ -179,7 +179,7 @@ test_connection <- function(remDr, pageURL, expectedTitle, public = FALSE) {
         loginButton <- remDr$findElement(using = "class", value = "labkey-button")
         loginButton$clickElement()
         
-        while(grepl("Sign In", remDr$getTitle()[[1]])) Sys.sleep(1)
+        while(grepl("Sign In", remDr$getTitle()[[1]])) sleep_for(1)
       }
       pageTitle <- remDr$getTitle()[[1]]
       expect_equal(pageTitle, expectedTitle)

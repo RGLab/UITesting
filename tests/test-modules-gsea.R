@@ -14,7 +14,7 @@ test_module("'Gene Set Enrichment Analysis'")
 test_tabs(c("Input", "View", "About", "Help"))
 
 test_that("parameters are present", {
-  Sys.sleep(3)
+  sleep_for(3)
   
   tab_bwrap <- remDr$findElements(using = "class", value = "x-tab-panel-bwrap")
   expect_equal(length(tab_bwrap), 1)
@@ -29,6 +29,7 @@ test_that("parameters are present", {
   cohort_arrow <- form_items[[1]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
   expect_equal(length(cohort_arrow), 1)
   cohort_arrow[[1]]$clickElement()
+  sleep_for(1)
   
   combo_lists <- remDr$findElements(using = "class", value = "x-combo-list-inner")
   expect_equal(combo_lists[[1]]$getElementText()[[1]], 
@@ -37,6 +38,7 @@ test_that("parameters are present", {
   cohort_clear <- form_items[[1]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(cohort_clear), 1)
   cohort_clear[[1]]$clickElement()
+  sleep_for(1)
   
   # modules
   modules_input <- form_items[[2]]$findChildElements(using = "id", value = "cbModules")
@@ -45,6 +47,7 @@ test_that("parameters are present", {
   modules_arrow <- form_items[[2]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
   expect_equal(length(modules_arrow), 1)
   modules_arrow[[1]]$clickElement()
+  sleep_for(1)
   
   combo_lists <- remDr$findElements(using = "class", value = "x-combo-list-inner")
   expect_equal(combo_lists[[2]]$getElementText()[[1]], 
@@ -53,6 +56,7 @@ test_that("parameters are present", {
   modules_clear <- form_items[[2]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(modules_clear), 1)
   modules_clear[[1]]$clickElement()
+  sleep_for(1)
   
   # buttons
   buttons <- remDr$findElements(using = "class", value = "x-btn-text")
@@ -68,9 +72,11 @@ test_that("selecting cohort is working", {
   
   cohort_arrow <- form_items[[1]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
   cohort_arrow[[1]]$clickElement()
+  sleep_for(1)
   
   chorot_TIV <- combo_lists[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   chorot_TIV[[2]]$clickElement()
+  sleep_for(1)
   
   cohort_input <- form_items[[1]]$findChildElements(using = "id", value = "cbCohort")
   expect_equal(cohort_input[[1]]$getElementAttribute("value")[[1]], "TIV Group 2008")
@@ -83,9 +89,11 @@ test_that("selecting modules is working", {
   
   module_arrow <- form_items[[2]]$findChildElements(using = "class", value = "x-form-arrow-trigger")
   module_arrow[[1]]$clickElement()
+  sleep_for(1)
   
   module_MSigDB_c7 <- combo_lists[[2]]$findChildElements(using = "class", value = "x-combo-list-item")
   module_MSigDB_c7[[2]]$clickElement()
+  sleep_for(1)
   
   module_input <- form_items[[2]]$findChildElements(using = "id", value = "cbModules")
   expect_equal(module_input[[1]]$getElementAttribute("value")[[1]], "MSigDB c7")
@@ -94,6 +102,7 @@ test_that("selecting modules is working", {
 test_that("run button is working", {
   buttons <- remDr$findElements(using = "class", value = "x-btn-text")
   buttons[[1]]$clickElement()
+  sleep_for(1)
   
   # check if output is there
   while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
@@ -123,9 +132,11 @@ test_that("reset button is working", {
   tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
   tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
   tabs[[1]]$clickElement()
+  sleep_for(1)
   
   buttons <- remDr$findElements(using = "class", value = "x-btn-text")
   buttons[[2]]$clickElement()
+  sleep_for(1)
   
   # check if parameters are clear
   cohort_input <- remDr$findElements(using = "id", value = "cbCohort")

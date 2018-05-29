@@ -9,7 +9,7 @@ test_connection(remDr = remDr,
                 pageURL = pageURL, 
                 expectedTitle = "Overview: /Studies")
 
-Sys.sleep(3)
+sleep_for(3)
 
 test_that("'Quick Help' is present", {
   remDr$executeScript(script = "start_tutorial();",
@@ -69,7 +69,7 @@ test_that("subject group controller is present", {
     sleep_for(10, condition = expression(manageMenu[[1]]$isElementDisplayed()[[1]]))
     
     manageMenu[[1]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     manageItems <- manageMenu[[1]]$findChildElements(using = "class", value = "df-menu-item-link")
     expect_length(manageItems, 1)
   }
@@ -78,7 +78,7 @@ test_that("subject group controller is present", {
   expect_length(loadMenu, 1)
   if (length(loadMenu) == 1) {
     loadMenu[[1]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     loadItems <- loadMenu[[1]]$findChildElements(using = "class", value = "df-menu-item-link")
     expect_gt(length(loadItems), 0)
   }
@@ -87,7 +87,7 @@ test_that("subject group controller is present", {
   expect_length(saveMenu, 1)
   if (length(saveMenu) == 1) {
     saveMenu[[1]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     saveItems <- saveMenu[[1]]$findChildElements(using = "class", value = "df-menu-item-link")
     expect_length(saveItems, 2)
   }
@@ -144,7 +144,7 @@ test_that("study panel is present", {
   if (length(studyCards) > 0) {
     cardSummary <- studyCards[[1]]$findChildElements(using = "class", value = "labkey-study-card-summary")
     cardSummary[[1]]$clickElement()
-    Sys.sleep(1)
+    sleep_for(1)
     
     studyDetail <- remDr$findElements(using = "class", value = "labkey-study-detail")
     expect_length(studyDetail, 1)
