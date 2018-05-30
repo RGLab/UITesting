@@ -178,7 +178,7 @@ test_gee <- function(applyFilter = FALSE) {
     sleep_for(1)
   
     # check if output is there
-    while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
+    while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) sleep_for(1)
     visualization <- remDr$findElements(using = "css selector", value = "img[id*=imgModuleHtmlView_]")
     expect_equal(length(visualization), 1)
   

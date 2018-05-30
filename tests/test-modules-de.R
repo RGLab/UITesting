@@ -138,7 +138,7 @@ test_de <- function(applyFilter = FALSE) {
     dataset_elisa[[1]]$clickElement()
     sleep_for(1)
     
-    while (remDr$findElements(using = "class", value = "ui-test-cmpstatus")[[1]]$getElementText()[[1]] == "") {}
+    while (remDr$findElements(using = "class", value = "ui-test-cmpstatus")[[1]]$getElementText()[[1]] == "") sleep_for(1)
   
     tab_header <- remDr$findElements(using = "class", value = "x-tab-panel-header")
     tabs <- tab_header[[1]]$findChildElements(using = "css selector", value = "li[id^=ext-comp]")
@@ -194,7 +194,7 @@ test_de <- function(applyFilter = FALSE) {
     sleep_for(1)
   
     # check if output is there
-    while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
+    while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) sleep_for(1)
     visualization <- remDr$findElements(using = "css selector", value = "img[id*=imgModuleHtmlView_]")
     expect_equal(length(visualization), 1)
     

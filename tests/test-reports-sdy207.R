@@ -10,7 +10,7 @@ test_connection(remDr = remDr,
                 expectedTitle = "CyTOF Visualization: /Studies/SDY207")
 
 test_that("report is generated", {
-  while (length(remDr$findElements(using = "class", value = "x4-mask-msg-text")) != 0) {}
+  while (length(remDr$findElements(using = "class", value = "x4-mask-msg-text")) != 0) sleep_for(1)
   
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)

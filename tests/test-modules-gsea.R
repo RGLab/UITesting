@@ -105,7 +105,7 @@ test_that("run button is working", {
   sleep_for(1)
   
   # check if output is there
-  while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) {}
+  while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) sleep_for(1)
   
   active_tab <- remDr$findElements(using = "class", value = "x-tab-strip-active")
   expect_equal(active_tab[[1]]$getElementText()[[1]], "View")
