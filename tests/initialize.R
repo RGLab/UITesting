@@ -54,7 +54,7 @@ if (seleniumServer == "SAUCELABS") {
                             version = "latest",
                             platform = "Windows 10",
                             extraCapabilities = extraCapabilities)
-  remDr$open(silent = TRUE)
+  remDr$open(silent = FALSE)
   
   # Timer to match with SauceLabs browser (it's not so accurate)
   ptm <- proc.time()
