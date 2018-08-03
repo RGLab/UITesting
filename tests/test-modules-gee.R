@@ -160,7 +160,7 @@ test_gee <- function(applyFilter = FALSE) {
     expect_equal(headers_text, 
                  c("Participant ID", "Age Reported", "Gender", "Race", 
                    "Study Time Collected", "Study Time Collected Unit", 
-                   "Virus", "Value Reported"))
+                   "Virus", "Value Preferred"))
     
     if (applyFilter) {
       test_filtering()
