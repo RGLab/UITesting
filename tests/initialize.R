@@ -168,7 +168,7 @@ test_connection <- function(remDr, pageURL, expectedTitle, public = FALSE) {
         loginButton <- remDr$findElement(using = "class", value = "labkey-button")
         loginButton$clickElement()
         
-        while(grepl("Sign In", remDr$getTitle()[[1]])) sleep_for(1)
+        while(!grepl("Sign In", remDr$getTitle()[[1]])) sleep_for(1)
         
         id <- remDr$findElement(using = "id", value = "email")
         id$sendKeysToElement(list(ISR_login))
