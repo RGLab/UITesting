@@ -39,21 +39,25 @@ if (seleniumServer == "SAUCELABS") {
   remoteServerAddr <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@", sauceUrl)
   port <- ifelse(machine == "TRAVIS", 4445, 80)
   
-  extraCapabilities <- list(name = name,
-                            build = build,
-                            username = SAUCE_USERNAME,
-                            accessKey = SAUCE_ACCESS_KEY,
-                            tags = list(machine, server),
-                            public = "public restricted",
-                            screenResolution = "1280x1024")
+  extraCapabilities <- list(
+    name = name,
+    build = build,
+    username = SAUCE_USERNAME,
+    accessKey = SAUCE_ACCESS_KEY,
+    tags = list(machine, server),
+    public = "public restricted",
+    screenResolution = "1280x1024"
+  )
   
   # Initiate a browser
-  remDr <- remoteDriver$new(remoteServerAddr = remoteServerAddr,
-                            port = port,
-                            browserName = browserName,
-                            version = "latest",
-                            platform = "Windows 10",
-                            extraCapabilities = extraCapabilities)
+  remDr <- remoteDriver$new(
+    remoteServerAddr = remoteServerAddr,
+    port = port,
+    browserName = browserName,
+    version = "latest",
+    platform = "Windows 10",
+    extraCapabilities = extraCapabilities
+  )
   remDr$open(silent = FALSE)
   
   # Timer to match with SauceLabs browser (it's not so accurate)
@@ -72,7 +76,8 @@ if (seleniumServer == "SAUCELABS") {
 
 # Set browser condition ----
 remDr$maxWindowSize()
-remDr$setTimeout(type = "implicit", milliseconds = 20000)
+remDr$setTimeout(milliseconds = 20000) # set page load timeout to 20 secs
+remDr$setTimeout(type = "implicit", milliseconds = 20000) # wait 5 secs for elements to load
 
 
 # global variables ----
