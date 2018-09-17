@@ -76,8 +76,8 @@ if (seleniumServer == "SAUCELABS") {
 
 # Set browser condition ----
 remDr$maxWindowSize()
-remDr$setTimeout(milliseconds = 20000) # set page load timeout to 20 secs
-remDr$setTimeout(type = "implicit", milliseconds = 20000) # wait 5 secs for elements to load
+remDr$setTimeout(milliseconds = 30000) # set page load timeout to 30 secs
+remDr$setTimeout(type = "implicit", milliseconds = 20000) # wait 20 secs for elements to load
 
 
 # global variables ----
