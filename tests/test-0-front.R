@@ -69,7 +69,7 @@ test_that("can log in", {
   id[[1]]$sendKeysToElement(list("wrong@email.com"))
   pw[[1]]$sendKeysToElement(list("wrongPassword"))
   signInButton[[1]]$clickElement()
-  sleep_for(1)
+  sleep_for(3)
   expect_equal(errorMessage[[1]]$getElementText()[[1]], 
                "Invalid Username or Password.\nYou can reset your password via the question mark link above.")
   
