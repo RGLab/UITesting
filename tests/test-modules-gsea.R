@@ -120,7 +120,7 @@ test_that("report is present", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)
   
-  report_header <- labkey_knitr[[1]]$findChildElements(using = "id", value = "gene-set-enrichment-analysis-of-tiv-group-2008")
+  report_header <- labkey_knitr[[1]]$findChildElements(using = "id", value = "gene-set-enrichment-analysis-of-tiv-group-2008_pbmc")
   expect_equal(length(report_header), 1)
   
   widget_data <- labkey_knitr[[1]]$findChildElements(using = "css selector", value = "script[data-for]")
