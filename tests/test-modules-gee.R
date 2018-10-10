@@ -67,8 +67,10 @@ test_gee <- function(applyFilter = FALSE) {
     expect_equal(length(cohorts_arrow), 1)
     
     cohorts_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
-    expect_equal(cohorts_list[[1]]$getElementText()[[1]], 
-                 "Select all\nLAIV group 2008 (SDY269)\nTIV Group 2008 (SDY269)")
+    expect_equal(
+      cohorts_list[[1]]$getElementText()[[1]], 
+      "Select all\nLAIV group 2008_PBMC (SDY269)\nTIV Group 2008_PBMC (SDY269)"
+    )
     cohorts_items <- cohorts_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
     cohorts_items[[2]]$clickElement()
     sleep_for(1)

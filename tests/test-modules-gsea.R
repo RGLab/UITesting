@@ -32,8 +32,10 @@ test_that("parameters are present", {
   sleep_for(1)
   
   combo_lists <- remDr$findElements(using = "class", value = "x-combo-list-inner")
-  expect_equal(combo_lists[[1]]$getElementText()[[1]], 
-               "LAIV group 2008\nTIV Group 2008")
+  expect_equal(
+    combo_lists[[1]]$getElementText()[[1]], 
+    "LAIV group 2008_PBMC\nTIV Group 2008_PBMC"
+  )
   
   cohort_clear <- form_items[[1]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(cohort_clear), 1)
@@ -79,7 +81,10 @@ test_that("selecting cohort is working", {
   sleep_for(1)
   
   cohort_input <- form_items[[1]]$findChildElements(using = "id", value = "cbCohort")
-  expect_equal(cohort_input[[1]]$getElementAttribute("value")[[1]], "TIV Group 2008")
+  expect_equal(
+    cohort_input[[1]]$getElementAttribute("value")[[1]],
+    "TIV Group 2008_PBMC"
+  )
 })
 
 test_that("selecting modules is working", {
@@ -115,7 +120,7 @@ test_that("report is present", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)
   
-  report_header <- labkey_knitr[[1]]$findChildElements(using = "id", value = "gene-set-enrichment-analysis-of-tiv-group-2008")
+  report_header <- labkey_knitr[[1]]$findChildElements(using = "id", value = "gene-set-enrichment-analysis-of-tiv-group-2008_pbmc")
   expect_equal(length(report_header), 1)
   
   widget_data <- labkey_knitr[[1]]$findChildElements(using = "css selector", value = "script[data-for]")
