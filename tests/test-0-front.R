@@ -4,17 +4,6 @@ context_of(file = "test-0-front.R",
            what = "Front",
            url = siteURL)
 
-dismiss_alert <- function() {
-  if (browserName == "chrome") {
-    sleep_for(31)
-  } else {
-    alertTxt <- try(remDr$getAlertText(), silent = TRUE)
-    if (class(alertTxt) == "list") {
-      remDr$dismissAlert()
-    }
-  }
-}
-
 test_that("can connect to the page", {
   remDr$navigate(siteURL)
 
