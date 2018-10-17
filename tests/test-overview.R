@@ -68,27 +68,27 @@ studies <- list(
 # test functions ----
 test_section <- function(key, label) {
   sdy <- get("sdy", envir = parent.frame())
-  
+
   if (key %in% names(studies[[sdy]])) {
     test_that(paste0("'", label, "' section shows correct information"), {
       section <- remDr$findElements(using = "css selector",
                                     value = paste0("[id^=", key, "ModuleHtmlView]"))
       expect_length(section, 1)
-      
+
       if (length(section) == 1) {
         sleep_for(10, condition = expression(section[[1]]$isElementDisplayed()[[1]]))
-        
+
         displayed <- section[[1]]$getElementText()[[1]]
         expected <- studies[[sdy]][[key]]
-        
+
         if (key %in% c("GEO", "assoc_studies")) {
           displayed <- sub(paste0(label, ": "), "", displayed)
         }
-        
+
         if (length(expected) > 1) {
           displayed <- strsplit(displayed, ", ")[[1]]
         }
-        
+
         expect_equal(displayed, expected)
       }
     })
@@ -105,16 +105,16 @@ test_overview <- function(sdy, public = FALSE) {
     what <- paste0("Overview of ", sdy)
     expectedTitle <- paste0("Overview: /Studies/", sdy)
   }
-  
+
   context_of(file = "test-overview.R",
              what = what,
              url = pageURL)
-  
+
   test_connection(remDr = remDr,
                   pageURL = pageURL,
                   expectedTitle = expectedTitle,
                   public = public)
-  
+
   if (!(public && ADMIN_MODE)) {
     test_that("'Study Overview' module is present", {
       study_overview <- remDr$findElements(using = "css selector",
@@ -122,19 +122,19 @@ test_overview <- function(sdy, public = FALSE) {
       expect_length(study_overview, 1)
       expect_true(study_overview[[1]]$getElementText()[[1]] != "")
     })
-    
+
     test_section("datasets", "Available datasets")
     test_section("raw_files", "Available raw data files")
     test_section("organization", "Sponsoring organization")
     test_section("GEO", "GEO accession")
-  
+
     if (!public) {
       test_section("assoc_studies", "Associated ImmuneSpace studies")
-      
+
       test_that("'Publications and Citations' module is present", {
         refs <- remDr$findElements(using = "id", value = "reportdiv")
         expect_length(refs, 1)
-        
+
         if (length(refs) == 1) {
           expect_true(refs[[1]]$getElementText()[[1]] != "")
         }

@@ -7,7 +7,7 @@ test_parameter <- function(param, formItem, paramConfig) {
     length(input), 1,
     info = param
   )
-  
+
   arrow <- formItem$findChildElements("class", "x-form-arrow-trigger")
   expect_equal(
     length(arrow), 1,
@@ -15,19 +15,19 @@ test_parameter <- function(param, formItem, paramConfig) {
   )
   arrow[[1]]$clickElement()
   sleep_for(5)
-  
+
   combo_list <- remDr$findElements("css selector", "div.x-combo-list[style*='visibility: visible']")
   expect_equal(
     length(combo_list), 1,
     info = param
   )
-  
+
   combo_list_text <- strsplit(combo_list[[1]]$getElementText()[[1]], split = "\n")[[1]]
   expect_equal(
     combo_list_text, paramConfig$expected,
     info = param
   )
-  
+
   items <- combo_list[[1]]$findChildElements("class", "x-combo-list-item")
   expect_equal(
     length(items), length(paramConfig$expected),
@@ -35,13 +35,13 @@ test_parameter <- function(param, formItem, paramConfig) {
   )
   items[[paramConfig$choice]]$clickElement()
   sleep_for(2)
-  
+
   clear <- formItem$findChildElements("class", "x-form-clear-trigger")
   expect_equal(
     length(clear), 1,
     info = param
   )
-  
+
   arrow[[1]]$clickElement()
   sleep_for(3)
 }
@@ -71,7 +71,7 @@ test_that("assay grid is present and working", {
     length(assaygrid), 1,
     info = ""
   )
-  
+
   # cells <- assaygrid[[1]]$findChildElements("class", "x-grid3-cell")
   # expect_equal(
   #   length(cells), 35,
@@ -86,13 +86,13 @@ test_that("parameters are present and working", {
     length(parameters), 1,
     info = ""
   )
-  
+
   parameterItems <- parameters[[1]]$findChildElements("class", "ui-test-parameters-item")
   expect_equal(
     length(parameterItems), 4,
     info = ""
   )
-  
+
   # parameters: timebox
   expect_match(parameterItems[[1]]$getElementText()[[1]], "Use Time As")
   timebox <- parameterItems[[1]]$findChildElements("class", "ui-test-timebox")
@@ -117,7 +117,7 @@ test_that("parameters are present and working", {
     length(observation), 1,
     info = ""
   )
-  
+
   # parameters: timepoints
   test_parameter(
     param = "timepoints",
@@ -127,7 +127,7 @@ test_that("parameters are present and working", {
       expected = c("Select all", "0 Days", "3 Days", "7 Days", "28 Days")
     )
   )
-  
+
   # parameters: assays
   test_parameter(
     param = "assays",
@@ -137,7 +137,7 @@ test_that("parameters are present and working", {
       expected = c("Select all", "ELISA", "ELISPOT", "HAI", "PCR")
     )
   )
-  
+
   # parameters: plottype
   expect_match(parameterItems[[4]]$getElementText()[[1]], "Plot type")
   plottype <- parameterItems[[4]]$findChildElements("class", "ui-test-plottype")
@@ -170,20 +170,20 @@ test_that("additional options are present", {
     length(additionalOptions), 1,
     info = ""
   )
-  
+
   additionalItems <- additionalOptions[[1]]$findChildElements("class", "ui-test-additional-options-item")
   expect_equal(
     length(additionalItems), 4,
     info = ""
   )
-  
+
   # extend
   additionalOptions_header <- additionalOptions[[1]]$findChildElements(
     "class", "x-fieldset-header"
   )
   additionalOptions_header[[1]]$clickElement()
   sleep_for(2)
-  
+
   # perplexity
   expect_match(additionalItems[[1]]$getElementText()[[1]], "tSNE - Perplexity")
   perplexity <- additionalItems[[1]]$findChildElements("class", "ui-test-perplexity")
@@ -192,8 +192,8 @@ test_that("additional options are present", {
     length(perplexity_disabled), 1,
     info = ""
   )
-  
-  
+
+
   # components
   expect_match(additionalItems[[2]]$getElementText()[[1]], "Components to Plot")
   components <- additionalItems[[2]]$findChildElements("class", "ui-test-components")
@@ -202,7 +202,7 @@ test_that("additional options are present", {
     length(components_disabled), 0,
     info = ""
   )
-  
+
   # imputation
   expect_match(additionalItems[[3]]$getElementText()[[1]], "Missing Value Imputation")
   imputation <- additionalItems[[3]]$findChildElements("class", "ui-test-impute")
@@ -239,7 +239,7 @@ test_that("additional options are present", {
     length(None), 1,
     info = ""
   )
-  
+
   # label
   expect_match(additionalItems[[4]]$getElementText()[[1]], "Immune Response Label")
   response <- additionalItems[[4]]$findChildElements("class", "ui-test-response")
@@ -264,7 +264,7 @@ test_that("additional options are present", {
     length(NAb), 1,
     info = ""
   )
-  
+
   # collapse
   additionalOptions_header[[1]]$clickElement()
   sleep_for(2)
@@ -274,7 +274,7 @@ test_that("buttons are present", {
   run_button <- remDr$findElements("class", "ui-test-run")
   expect_length(run_button, 1)
   expect_match(run_button[[1]]$getElementText()[[1]], "Run")
-  
+
   reset_button <- remDr$findElements(using = "class", value = "ui-test-reset")
   expect_equal(
     length(reset_button), 1,
@@ -286,10 +286,10 @@ test_that("buttons are present", {
 test_that("run button is working", {
   run_button <- remDr$findElements(using = "class", value = "ui-test-run")
   run_button[[1]]$clickElement()
-  
+
   # check if output is there
   while (length(remDr$findElements("class", "ext-el-mask-msg")) != 0) sleep_for(1)
-  
+
   active_tab <- remDr$findElements("class", "x-tab-strip-active")
   expect_equal(active_tab[[1]]$getElementText()[[1]], "View")
 })
@@ -297,13 +297,13 @@ test_that("run button is working", {
 test_that("report is present", {
   labkey_knitr <- remDr$findElements("class", "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)
-  
+
   widget_data <- labkey_knitr[[1]]$findChildElements("css selector", "script[data-for]")
   expect_equal(
     length(widget_data), 6,
     info = ""
   )
-  
+
   plot_svg <- labkey_knitr[[1]]$findChildElements("class", "plot-container")
   expect_equal(
     length(plot_svg), 6,
@@ -316,11 +316,11 @@ test_that("reset button is working", {
   tabs <- tab_header[[1]]$findChildElements("css selector", "li[id^=ext-comp]")
   tabs[[1]]$clickElement()
   sleep_for(2)
-  
+
   reset_button <- remDr$findElements("class", "ui-test-reset")
   reset_button[[1]]$clickElement()
   sleep_for(2)
-  
+
   # check if parameters are clear
   timepoints_input <- remDr$findElements("class", "ui-test-timepoints")
   timepoints_input_value <- timepoints_input[[1]]$getElementAttribute("value")[[1]]
@@ -328,7 +328,7 @@ test_that("reset button is working", {
     timepoints_input_value, "Select...",
     info = ""
   )
-  
+
   assays_input <- remDr$findElements("class", "ui-test-assays")
   assays_input_value <- assays_input[[1]]$getElementAttribute("value")[[1]]
   expect_equal(
