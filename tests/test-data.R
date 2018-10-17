@@ -1,12 +1,12 @@
 if (!exists("context_of")) source("initialize.R")
 
 pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.DATA_ANALYSIS")
-context_of(file = "test-data.R", 
-           what = "Clinical and Assay Data", 
+context_of(file = "test-data.R",
+           what = "Clinical and Assay Data",
            url = pageURL)
 
-test_connection(remDr = remDr, 
-                pageURL = pageURL, 
+test_connection(remDr = remDr,
+                pageURL = pageURL,
                 expectedTitle = "Clinical and Assay Data: /Studies/SDY269")
 
 test_that("List of datasets is present", {
@@ -17,7 +17,7 @@ test_that("List of datasets is present", {
 test_that("Relevant datasets are available", {
   rows <- remDr$findElements(using = "class", value = "x4-tree-node-text")
   expect_gt(length(rows), 0)
-  
+
   rows_text <- unlist(lapply(rows, function(x) x$getElementText()[[1]]))
   expected_text <- c(
     "Assays",
@@ -40,24 +40,24 @@ test_that("Relevant datasets are available", {
     "Cohort membership",
     "Demographics"
     )
-  
-  expect_equal(setdiff(rows_text, expected_text), character(0), 
+
+  expect_equal(setdiff(rows_text, expected_text), character(0),
                info = paste(c("Unexpected datasets:", setdiff(rows_text, expected_text)), collapse = "\n"))
-  
-  expect_equal(setdiff(expected_text, rows_text), character(0), 
+
+  expect_equal(setdiff(expected_text, rows_text), character(0),
                info = paste(c("Missing datasets:", setdiff(expected_text, rows_text)), collapse = "\n"))
 })
 
 ################################################################################
 
 pageURL <- paste0(siteURL, "/project/Studies/begin.view?pageId=study.DATA_ANALYSIS")
-context_of(file = "test-data.R", 
-           what = "Clinical and Assay Data", 
+context_of(file = "test-data.R",
+           what = "Clinical and Assay Data",
            url = pageURL,
            level = "project")
 
-test_connection(remDr = remDr, 
-                pageURL = pageURL, 
+test_connection(remDr = remDr,
+                pageURL = pageURL,
                 expectedTitle = "Clinical and Assay Data: /Studies")
 
 test_that("List of datasets is present", {
@@ -68,7 +68,7 @@ test_that("List of datasets is present", {
 test_that("Relevant datasets are available", {
   rows <- remDr$findElements(using = "class", value = "x4-tree-node-text")
   expect_gt(length(rows), 0)
-  
+
   rows_text <- unlist(lapply(rows, function(x) x$getElementText()[[1]]))
   expected_text <- c(
     "Assays",
@@ -91,10 +91,10 @@ test_that("Relevant datasets are available", {
     "Cohort membership",
     "Demographics"
     )
-  
-  expect_equal(setdiff(rows_text, expected_text), character(0), 
+
+  expect_equal(setdiff(rows_text, expected_text), character(0),
                info = paste(c("Unexpected datasets:", setdiff(rows_text, expected_text)), collapse = "\n"))
-  
-  expect_equal(setdiff(expected_text, rows_text), character(0), 
+
+  expect_equal(setdiff(expected_text, rows_text), character(0),
                info = paste(c("Missing datasets:", setdiff(expected_text, rows_text)), collapse = "\n"))
 })

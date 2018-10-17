@@ -116,6 +116,7 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
     - Gene Expression Explorer ([`test-modules-gee.R`](tests/test-modules-gee.R))
     - Gene Set Enrichment Analysis ([`test-modules-gsea.R`](tests/test-modules-gsea.R))
     - Immune Response Predictor ([`test-modules-irp.R`](tests/test-modules-irp.R))
+    - Dimension Reduction ([`test-modules-dr.R`](tests/test-modules-dr.R))
 - Reports page ([`test-reports.R`](tests/test-reports.R))
     - SDY144 ([`test-reports-sdy144.R`](tests/test-reports-sdy144.R))
     - SDY180 ([`test-reports-sdy180.R`](tests/test-reports-sdy180.R))
