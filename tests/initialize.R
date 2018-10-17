@@ -59,6 +59,7 @@ if (seleniumServer == "SAUCELABS") {
     extraCapabilities = extraCapabilities
   )
   remDr$open(silent = FALSE)
+  remDr$maxWindowSize()
 
   # Timer to match with SauceLabs browser (it's not so accurate)
   ptm <- proc.time()
@@ -69,13 +70,11 @@ if (seleniumServer == "SAUCELABS") {
 
 } else {
   # With local machine
-  rs <- rsDriver(browser = browserName)
-  remDr <- rs$client
+  remDr <- remoteDriver(browserName = browserName)
 }
 
 
 # Set browser condition ----
-remDr$maxWindowSize()
 remDr$setTimeout(milliseconds = 30000) # set page load timeout to 30 secs
 remDr$setTimeout(type = "implicit", milliseconds = 20000) # wait 20 secs for elements to load
 

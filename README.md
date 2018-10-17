@@ -1,52 +1,28 @@
-# UITesting
+# ImmuneSpace UI Testing
 
-[`prod`](https://www.immunespace.org/): [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=master)](https://travis-ci.org/RGLab/UITesting)
-
-[`test`](https://test.immunespace.org/): [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=dev)](https://travis-ci.org/RGLab/UITesting)
+| [Production](https://www.immunespace.org/) | [Test](https://test.immunespace.org/) |
+|-----|-----|
+| [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=master)](https://travis-ci.org/RGLab/UITesting) | [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=dev)](https://travis-ci.org/RGLab/UITesting) |
 
 
 ## Requirments
 
-- [R](https://cran.r-project.org/) (>= 3.4.1)
-    - [testthat](https://cran.r-project.org/web/packages/testthat/index.html) (>= 1.0.2)
-    - [RSelenium](https://cran.r-project.org/web/packages/RSelenium/index.html) (>= 1.7.1)
+- [R](https://cran.r-project.org/)
+- [Docker](https://www.docker.com/)
 - [Sauce Labs](https://saucelabs.com/)
-- [chrome](https://www.google.com/chrome/)
-- [firefox](https://www.mozilla.org/en-US/firefox/)
 
 
-## Install `RSelenium`
+## Setup in Linux/macOS
 
-Currently, `Rselenium` and related packages are not availabe on CRAN, so we need to install them from GitHub repos:
+### Install R packages
 
 ```R
-devtools::install_github("johndharrison/binman")
-devtools::install_github("johndharrison/wdman")
-devtools::install_github("ropensci/RSelenium")
+install.packages("testthat", "RSelenium", "XML", "digest", "jsonlite")
 ```
-
-
-## Setup in Ubuntu
 
 ### Set environment variables
 
-From the command line:
-
-```sh
-# ImmuneSpace login info
-export ISR_login=yourImmuneSpace@email.here
-export ISR_pwd=yourImmuneSpacePasswordHere
-
-# SauceLabs login info
-export SAUCE_USERNAME=yourUsername
-export SAUCE_ACCESS_KEY=yourAccessKey
-
-# optional
-export SELENIUM_SERVER=LOCAL # if not set, it uses `SAUCELABS`
-export TEST_BROWSER=firefox # if not set, default is `chrome`
-```
-
-Or in `.Renviron` file on your **home** directory:
+In `.Renviron` file on your **home** directory:
 
 ```sh
 # ImmuneSpace login info
@@ -58,13 +34,37 @@ SAUCE_USERNAME=yourUsername
 SAUCE_ACCESS_KEY=yourAccessKey
 
 # optional
-SELENIUM_SERVER=LOCAL # if not set, it uses `SAUCELABS`
-TEST_BROWSER=firefox # if not set, default is `chrome`
+SELENIUM_SERVER=LOCAL # if not set, it uses SauceLabs
+TEST_BROWSER=firefox # if not set, default is chrome
 ```
 
-### Run tests
+### Docker
 
-To run all tests from the command line:
+#### Install Docker
+
+Install Docker Community Edition (CE) following the instructions from their website:
+
+- [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+- [macOS](https://docs.docker.com/docker-for-mac/install/#install-and-run-docker-for-mac)
+
+#### Run a Docker image containing the standalone Selenium server and a browser
+
+To run chrome browser:
+
+```sh
+docker run -d -p 127.0.0.1:4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome:latest
+```
+
+Or to run FireFox browser:
+
+```sh
+docker run -d -p 127.0.0.1:4444:4444 -v /dev/shm:/dev/shm selenium/standalone-firefox:latest
+```
+
+
+### To run all tests
+
+From the command line:
 
 ```sh
 Rscript test.R
@@ -76,7 +76,9 @@ Or in R:
 source("test.R")
 ```
 
-To run a test file in R:
+### To run a test file
+
+In R:
 
 ```R
 testthat::test_file("tests/test-0-front.R", reporter = c("summary", "fail"))
@@ -98,12 +100,12 @@ testthat::test_file("tests/test-0-front.R", reporter = c("summary", "fail"))
 
 See [Defining Variables in Repository Settings](https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings)
 
-### Create [DESCRIPTION](DESCRIPTION) file
+### Create DESCRIPTION file
 
-Even though this is not a package, DESCRIPTION file is needed to run a builder in Travis in order to declare dependencies according to [Hadley](https://github.com/travis-ci/travis-ci/issues/5913#issuecomment-210733660)
+Even though this is not a package, [DESCRIPTION](DESCRIPTION) file is [needed](https://github.com/travis-ci/travis-ci/issues/5913#issuecomment-210733660) to run a builder in Travis in order to declare dependencies.
 
 
-## Tests
+## Available tests
 
 - Front page ([`test-0-front.R`](tests/test-0-front.R))
 - Home page ([`test-home.R`](tests/test-home.R))
@@ -124,3 +126,8 @@ Even though this is not a package, DESCRIPTION file is needed to run a builder i
     - SDY269 ([`test-reports-sdy269.R`](tests/test-reports-sdy269.R))
     - IS1 ([`test-reports-is1.R`](tests/test-reports-is1.R))
 - RStudio session ([`test-rstudio.R`](tests/test-rstudio.R))
+
+
+## Big Thanks
+
+Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs](https://saucelabs.com)
