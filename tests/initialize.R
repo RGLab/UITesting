@@ -71,6 +71,7 @@ if (seleniumServer == "SAUCELABS") {
 } else {
   # With local machine
   remDr <- remoteDriver(browserName = browserName)
+  remDr$open()
 }
 
 
