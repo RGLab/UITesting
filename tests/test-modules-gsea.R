@@ -1,6 +1,6 @@
 if (!exists("context_of")) source("initialize.R")
 
-pageURL <- paste0(siteURL, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
+pageURL <- paste0(site_url, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
 context_of(file = "test-modules-gsea.R",
            what = "Gene Set Enrichment Analysis",
            url = pageURL)

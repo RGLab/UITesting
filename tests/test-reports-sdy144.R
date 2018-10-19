@@ -1,6 +1,6 @@
 if (!exists("context_of")) source("initialize.R")
 
-pageURL <- paste0(siteURL, "/reports/Studies/SDY144/runReport.view?reportId=module%3ASDY144%2Freports%2Fschemas%2Fstudy%2Fdemographics%2FHAI_VN_vs_plasma_cells.Rmd")
+pageURL <- paste0(site_url, "/reports/Studies/SDY144/runReport.view?reportId=module%3ASDY144%2Freports%2Fschemas%2Fstudy%2Fdemographics%2FHAI_VN_vs_plasma_cells.Rmd")
 context_of(file = "test-reports-sdy144.R",
            what = "SDY144 Report",
            url = pageURL)

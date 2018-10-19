@@ -1,15 +1,15 @@
 if (!exists("context_of")) source("initialize.R")
 
-# test functions ----
-test_de <- function(applyFilter = FALSE) {
-  pageURL <- paste0(siteURL, "/DataExplorer/Studies/SDY269/begin.view")
-  context_of(file = "test-modules-de.R",
-             what = paste0("Data Explorer (applyFilter = ", applyFilter, ")"),
-             url = pageURL)
+# test functions ---------------------------------------------------------------
+test_data_explorer <- function(applyFilter = FALSE) {
+  page_url <- paste0(site_url, "/DataExplorer/Studies/SDY269/begin.view")
+  context_of(
+    "test-modules-de.R",
+    paste0("Data Explorer (applyFilter = ", applyFilter, ")"),
+    page_url
+  )
 
-  test_connection(remDr = remDr,
-                  pageURL = pageURL,
-                  expectedTitle = "Data Explorer: /Studies/SDY269")
+  test_connection(remDr, page_url, "Data Explorer: /Studies/SDY269")
 
   test_module("'Data Explorer'")
 
@@ -19,7 +19,7 @@ test_de <- function(applyFilter = FALSE) {
     sleep_for(3)
 
     # parameters
-    parameters <- remDr$findElements(using = "class", value = "ui-test-parameters")
+    parameters <- remDr$findElements("class", value = "ui-test-parameters")
     expect_equal(length(parameters), 1)
 
     formItems <- parameters[[1]]$findChildElements(using = "class", value = "x-form-item")
@@ -38,21 +38,33 @@ test_de <- function(applyFilter = FALSE) {
     expect_equal(length(dataset_list), 1)
     if (length(dataset_list) == 1) {
       dataset_actual <- strsplit(dataset_list[[1]]$getElementText()[[1]], "\n")[[1]]
-      dataset_expected <- c("Enzyme-linked immunosorbent assay (ELISA)",
-                            "Enzyme-Linked ImmunoSpot (ELISPOT)",
-                            "Flow cytometry analyzed results",
-                            "Hemagglutination inhibition (HAI)",
-                            "Polymerisation chain reaction (PCR)",
-                            "Gene expression")
+      dataset_expected <- c(
+        "Enzyme-linked immunosorbent assay (ELISA)",
+        "Enzyme-Linked ImmunoSpot (ELISPOT)",
+        "Flow cytometry analyzed results",
+        "Hemagglutination inhibition (HAI)",
+        "Polymerisation chain reaction (PCR)",
+        "Gene expression"
+      )
 
-      expect_equal(setdiff(dataset_actual, dataset_expected), character(0),
-                   info = paste(c("Unexpected datasets:", setdiff(dataset_actual, dataset_expected)), collapse = "\n"))
+      expect_equal(
+        setdiff(dataset_actual, dataset_expected), character(0),
+        info = paste(
+          c("Unexpected datasets:", setdiff(dataset_actual, dataset_expected)),
+          collapse = "\n"
+        )
+      )
 
-      expect_equal(setdiff(dataset_expected, dataset_actual), character(0),
-                   info = paste(c("Missing datasets:", setdiff(dataset_expected, dataset_actual)), collapse = "\n"))
+      expect_equal(
+        setdiff(dataset_expected, dataset_actual), character(0),
+        info = paste(
+          c("Missing datasets:", setdiff(dataset_expected, dataset_actual)),
+          collapse = "\n"
+        )
+      )
     }
 
-    dataset_clear <- formItems[[1]]$findChildElements(using = "class", value = "x-form-clear-trigger")
+    dataset_clear <- formItems[[1]]$findChildElements("class", "x-form-clear-trigger")
     expect_equal(length(dataset_clear), 1)
     dataset_clear[[1]]$clickElement()
     sleep_for(1)
@@ -209,6 +221,7 @@ test_de <- function(applyFilter = FALSE) {
   })
 }
 
-# tests ----
-test_de()
-test_de(applyFilter = TRUE)
+
+# run tests --------------------------------------------------------------------
+test_data_explorer()
+test_data_explorer(applyFilter = TRUE)

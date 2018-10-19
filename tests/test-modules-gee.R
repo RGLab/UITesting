@@ -2,7 +2,7 @@ if (!exists("context_of")) source("initialize.R")
 
 # test functions ----
 test_gee <- function(applyFilter = FALSE) {
-  pageURL <- paste0(siteURL, "/GeneExpressionExplorer/Studies/SDY269/begin.view")
+  pageURL <- paste0(site_url, "/GeneExpressionExplorer/Studies/SDY269/begin.view")
   context_of(file = "test-modules-gee.R",
              what = paste0("Gene Expression Explorer (applyFilter = ", applyFilter, ")"),
              url = pageURL)

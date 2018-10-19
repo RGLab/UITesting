@@ -1,6 +1,6 @@
 if (!exists("context_of")) source("initialize.R")
 
-pageURL <- paste0(siteURL, "/rstudio/start.view?")
+pageURL <- paste0(site_url, "/rstudio/start.view?")
 context_of(file = "test-rstudio.R",
            what = "RStudio",
            url = pageURL)

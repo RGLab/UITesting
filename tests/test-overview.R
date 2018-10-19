@@ -97,11 +97,11 @@ test_section <- function(key, label) {
 
 test_overview <- function(sdy, public = FALSE) {
   if (public) {
-    pageURL <- paste0(siteURL, "/project/home/Public/begin.view?SDY=", sdy)
+    pageURL <- paste0(site_url, "/project/home/Public/begin.view?SDY=", sdy)
     what <- paste0("Overview of ", sdy, " (public)")
     expectedTitle <- "Overview: /home/Public"
   } else {
-    pageURL <- paste0(siteURL, "/project/Studies/", sdy, "/begin.view?")
+    pageURL <- paste0(site_url, "/project/Studies/", sdy, "/begin.view?")
     what <- paste0("Overview of ", sdy)
     expectedTitle <- paste0("Overview: /Studies/", sdy)
   }

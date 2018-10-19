@@ -31,7 +31,7 @@ test_parameter <- function(param, formItem, paramConfig) {
 }
 
 test_irp <- function(config) {
-  pageURL <- paste0(siteURL, "/ImmuneResponsePredictor/Studies/", config$study, "/begin.view")
+  pageURL <- paste0(site_url, "/ImmuneResponsePredictor/Studies/", config$study, "/begin.view")
   context_of(file = "test-modules-irp.R",
              what = paste0("Immune Response Predictor (", config$study, ")"),
              url = pageURL)

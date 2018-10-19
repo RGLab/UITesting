@@ -1,6 +1,6 @@
 if (!exists("context_of")) source("initialize.R")
 
-pageURL <- paste0(siteURL, "/project/HIPC/IS1/begin.view?pageId=Report")
+pageURL <- paste0(site_url, "/project/HIPC/IS1/begin.view?pageId=Report")
 context_of(file = "test-reports-is1.R",
            what = "IS1 Report",
            url = pageURL)

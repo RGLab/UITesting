@@ -1,40 +1,46 @@
+if (!exists("remDr")) source("initialize.R")
+
+# test functions ---------------------------------------------------------------
 test_home <- function() {
   sleep_for(2)
 
   test_that("'Quick Help' is present", {
-    remDr$executeScript(script = "LABKEY.help.Tour.show('immport-home-tour');",
-                        args = list("dummy"))
+    remDr$executeScript("LABKEY.help.Tour.show('immport-home-tour');")
 
-    quickHelp <- remDr$findElements(using = "class",
-                                    value = "hopscotch-bubble")
-    expect_gte(length(quickHelp), 1)
+    quick_help <- remDr$findElements("class", "hopscotch-bubble")
+    expect_gte(length(quick_help), 1)
 
-    if (length(quickHelp) >= 1) {
-      titles <- c("Welcome to ImmuneSpace",
-                  "Announcements",
-                  "Quick Links",
-                  "Tools",
-                  "Tutorials",
-                  "About",
-                  "Video Tutorials Menu",
-                  "Studies Navigation")
+    if (length(quick_help) >= 1) {
+      titles <- c(
+        "Welcome to ImmuneSpace",
+        "Announcements",
+        "Quick Links",
+        "Tools",
+        "Tutorials",
+        "About",
+        "Video Tutorials Menu",
+        "Studies Navigation"
+      )
       for (i in seq_along(titles)) {
-        helpTitle <- quickHelp[[1]]$findChildElements(using = "class",
-                                                      value = "hopscotch-title")
-        expect_equal(helpTitle[[1]]$getElementText()[[1]], titles[i])
+        help_title <- quick_help[[1]]$findChildElements(
+          "class", "hopscotch-title"
+        )
+        expect_equal(help_title[[1]]$getElementText()[[1]], titles[i])
 
-        nextButton <- quickHelp[[1]]$findChildElements(using = "class",
-                                                       value = "hopscotch-next")
-        expect_equal(length(nextButton), 1)
+        next_button <- quick_help[[1]]$findChildElements(
+          "class", "hopscotch-next"
+        )
+        expect_equal(length(next_button), 1)
 
-        closeButton <- quickHelp[[1]]$findChildElements(using = "class",
-                                                        value = "hopscotch-close")
-        expect_equal(length(closeButton), 1)
+        close_button <- quick_help[[1]]$findChildElements(
+          "class", "hopscotch-close"
+        )
+        expect_equal(length(close_button), 1)
 
         if (i == length(titles)) {
-          closeButton[[1]]$clickElement()
+          close_button[[1]]$clickElement()
         } else {
-          nextButton[[1]]$clickElement()
+          next_button[[1]]$clickElement()
           sleep_for(1)
         }
       }
@@ -42,11 +48,14 @@ test_home <- function() {
   })
 
   test_that("'Public Data Summary' module is present", {
-    summaryTab <- remDr$findElements(using = "css selector", value = "[id^=Summary]")
-    expect_equal(length(summaryTab), 1, info = "Does 'Public Data Summary' module exist?")
+    summary_tab <- remDr$findElements("css selector", "[id^=Summary]")
+    expect_equal(
+      length(summary_tab), 1,
+      info = "Does 'Public Data Summary' module exist?"
+    )
 
-    if (length(summaryTab) == 1) {
-      rows <- summaryTab[[1]]$findChildElements(using = "css selector", value = "tr")
+    if (length(summary_tab) == 1) {
+      rows <- summary_tab[[1]]$findChildElements("css selector", "tr")
       expect_gt(length(rows), 0)
     }
   })
@@ -55,35 +64,36 @@ test_home <- function() {
   test_studies_tab()
 }
 
-if (!exists("context_of")) source("initialize.R")
 
-pageURL <- paste0(siteURL, "/project/home/begin.view")
-context_of(file = "test-home.R",
-           what = "Home",
-           url = pageURL)
+# run tests --------------------------------------------------------------------
+page_url <- paste0(site_url, "/project/home/begin.view")
+context_of("test-home.R", "Home", page_url)
 
 test_connect_home <- function() {
   test_that("can connect to the page", {
-    remDr$navigate(pageURL)
+    remDr$navigate(page_url)
 
-    signinURL <- paste0(siteURL, "/login/home/login.view?returnUrl=%2Fproject%2Fhome%2Fbegin.view%3F")
-    headermenu <- remDr$findElements(using = "class", value = "header-link")
-    if (length(headermenu) == 1) {
-      remDr$navigate(signinURL)
+    signin_url <- paste0(
+      site_url,
+      "/login/home/login.view?returnUrl=%2Fproject%2Fhome%2Fbegin.view%3F"
+    )
+    header_menu <- remDr$findElements("class", "header-link")
+    if (length(header_menu) == 1) {
+      remDr$navigate(signin_url)
 
-      id <- remDr$findElement(using = "id", value = "email")
-      id$sendKeysToElement(list(ISR_login))
+      id <- remDr$findElement("id", "email")
+      id$sendKeysToElement(list(ISR_LOGIN))
 
-      pw <- remDr$findElement(using = "id", value = "password")
-      pw$sendKeysToElement(list(ISR_pwd))
+      pwd <- remDr$findElement("id", "password")
+      pwd$sendKeysToElement(list(ISR_PWD))
 
-      loginButton <- remDr$findElement(using = "class", value = "labkey-button")
-      loginButton$clickElement()
+      login_button <- remDr$findElement("class", "labkey-button")
+      login_button$clickElement()
 
       while(grepl("Sign In", remDr$getTitle()[[1]])) sleep_for(1)
     }
-    pageTitle <- remDr$getTitle()[[1]]
-    expect_equal(pageTitle, "News and Updates: /home")
+    page_title <- remDr$getTitle()[[1]]
+    expect_equal(page_title, "News and Updates: /home")
   })
 }
 
@@ -96,13 +106,13 @@ test_that("can sign out", {
 
   dismiss_alert()
 
-  pageTitle <- remDr$getTitle()[[1]]
-  expect_equal(pageTitle, "Welcome to ImmuneSpace")
+  page_title <- remDr$getTitle()[[1]]
+  expect_equal(page_title, "Welcome to ImmuneSpace")
 })
 
 if (remDr$getTitle()[[1]] == "Welcome to ImmuneSpace") {
   if (!ADMIN_MODE) {
-    remDr$navigate(pageURL)
+    remDr$navigate(page_url)
 
     test_home()
   }

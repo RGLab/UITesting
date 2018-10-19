@@ -1,10 +1,8 @@
-if (!exists("context_of")) source("initialize.R")
+if (!exists("remDr")) source("initialize.R")
 
-pageURL <- paste0(siteURL, "/project/Studies/SDY269/begin.view?pageId=study.PARTICIPANTS")
-context_of(file = "test-participants.R",
-           what = "Participants",
-           url = pageURL)
+page_url <- paste0(
+  site_url, "/project/Studies/SDY269/begin.view?pageId=study.PARTICIPANTS"
+)
+context_of("test-participants.R", "Participants", page_url)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "Participants: /Studies/SDY269")
+test_connection(remDr, page_url,"Participants: /Studies/SDY269")
