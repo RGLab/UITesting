@@ -69,7 +69,7 @@ test_that("can log in", {
 
   # wrong credentials
   id[[1]]$sendKeysToElement(list("wrong@email.com"))
-  pw[[1]]$sendKeysToElement(list("wrongPassword"))
+  pwd[[1]]$sendKeysToElement(list("wrongPassword"))
   signin_button[[1]]$clickElement()
   sleep_for(3)
   expect_equal(
@@ -78,7 +78,7 @@ test_that("can log in", {
   )
 
   # forgot password
-  forgot_password[[1]]$clickElement()
+  forgot_pwd[[1]]$clickElement()
   sleep_for(1)
 
   page_title <- remDr$getTitle()[[1]]
