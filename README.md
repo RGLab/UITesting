@@ -26,8 +26,8 @@ In `.Renviron` file on your **home** directory:
 
 ```sh
 # ImmuneSpace login info
-ISR_login=yourImmuneSpace@email.here
-ISR_pwd=yourImmuneSpacePasswordHere
+ISR_LOGIN=yourImmuneSpace@email.here
+ISR_PWD=yourImmuneSpacePasswordHere
 
 # SauceLabs login info
 SAUCE_USERNAME=yourUsername

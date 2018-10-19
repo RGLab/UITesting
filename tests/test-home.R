@@ -51,8 +51,8 @@ test_home <- function() {
     }
   })
 
-  test_tutorialsTab()
-  test_studiesTab()
+  test_tutorials_tab()
+  test_studies_tab()
 }
 
 if (!exists("context_of")) source("initialize.R")

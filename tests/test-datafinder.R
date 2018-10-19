@@ -49,7 +49,7 @@ test_that("'Quick Help' is present", {
   }
 })
 
-test_studiesTab()
+test_studies_tab()
 
 test_that("'Data Finder' module is present", {
   module <- remDr$findElements(using = "id", value = "dataFinderApp")
