@@ -40,7 +40,7 @@ if (selenium_server == "SAUCELABS") {
     "https://travis-ci.org/RGLab/UITesting/jobs/",
     Sys.getenv("TRAVIS_JOB_ID")
   )
-  jon_name <- ifelse(
+  job_name <- ifelse(
     machine == "TRAVIS",
     paste0("UI testing `", server, "` by TRAVIS #", job, " ", job_url),
     paste0("UI testing `", server, "` by ", Sys.info()["nodename"])
