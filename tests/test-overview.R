@@ -110,10 +110,7 @@ test_overview <- function(sdy, public = FALSE) {
              what = what,
              url = pageURL)
 
-  test_connection(remDr = remDr,
-                  pageURL = pageURL,
-                  expectedTitle = expectedTitle,
-                  public = public)
+  test_connection(remDr, pageURL, expectedTitle, public = public)
 
   if (!(public && ADMIN_MODE)) {
     test_that("'Study Overview' module is present", {

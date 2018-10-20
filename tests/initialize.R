@@ -247,7 +247,7 @@ test_tabs <- function(x) {
   })
 }
 
-test_studiesTab <- function() {
+test_studies_tab <- function() {
   test_that("`Studies` tab shows studies properly", {
     study_tab <- remDr$findElements("css selector", "li[data-name=StudiesMenu]")
     expect_length(study_tab, 1)

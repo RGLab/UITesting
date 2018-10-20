@@ -46,7 +46,7 @@ test_parameter <- function(param, formItem, paramConfig) {
   sleep_for(3)
 }
 
-pageURL <- paste0(site_url, "/DimRedux/Studies/", "SDY269", "/begin.view")
+page_url <- paste0(site_url, "/DimRedux/Studies/", "SDY269", "/begin.view")
 context_of(
   file = "test-modules-irp.R",
   what = paste0("Dimension Reduction (", "SDY269", ")"),

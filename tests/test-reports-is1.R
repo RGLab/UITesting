@@ -5,9 +5,7 @@ context_of(file = "test-reports-is1.R",
            what = "IS1 Report",
            url = pageURL)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "Analysis: /HIPC/IS1")
+test_connection(remDr, pageURL, "Analysis: /HIPC/IS1")
 
 test_that("report is generated", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")

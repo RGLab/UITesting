@@ -7,9 +7,7 @@ test_gee <- function(applyFilter = FALSE) {
              what = paste0("Gene Expression Explorer (applyFilter = ", applyFilter, ")"),
              url = pageURL)
 
-  test_connection(remDr = remDr,
-                  pageURL = pageURL,
-                  expectedTitle = "Gene Expression Explorer: /Studies/SDY269")
+  test_connection(remDr, pageURL, "Gene Expression Explorer: /Studies/SDY269")
 
   test_module("'Gene Expression Explorer'")
 

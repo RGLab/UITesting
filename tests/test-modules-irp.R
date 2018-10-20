@@ -36,9 +36,9 @@ test_irp <- function(config) {
              what = paste0("Immune Response Predictor (", config$study, ")"),
              url = pageURL)
 
-  test_connection(remDr = remDr,
-                  pageURL = pageURL,
-                  expectedTitle = paste0("Immune Response Predictor: /Studies/", config$study))
+  test_connection(
+    remDr, pageURL, paste0("Immune Response Predictor: /Studies/", config$study)
+  )
 
   test_module("'Immune Response Predictor'")
 

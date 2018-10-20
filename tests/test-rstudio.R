@@ -5,9 +5,7 @@ context_of(file = "test-rstudio.R",
            what = "RStudio",
            url = pageURL)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "Launch RStudio")
+test_connection(remDr, pageURL, "Launch RStudio")
 
 test_open <- function(button) {
   expect_equal(button[[1]]$getElementText()[[1]], "Open RStudio Server")

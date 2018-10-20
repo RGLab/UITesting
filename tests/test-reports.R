@@ -5,9 +5,7 @@ context_of(file = "test-reports.R",
            what = "Reports",
            url = pageURL)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "Reports: /Studies/SDY269")
+test_connection(remDr, pageURL, "Reports: /Studies/SDY269")
 
 test_that("'List of Available Reports' module is present", {
   webElems <- remDr$findElements(using = "id", value = "dataviews-panel-1")

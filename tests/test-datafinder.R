@@ -39,7 +39,7 @@ test_that("'Quick Help' is present", {
       expect_equal(length(close_button), 1)
 
       if (i == length(titles)) {
-        close_Button[[1]]$clickElement()
+        close_button[[1]]$clickElement()
       } else {
         next_button[[1]]$clickElement()
         sleep_for(1)

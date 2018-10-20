@@ -5,9 +5,7 @@ context_of(file = "test-reports-sdy207.R",
            what = "SDY207 Report",
            url = pageURL)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "CyTOF Visualization: /Studies/SDY207")
+test_connection(remDr, pageURL, "CyTOF Visualization: /Studies/SDY207")
 
 test_that("report is generated", {
   while (length(remDr$findElements(using = "class", value = "x4-mask-msg-text")) != 0) sleep_for(1)

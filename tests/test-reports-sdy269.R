@@ -5,9 +5,10 @@ context_of(file = "test-reports-sdy269.R",
            what = "SDY269 Report",
            url = pageURL)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "Correlating HAI with flow cytometry and ELISPOT: /Studies/SDY269")
+test_connection(
+  remDr, pageURL,
+  "Correlating HAI with flow cytometry and ELISPOT: /Studies/SDY269"
+)
 
 test_that("report is generated", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")

@@ -5,9 +5,7 @@ context_of(file = "test-modules.R",
            what = "Modules",
            url = pageURL)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "Modules: /Studies/SDY269")
+test_connection(remDr, pageURL, "Modules: /Studies/SDY269")
 
 test_that("'Active Modules' module is present", {
   panel <- remDr$findElements(using = "class", value = "x-panel")

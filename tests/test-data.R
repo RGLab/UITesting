@@ -1,6 +1,6 @@
 if (!exists("remDr")) source("initialize.R")
 
-pageURL <- paste0(
+page_url <- paste0(
   site_url,
   "/project/Studies/SDY269/begin.view?pageId=study.DATA_ANALYSIS"
 )

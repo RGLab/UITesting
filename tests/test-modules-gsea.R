@@ -5,9 +5,7 @@ context_of(file = "test-modules-gsea.R",
            what = "Gene Set Enrichment Analysis",
            url = pageURL)
 
-test_connection(remDr = remDr,
-                pageURL = pageURL,
-                expectedTitle = "Gene Set Enrichment Analysis: /Studies/SDY269")
+test_connection(remDr, pageURL, "Gene Set Enrichment Analysis: /Studies/SDY269")
 
 test_module("'Gene Set Enrichment Analysis'")
 
