@@ -1,6 +1,6 @@
 if (!exists("context_of")) source("initialize.R")
 
-pageURL <- paste0(site_url, "/reports/Studies/SDY180/runReport.view?reportId=module%3ASDY180%2Freports%2Fschemas%2Fstudy%2Fdemographics%2Fplasmablast_abundance.Rmd")
+page_url <- paste0(site_url, "/reports/Studies/SDY180/runReport.view?reportId=module%3ASDY180%2Freports%2Fschemas%2Fstudy%2Fdemographics%2Fplasmablast_abundance.Rmd")
 context_of("test-reports-sdy180.R", "SDY180 Report", page_url)
 
 test_connection(remDr, page_url, "Measuring plasmablast abundance by multiparameter flow cytometry: /Studies/SDY180")
