@@ -50,14 +50,10 @@ page_url <- paste0(site_url, "/DimRedux/Studies/", "SDY269", "/begin.view")
 context_of(
   file = "test-modules-irp.R",
   what = paste0("Dimension Reduction (", "SDY269", ")"),
-  url = pageURL
+  url = page_url
 )
 
-test_connection(
-  remDr = remDr,
-  pageURL = pageURL,
-  expectedTitle = "Dimension Reduction: /Studies/SDY269"
-)
+test_connection(remDr, page_url, "Dimension Reduction: /Studies/SDY269")
 
 sleep_for(3)
 

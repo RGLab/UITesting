@@ -57,12 +57,12 @@ test_that("'Data Finder' module is present", {
 
 test_that("subject group controller is present", {
   filter_area <- remDr$findElements("id", "filterArea")
-  expect_length(next_button, 1)
+  expect_length(filter_area, 1)
 
-  group_label <- next_button[[1]]$findChildElements("class", "labkey-group-label")
+  group_label <- filter_area[[1]]$findChildElements("class", "labkey-group-label")
   expect_length(group_label, 1)
 
-  manage_menu <- next_button[[1]]$findChildElements("id", "df-manageMenu")
+  manage_menu <- filter_area[[1]]$findChildElements("id", "df-manageMenu")
   expect_length(manage_menu, 1)
   if (length(manage_menu) == 1) {
     sleep_for(
@@ -156,7 +156,7 @@ test_that("study panel is present", {
     study_detail <- remDr$findElements("class", "labkey-study-detail")
     expect_length(study_detail, 1)
 
-    study_demographics <- studyDetail[[1]]$findChildElements(
+    study_demographics <- study_detail[[1]]$findChildElements(
       "class", "study-demographics"
     )
     expect_length(study_demographics, 1)
