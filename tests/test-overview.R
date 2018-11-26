@@ -15,7 +15,7 @@ studies <- list(
       "FCS sample files",
       "Gene expression microarray data files"
     ),
-    organization = "NIAID",
+    organization = "NIAID (HIPC funded)",
     GEO = c(
       "GSE29615",
       "GSE29617"
