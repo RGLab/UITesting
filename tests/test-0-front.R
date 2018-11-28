@@ -82,7 +82,7 @@ test_that("can log in", {
   sleep_for(1)
 
   page_title <- remDr$getTitle()[[1]]
-  expect_equal(page_title, "")
+  expect_equal(page_title, "Reset Password: /home")
 
   email_input <- remDr$findElements("id", "EmailInput")
   expect_equal(length(email_input), 1)
