@@ -126,7 +126,7 @@ test_that("selection panel is present", {
   expect_length(facet_panel, 1)
 
   facets <- facet_panel[[1]]$findChildElements("class", "df-facet")
-  expect_length(facets, 10)
+  expect_length(facets, 13)
   expect_match(facets[[1]]$getElementText()[[1]], "Species")
   expect_match(facets[[2]]$getElementText()[[1]], "Condition")
   expect_match(facets[[3]]$getElementText()[[1]], "Exposure Material")
