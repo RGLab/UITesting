@@ -130,7 +130,7 @@ test_that("parameters are present and working", {
     formItem = parameterItems[[3]],
     paramConfig = list(
       choice = 2,
-      expected = c("Select all", "ELISA", "ELISPOT", "HAI", "PCR")
+      expected = c("Select all", "ELISA", "ELISPOT", "Gene Expression", "HAI", "PCR")
     )
   )
 
