@@ -46,7 +46,7 @@ test_parameter <- function(param, formItem, paramConfig) {
   sleep_for(3)
 }
 
-page_url <- paste0(site_url, "/DimRedux/Studies/", "SDY269", "/begin.view")
+page_url <- paste0(site_url, "/DimensionReduction/Studies/", "SDY269", "/begin.view")
 context_of(
   file = "test-modules-irp.R",
   what = paste0("Dimension Reduction (", "SDY269", ")"),
@@ -130,7 +130,7 @@ test_that("parameters are present and working", {
     formItem = parameterItems[[3]],
     paramConfig = list(
       choice = 2,
-      expected = c("Select all", "ELISA", "ELISPOT", "HAI", "PCR")
+      expected = c("Select all", "ELISA", "ELISPOT", "Gene Expression", "HAI", "PCR")
     )
   )
 
