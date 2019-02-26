@@ -21,6 +21,7 @@ studies <- list(
       "GSE29617"
     ),
     assoc_studies = c(
+      "SDY1119",
       "SDY270",
       "SDY61"
     )
