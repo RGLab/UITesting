@@ -88,25 +88,10 @@ if (selenium_server == "SAUCELABS") {
     write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
   }
 } else {
-  # With local machine must first check available driver and browser versions
-  # then start a selenium server with compatible versions (e.g. driver version < browser version)
-  driver <- ifelse(browser_name == "chrome", "chromedriver", "geckodriver")
-  driverVersions <- unname(unlist(binman::list_versions(driver)))
-  cmd <- ifelse(browser_name == "chrome", "google-chrome --product-version", "firefox -v")
-  browserVersion <- system(cmd, intern = TRUE)
-  possibleDrivers <- driverVersions[ browserVersion >= driverVersions ]
-  driverToUse <- possibleDrivers[[length(possibleDrivers)]]
-  versionArg <- gsub("driver","ver", driver)
-  if(versionArg == "chromever"){
-    rD <- rsDriver(port = 4444L,
-                   browser = browser_name,
-                   chromever = driverToUse)
-  }else{
-    rD <- rsDriver(port = 4444L,
-                   browser = browser_name,
-                   geckover = driverToUse)
-  }
-  remDr <- rD$client
+  # With local machine running in docker image provided by Selenium.
+  # See README for setup.
+  remDr <- remoteDriver(browserName = browser_name)
+  remDr$open()
 }
 
 
