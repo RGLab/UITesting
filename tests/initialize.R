@@ -19,8 +19,12 @@ selenium_server <- ifelse(
   "LOCAL"
 )
 machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
-server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
-site_url <- paste0("https://", server, ".immunespace.org")
+site_url <- Sys.getenv("DEV_MACHINE")
+if ( length(site_url) == 0) {
+  server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
+  site_url <- paste0("https://", server, ".immunespace.org")
+}
+
 browser_name <- ifelse(
   Sys.getenv("TEST_BROWSER") == "",
   "chrome",
