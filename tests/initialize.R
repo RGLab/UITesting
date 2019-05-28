@@ -18,10 +18,13 @@ selenium_server <- ifelse(
   "SAUCELABS",
   "LOCAL"
 )
+
 machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
-site_url <- Sys.getenv("DEV_MACHINE")
-if ( length(site_url) == 0) {
-  server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
+server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
+
+if (machine == "LOCAL" && length(Sys.getenv("DEV_HOST")) > 0) {
+  site_url <- Sys.getenv("DEV_HOST")
+} else {
   site_url <- paste0("https://", server, ".immunespace.org")
 }
 
