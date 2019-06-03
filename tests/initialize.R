@@ -22,7 +22,7 @@ selenium_server <- ifelse(
 machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
 server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
 
-if (machine == "LOCAL" && length(Sys.getenv("DEV_HOST")) > 0) {
+if (machine == "LOCAL" & Sys.getenv("DEV_HOST") != "") {
   site_url <- Sys.getenv("DEV_HOST")
 } else {
   site_url <- paste0("https://", server, ".immunespace.org")
