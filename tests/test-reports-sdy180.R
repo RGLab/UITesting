@@ -23,7 +23,7 @@ test_that("report is producing plot", {
   if (length(widget_data) == 1) {
     plot_data <- jsonlite::fromJSON(widget_data[[1]]$getElementAttribute("innerHTML")[[1]])
     expect_is(plot_data, "list")
-    expect_equal(plot_data$x$layout$title, "Plasma cell abundance after vaccination")
+    expect_equal(plot_data$x$layout$title$text, "Plasma cell abundance after vaccination")
 
     plot_svg <- remDr$findElements(using = "class", value = "plot-container")
     expect_equal(length(plot_svg), 1)

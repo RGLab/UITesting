@@ -29,13 +29,13 @@ test_that("report is producing plots", {
   if (length(widget_data) == 2) {
     plot1_data <- jsonlite::fromJSON(widget_data[[1]]$getElementAttribute("innerHTML")[[1]])
     expect_is(plot1_data, "list")
-    expect_equal(plot1_data$x$layout$xaxis$title, "Total plasmablasts (%)")
-    expect_equal(plot1_data$x$layout$yaxis$title, "Influenza specific cells (per 10^6 PBMCs)")
+    expect_equal(plot1_data$x$layout$xaxis$title$text, "Total plasmablasts (%)")
+    expect_equal(plot1_data$x$layout$yaxis$title$text, "Influenza specific cells (per 10^6 PBMCs)")
 
     plot2_data <- jsonlite::fromJSON(widget_data[[2]]$getElementAttribute("innerHTML")[[1]])
     expect_is(plot2_data, "list")
-    expect_equal(plot2_data$x$layout$xaxis$title, "HAI fold")
-    expect_equal(plot2_data$x$layout$yaxis$title, "Influenza specific cells (per 10^6 PBMCs)")
+    expect_equal(plot2_data$x$layout$xaxis$title$text, "HAI fold")
+    expect_equal(plot2_data$x$layout$yaxis$title$text, "Influenza specific cells (per 10^6 PBMCs)")
 
     plot_svg <- remDr$findElements(using = "class", value = "plot-container")
     expect_equal(length(plot_svg), 2)

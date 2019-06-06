@@ -296,13 +296,13 @@ test_that("report is present", {
 
   widget_data <- labkey_knitr[[1]]$findChildElements("css selector", "script[data-for]")
   expect_equal(
-    length(widget_data), 6,
+    length(widget_data), 5,
     info = ""
   )
 
   plot_svg <- labkey_knitr[[1]]$findChildElements("class", "plot-container")
   expect_equal(
-    length(plot_svg), 6,
+    length(plot_svg), 5,
     info = ""
   )
 })

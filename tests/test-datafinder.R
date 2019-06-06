@@ -23,6 +23,7 @@ test_that("'Quick Help' is present", {
       "Quick Search"
     )
     for (i in seq_along(titles)) {
+      sleep_for(1)
       help_title <- quick_help[[1]]$findChildElements(
         "class", "hopscotch-title"
       )
@@ -42,7 +43,6 @@ test_that("'Quick Help' is present", {
         close_button[[1]]$clickElement()
       } else {
         next_button[[1]]$clickElement()
-        sleep_for(1)
       }
     }
   }
