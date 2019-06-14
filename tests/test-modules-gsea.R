@@ -108,17 +108,7 @@ test_that("run button is working", {
   sleep_for(1)
 
   # check if output is there
-  # First wait until mask is gone
   while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) sleep_for(1)
-
-  # Then look for active tab that has switched from View to Input which may have delay
-  idx <- 0
-  active_tab <- remDr$findElements(using = "class", value = "x-tab-strip-active")
-  while(idx < 5 & active_tab[[1]]$getElementText()[[1]] != "View"){
-    sleep_for(1)
-    idx <- idx + 1
-    active_tab <- remDr$findElements(using = "class", value = "x-tab-strip-active")
-  }
 
   active_tab <- remDr$findElements(using = "class", value = "x-tab-strip-active")
   expect_equal(active_tab[[1]]$getElementText()[[1]], "View")
