@@ -90,7 +90,7 @@ test_that("parameters are present and working", {
   )
 
   # parameters: timebox
-  expect_match(parameterItems[[1]]$getElementText()[[1]], "Use Time As")
+  expect_match(parameterItems[[1]]$getElementText()[[1]], "Aggregate By")
   timebox <- parameterItems[[1]]$findChildElements("class", "ui-test-timebox")
   expect_equal(
     length(timebox), 1,
@@ -101,14 +101,14 @@ test_that("parameters are present and working", {
     length(timebox_options), 2,
     info = ""
   )
-  expect_equal(timebox_options[[1]]$getElementText()[[1]], "Variable")
-  variable <- timebox_options[[1]]$findChildElements("css selector", "input[value=Variable]")
+  expect_equal(timebox_options[[1]]$getElementText()[[1]], "Subject")
+  variable <- timebox_options[[1]]$findChildElements("css selector", "input[value=Subject]")
   expect_equal(
     length(variable), 1,
     info = ""
   )
-  expect_equal(timebox_options[[2]]$getElementText()[[1]], "Observation")
-  observation <- timebox_options[[2]]$findChildElements("css selector", "input[value=Observation]")
+  expect_equal(timebox_options[[2]]$getElementText()[[1]], "Subject-Timepoint")
+  observation <- timebox_options[[2]]$findChildElements("css selector", "input[value=Subject-Timepoint]")
   expect_equal(
     length(observation), 1,
     info = ""
