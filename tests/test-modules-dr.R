@@ -143,7 +143,7 @@ test_that("parameters are present and working", {
   )
   plottype_options<- plottype[[1]]$findChildElements("class", "x-form-item")
   expect_equal(
-    length(plottype_options), 2,
+    length(plottype_options), 3,
     info = ""
   )
   expect_equal(plottype_options[[1]]$getElementText()[[1]], "PCA")
@@ -158,6 +158,12 @@ test_that("parameters are present and working", {
     length(tSNE), 1,
     info = ""
   )
+  expect_equal(plottype_options[[3]]$getElementText()[[1]], "UMAP")
+  UMAP <- plottype_options[[3]]$findChildElements("css selector", "input[value=UMAP]")
+  expect_equal(
+    length(UMAP), 1,
+    info = ""
+  )
 })
 
 test_that("additional options are present", {
@@ -169,7 +175,7 @@ test_that("additional options are present", {
 
   additionalItems <- additionalOptions[[1]]$findChildElements("class", "ui-test-additional-options-item")
   expect_equal(
-    length(additionalItems), 4,
+    length(additionalItems), 5,
     info = ""
   )
 
@@ -189,10 +195,18 @@ test_that("additional options are present", {
     info = ""
   )
 
+  # neighborhood size
+  expect_match(additionalItems[[2]]$getElementText()[[1]], "UMAP - Neighborhood Size")
+  neighbors <- additionalItems[[2]]$findChildElements("class", "ui-test-nneighbors")
+  neighbors_disabled <- neighbors[[1]]$getElementAttribute("disabled")
+  expect_equal(
+    length(neighbors_disabled), 1,
+    info = ""
+  )
 
   # components
-  expect_match(additionalItems[[2]]$getElementText()[[1]], "Components to Plot")
-  components <- additionalItems[[2]]$findChildElements("class", "ui-test-components")
+  expect_match(additionalItems[[3]]$getElementText()[[1]], "Components to Plot")
+  components <- additionalItems[[3]]$findChildElements("class", "ui-test-components")
   components_disabled <- components[[1]]$getElementAttribute("disabled")
   expect_equal(
     length(components_disabled), 0,
@@ -200,8 +214,8 @@ test_that("additional options are present", {
   )
 
   # imputation
-  expect_match(additionalItems[[3]]$getElementText()[[1]], "Missing Value Imputation")
-  imputation <- additionalItems[[3]]$findChildElements("class", "ui-test-impute")
+  expect_match(additionalItems[[4]]$getElementText()[[1]], "Missing Value Imputation")
+  imputation <- additionalItems[[4]]$findChildElements("class", "ui-test-impute")
   expect_equal(
     length(imputation), 1,
     info = ""
@@ -237,8 +251,8 @@ test_that("additional options are present", {
   )
 
   # label
-  expect_match(additionalItems[[4]]$getElementText()[[1]], "Immune Response Label")
-  response <- additionalItems[[4]]$findChildElements("class", "ui-test-response")
+  expect_match(additionalItems[[5]]$getElementText()[[1]], "Immune Response Label")
+  response <- additionalItems[[5]]$findChildElements("class", "ui-test-response")
   expect_equal(
     length(response), 1,
     info = ""
