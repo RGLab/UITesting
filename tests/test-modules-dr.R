@@ -48,7 +48,7 @@ test_parameter <- function(param, formItem, paramConfig) {
 
 page_url <- paste0(site_url, "/DimensionReduction/Studies/", "SDY269", "/begin.view")
 context_of(
-  file = "test-modules-irp.R",
+  file = "test-modules-dr.R",
   what = paste0("Dimension Reduction (", "SDY269", ")"),
   url = page_url
 )

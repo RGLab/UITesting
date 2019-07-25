@@ -5,8 +5,8 @@ if (!exists("context_of")) source("initialize.R")
 studies <- list(
   SDY269 = list(
     datasets = c(
-      "Enzyme-linked immunosorbent assay (ELISA)",
       "Enzyme-Linked ImmunoSpot (ELISPOT)",
+      "Enzyme-linked immunosorbent assay (ELISA)",
       "Flow cytometry analyzed results",
       "Hemagglutination inhibition (HAI)",
       "Polymerisation chain reaction (PCR)"
