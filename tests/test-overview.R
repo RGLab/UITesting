@@ -39,16 +39,22 @@ studies <- list(
     organization = "NIAID (HIPC funded)",
     GEO = "GSE41080",
     assoc_studies = c(
+      "SDY112",
       "SDY215",
       "SDY312",
+      "SDY315",
       "SDY460",
+      "SDY478",
       "SDY773",
       "SDY887"
     )
   ),
   SDY887 = list(
     datasets = "Flow cytometry analyzed results",
-    raw_files = "None",
+    raw_files = c(
+      "FCS control files",
+      "FCS sample files"
+    ),
     organization = "Ellison Foundation (HIPC funded)",
     assoc_studies = c(
       "SDY212",
