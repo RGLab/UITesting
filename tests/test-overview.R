@@ -51,7 +51,10 @@ studies <- list(
   ),
   SDY887 = list(
     datasets = "Flow cytometry analyzed results",
-    raw_files = "None",
+    raw_files = c(
+      "FCS control files",
+      "FCS sample files"
+    ),
     organization = "Ellison Foundation (HIPC funded)",
     assoc_studies = c(
       "SDY212",
