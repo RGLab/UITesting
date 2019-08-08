@@ -225,11 +225,11 @@ test_irp(list(study = "SDY180",
                                             "28 days (3 cohort_types)")),
               training = list(choice = 2,
                               expected = c("Select all",
-                                           "Study group 1 2009-2010 Fluzone_Other",
-                                           "Study group 1 Saline_Other",
-                                           "Study group 2 2009-2010 Fluzone_Other")),
+                                           "Study group 1 2009-2010 Fluzone_Whole blood",
+                                           "Study group 1 Saline_Whole blood",
+                                           "Study group 2 2009-2010 Fluzone_Whole blood")),
               testing = list(choice = 2,
                              expected = c("Select all",
-                                          "Study group 1 Saline_Other",
-                                          "Study group 2 2009-2010 Fluzone_Other"))))
+                                          "Study group 1 Saline_Whole blood",
+                                          "Study group 2 2009-2010 Fluzone_Whole blood"))))
 
