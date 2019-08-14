@@ -107,7 +107,7 @@ test_that("run button is working", {
   buttons[[1]]$clickElement()
   sleep_for(1)
 
-  # check if output is there
+  # check if output is there by waiting on mask msg to disappear
   while (length(remDr$findElements(using = "class", value = "ext-el-mask-msg")) != 0) sleep_for(1)
 
   active_tab <- remDr$findElements(using = "class", value = "x-tab-strip-active")
