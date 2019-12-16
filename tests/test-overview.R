@@ -50,7 +50,9 @@ studies <- list(
     )
   ),
   SDY887 = list(
-    datasets = "Flow cytometry analyzed results",
+    datasets = c(
+      "Flow cytometry analyzed results",
+      "Hemagglutination inhibition (HAI)"),
     raw_files = c(
       "FCS control files",
       "FCS sample files"
