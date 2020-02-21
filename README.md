@@ -84,6 +84,37 @@ In R:
 testthat::test_file("tests/test-0-front.R", reporter = c("summary", "fail"))
 ```
 
+### To debug with a live browser window
+```R
+# Start selenium server
+rD <- RSelenium::rsDriver(browser="firefox")
+
+# Open browser
+remDr <- rD[["client"]]
+
+# Stop selenium server
+rD[["server"]]$stop()
+```
+
+### To debug with a dockerized selenium container
+```Bash
+# Setup a VNC viewer so you can look at the output of the VNC server in the container
+https://www.realvnc.com/en/connect/download/viewer/
+
+# Background on VNCs with Selenium and Docker Here:
+https://qxf2.com/blog/view-docker-container-display-using-vnc-viewer/
+
+# Run the standalone debug server
+docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:3.141.59-zirconium
+
+# Use the viewer to checkout what is going on:
+- Open the viewer utility through the UI (search vncviewer)
+- Connect to 'localhost:5900'
+- enter the password given by Selenium - aka 'secret'
+```
+
+# Note on Developing React Modules: 
+Dev versions of a webpart will not be available in your dockerized test environment unless you map the npm dev server port (e.g. 3001) to that same port in the docker environment.  
 
 ## Setup in Travis CI
 
