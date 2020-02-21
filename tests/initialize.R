@@ -390,3 +390,8 @@ test_filtering <- function() {
   buttons[[1]]$clickElement()
   sleep_for(2)
 }
+
+test_presence_of_single_item <- function(itemId){
+  el <- remDr$findElement("id", itemId)
+  expect_length(el, 1)
+}
