@@ -187,17 +187,48 @@ test_that("Study Statistics tab has correct elements", {
   paths <- plot$findChildElements('tag name', 'path')
   expect_length(paths, 2)
 
+  # ---- Most cited studies ----
+  tab <- remDr$findElement('id', 'StudyStatsDropdown')
+  tab$clickElement()
+  navbarLi <- remDr$findElement('id', 'navbar-link-study-stats')
+  reportOptions <- navbarLi$findChildElements('tag name', 'li')
+  reportOptions[[2]]$clickElement()
 
-    # select by time plot
+  mostCitedDiv <- remDr$findElement('id', '#most-cited')
+  h2 <- mostCitedDiv$findChildElement('tag name', 'h2')
+  expect_length(h2, 1)
 
-    # by time
-      # check select order btn not present
-      # check plot is present and has values
+  ul <- mostCitedDiv$findChildElement('tag name', 'ul')
+  liElements <- ul$findChildElements('tag name', 'li')
+  expect_length(liElements, 3)
 
+  plot <- mostCitedDiv$findChildElement('id', 'barplot-byPubId')
+  rects <- plot$findChildElements('tag name', 'rect')
+  byPubIdWidths <- getBarPlotWidths(rects)
+  expect_true(length(byPubIdWidths) > 65)
 
-  # Most cited studies
-    # Plot is present
-    # button changes order
+  selectOrderBtn <- remDr$findElement('id', 'order-select-dropdown')
+  expect_length(selectOrderBtn, 1)
+  selectOrderBtn$clickElement()
+
+  parentDiv <- remDr$findElement('css', "[class = 'dropdown open btn-group']")
+  ahrefs <- parentDiv$findChildElements('tag name', 'a')
+  expect_length(ahrefs, 3)
+  orderOptions <- unlist(sapply(ahrefs, function(a){
+    text <- a$getElementText()
+  }))
+
+  expectedOrderOptions <- c("Most Cited",
+                            "Study ID",
+                            "Most Recent")
+  expect_true(all.equal(orderOptions, expectedOrderOptions))
+
+  ahrefs[[1]]$clickElement()
+  plot <- remDr$findElement('id', 'barplot-byPubId')
+  rects <- plot$findChildElements('tag name', 'rect')
+  byMostCitedWidths <- getBarPlotWidths(rects)
+
+  expect_true(!isTRUE(all.equal(byPubIdWidths, byMostCitedWidths)))
 
   # Similar studies
     # All plots are present and button cycles through them
