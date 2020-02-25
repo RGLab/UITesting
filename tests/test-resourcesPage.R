@@ -185,7 +185,7 @@ test_that("Study Statistics tab has correct elements", {
 
   plot <- remDr$findElement('id', 'ma-lineplot-byMonth')
   paths <- plot$findChildElements('tag name', 'path')
-  expect_length(paths, 2)
+  expect_length(paths, 4) # includes 2 paths for color
 
   # ---- Most cited studies ----
   tab <- remDr$findElement('id', 'StudyStatsDropdown')
@@ -230,8 +230,62 @@ test_that("Study Statistics tab has correct elements", {
 
   expect_true(!isTRUE(all.equal(byPubIdWidths, byMostCitedWidths)))
 
-  # Similar studies
-    # All plots are present and button cycles through them
+  # ---- Similar studies -----
+  tab <- remDr$findElement('id', 'StudyStatsDropdown')
+  tab$clickElement()
+  navbarLi <- remDr$findElement('id', 'navbar-link-study-stats')
+  reportOptions <- navbarLi$findChildElements('tag name', 'li')
+  reportOptions[[3]]$clickElement()
+
+  similarStudiesDiv <- remDr$findElement('id', '#similar-studies')
+  h2 <- similarStudiesDiv$findChildElement('tag name', 'h2')
+  expect_length(h2, 1)
+
+  ul <- similarStudiesDiv$findChildElement('tag name', 'ul')
+  liElements <- ul$findChildElements('tag name', 'li')
+  expect_length(liElements, 2)
+
+  plots <- similarStudiesDiv$findChildElements('tag name', 'svg')
+  expect_length(plots, 8)
+
+  circles <- plots[[1]]$findChildElements('tag name', 'circle')
+  expect_true(length(circles) > 95)
+
+  byAssayIds <- unlist(sapply(plots, function(plot){
+    id <- plot$getElementAttribute('id')
+  }))
+
+  selectOrderBtn <- remDr$findElement('id', 'order-select-dropdown')
+  expect_length(selectOrderBtn, 1)
+  selectOrderBtn$clickElement()
+
+  parentDiv <- remDr$findElement('css', "[class = 'dropdown open btn-group']")
+  ahrefs <- parentDiv$findChildElements('tag name', 'a')
+  expect_length(ahrefs, 3)
+  orderOptions <- unlist(sapply(ahrefs, function(a){
+    text <- a$getElementText()
+  }))
+
+  expectedOrderOptions <- c("Assay Data Available",
+                            "Study Design",
+                            "Condition Studied")
+  expect_true(all.equal(orderOptions, expectedOrderOptions))
+
+  ahrefs[[2]]$clickElement()
+
+  similarStudiesDiv <- remDr$findElement('id', '#similar-studies')
+  plots <- similarStudiesDiv$findChildElements('tag name', 'svg')
+  expect_length(plots, 4)
+
+  circles <- plots[[1]]$findChildElements('tag name', 'circle')
+  expect_true(length(circles) > 95)
+
+  byStudyDesignIds <- unlist(sapply(plots, function(plot){
+    id <- plot$getElementAttribute('id')
+  }))
+
+  expect_true(!isTRUE(all.equal(byAssayIds, byStudyDesignIds)))
+
 })
 
 
