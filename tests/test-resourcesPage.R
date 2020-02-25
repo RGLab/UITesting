@@ -13,13 +13,13 @@ test_that("all webpart is present", {
 
 test_that("About tab has correct elements", {
 
-  aboutDiv <- remDr$findElement('id', 'About')
-  expect_length(aboutDiv, 1)
+  div <- remDr$findElement('id', 'About')
+  expect_length(div, 1)
 
-  aboutParagraphs <- aboutDiv$findChildElements('tag name', 'p')
-  expect_length(aboutParagraphs, 3)
+  paragraphs <- div$findChildElements('tag name', 'p')
+  expect_length(paragraphs, 3)
 
-  test_presence_of_single_img(AboutDiv)
+  test_presence_of_single_img(div)
 })
 
 test_that("Data Standards tab has correct elements", {
@@ -31,14 +31,14 @@ test_that("Data Standards tab has correct elements", {
   assayOptions <- navbarLi$findChildElements('tag name', 'li')
   expect_length(assayOptions, 3)
 
-  assayTexts <- sapply(assayOptions, function(li){
+  assayTitles <- sapply(assayOptions, function(li){
     ahref <- li$findChildElement('tag name', 'a')
     innerText <- ahref$getElementText()[[1]]
   })
-  expectedAssayTexts <- c("Cytometry",
+  expectedAssayTitles <- c("Cytometry",
                           "Gene Expression",
                           "Immune Response")
-  expect_true(all.equal(assayTexts, expectedAssayTexts))
+  expect_true(all.equal(assayTitles, expectedAssayTitles))
 
   assayOptions[[2]]$clickElement()
 
@@ -91,13 +91,108 @@ test_that("Highlighted Reports tab has correct elements", {
 })
 
 test_that("Study Statistics tab has correct elements", {
+  getBarPlotWidths <- function(rectsContainer){
+    widths <- unlist(sapply(rectsContainer, function(rect){
+      width <- rect$getElementAttribute('width')
+    }))
+  }
+
+  # ----
+  tab <- remDr$findElement('id', 'StudyStatsDropdown')
+  tab$clickElement()
+
+  navbarLi <- remDr$findElement('id', 'navbar-link-study-stats')
+  reportOptions <- navbarLi$findChildElements('tag name', 'li')
+  expect_length(reportOptions, 3)
+
+  reportTitles <- sapply(reportOptions, function(li){
+    ahref <- li$findChildElement('tag name', 'a')
+    innerText <- ahref$getElementText()[[1]]
+  })
+  expectedReportTitles <- c("Most Accessed",
+                          "Most Cited",
+                          "Similar Studies")
+  expect_true(all.equal(reportTitles, expectedReportTitles))
+
   # Most accessed studies
-    # by study
-      # button to order is present
-      # button changes order
+  reportOptions[[1]]$clickElement()
+
+  mostAccessedDiv <- remDr$findElement('id', '#most-accessed')
+  h2 <- mostAccessedDiv$findChildElement('tag name', 'h2')
+  expect_length(h2, 1)
+
+  ul <- mostAccessedDiv$findChildElement('tag name', 'ul')
+  liElements <- ul$findChildElements('tag name', 'li')
+  expect_length(liElements, 3)
+
+  plot <- mostAccessedDiv$findChildElement('id', 'ma-barplot-byStudy')
+  rects <- plot$findChildElements('tag name', 'rect')
+  allUxWidths <- getBarPlotWidths(rects)
+  expect_true(length(allUxWidths) > 150)
+
+  selectOrderBtn <- remDr$findElement('id', 'ma-bar-order-select-dropdown')
+  expect_length(selectOrderBtn, 1)
+  selectOrderBtn$clickElement()
+
+  parentDiv <- remDr$findElement('css', "[class = 'dropdown open btn-group']")
+  ahrefs <- parentDiv$findChildElements('tag name', 'a')
+  expect_length(ahrefs, 3)
+  orderOptions <- unlist(sapply(ahrefs, function(a){
+    text <- a$getElementText()
+  }))
+
+  expectedOrderOptions <- c("UI Pageviews",
+                            "ImmuneSpaceR connections",
+                            "All interactions")
+  expect_true(all.equal(orderOptions, expectedOrderOptions))
+
+  ahrefs[[1]]$clickElement()
+  plot <- remDr$findElement('id', 'ma-barplot-byStudy')
+  rects <- plot$findChildElements('tag name', 'rect')
+  pageViewWidths <- getBarPlotWidths(rects)
+
+  expect_true(!isTRUE(all.equal(pageViewWidths, allUxWidths)))
+
+  selectOrderBtn <- remDr$findElement('id', 'ma-bar-order-select-dropdown')
+  selectOrderBtn$clickElement()
+  parentDiv <- remDr$findElement('css', "[class = 'dropdown open btn-group']")
+  ahrefs <- parentDiv$findChildElements('tag name', 'a')
+
+  ahrefs[[2]]$clickElement()
+  plot <- remDr$findElement('id', 'ma-barplot-byStudy')
+  rects <- plot$findChildElements('tag name', 'rect')
+  isrConnectionsWidths <- getBarPlotWidths(rects)
+
+  expect_true(!isTRUE(all.equal(isrConnectionsWidths, pageViewWidths)))
+
+  selectPlotTypeBtn <- remDr$findElement('id', 'ma-type-select-dropdown')
+  selectPlotTypeBtn$clickElement()
+  parentDiv <- remDr$findElement('css', "[class = 'dropdown open btn-group']")
+  ahrefs <- parentDiv$findChildElements('tag name', 'a')
+
+  expect_length(ahrefs, 2)
+  plotTypeOptions <- unlist(sapply(ahrefs, function(a){
+    text <- a$getElementText()
+  }))
+
+  expectedPlotTypeOptions <- c("By Study",
+                               "By Month")
+  expect_true(all.equal(plotTypeOptions, expectedPlotTypeOptions))
+  ahrefs[[2]]$clickElement()
+
+  selectOrderBtn <- remDr$findElements('id', 'ma-bar-order-select-dropdown')
+  expect_length(selectOrderBtn, 0)
+
+  plot <- remDr$findElement('id', 'ma-lineplot-byMonth')
+  paths <- plot$findChildElements('tag name', 'path')
+  expect_length(paths, 2)
+
+
+    # select by time plot
 
     # by time
-      # button to order is not present
+      # check select order btn not present
+      # check plot is present and has values
 
 
   # Most cited studies
@@ -108,223 +203,5 @@ test_that("Study Statistics tab has correct elements", {
     # All plots are present and button cycles through them
 })
 
-test_presence_of_single_img <- function(el){
-  img <- el$findChildElement('tag name', 'img')
-  expect_length(img, 1)
 
-  if(length(img) > 0){
-    imgSrc <- img$getElementAttribute('src')[[1]]
-    res <- httr::GET(imgSrc)
-    expect_true(res$status_code == 200)
-  }
-}
-
-navigate_to_link <- function(linkName){
-  navbarLi <- remDr$findElement('id', paste0('navbar-link-', linkName))
-  ahref <- navbarLi$findChildElement('tag name', 'a')
-  ahref$clickElement()
-}
-
-
-# test_that("'Data Finder' module is present", {
-#   test_presence_of_single_item("app")
-# })
-#
-# test_that("participant group buttons are available", {
-#   linkIds <- c("manage-participant-group-link",
-#                "send-participant-group-link",
-#                "export-datasets-link",
-#                "open-rstudio-link")
-#   lapply(linkIds, test_presence_of_single_item)
-#
-#   buttonIds <- paste0(c("Load", "Clear", "Save"), "-participant-group-btn")
-#   lapply(buttonIds, test_presence_of_single_item)
-# })
-#
-# test_that("Current participant group info is present", {
-#   test_presence_of_single_item("current-participant-group-info-banner")
-# })
-#
-# test_that("Filter banner is present", {
-#   test_presence_of_single_item("filters-banner")
-# })
-#
-# test_that("Filter selector buttons are present", {
-#   studyDesign <- c("Condition",
-#                    "ResearchFocus",
-#                    "ExposureMaterial",
-#                    "ExposureProcess",
-#                    "Species")
-#   participantCharacteristics <- c("Gender",
-#                                   "Age",
-#                                   "Race")
-#   availableData <- c("Timepoint",
-#                      "SampleType",
-#                      "Assay")
-#   dropdownButtonGroups <- list(studyDesign,
-#                                participantCharacteristics,
-#                                availableData)
-#   lapply(dropdownButtonGroups, function(subgroupIds){
-#     subgroupIds <- paste0(subgroupIds, "-filter-dropdown")
-#     lapply(subgroupIds, test_presence_of_single_item)
-#   })
-#
-#   assayTimepointBtnId <- "content-dropdown-button-heatmap-selector"
-#   test_presence_of_single_item(assayTimepointBtnId)
-#
-#   applyFiltersBtnId <- "action-button-Apply"
-#   test_presence_of_single_item(applyFiltersBtnId)
-# })
-#
-# test_that("Plot tabs are present", {
-#   tabs <- c("study",
-#             "participant",
-#             "data")
-#   tabs <- paste0("tab-find-", tabs)
-#   dmp <- lapply(tabs, test_presence_of_single_item)
-# })
-#
-# test_that("plots are present for each tab", {
-#
-#   test_barplot <- function(id){
-#     svgId <- paste0('svg-barplot-', id)
-#     el <- remDr$findElement('id', svgId)
-#     expect_length(el, 1)
-#
-#     if ( length(el) > 0 ) {
-#       rectsContainer <- paste0('barplot', id)
-#       el <- remDr$findElements('id', rectsContainer)
-#       expect_length(el, 1)
-#
-#       rects <- el[[1]]$findChildElements('class', 'rect')
-#       expect_gt(length(rects), 0)
-#
-#       yAxisLabels <- paste0('yaxis-labels-short-', id)
-#       el <- remDr$findElement('id', yAxisLabels)
-#       expect_length(el, 1)
-#
-#       xAxis <- paste0('xaxis-', id)
-#       el <- remDr$findElement('id', xAxis)
-#       expect_length(el, 1)
-#
-#       # TODO: use xPath to match X axis text
-#     }
-#   }
-#
-#   # Study Design - study cards
-#   studyDesignPlots <- c("Condition",
-#                         "ExposureProcess",
-#                         "ResearchFocus",
-#                         "ExposureMaterial")
-#
-#   dmp <- lapply(studyDesignPlots, test_barplot)
-#
-#   # Participant Characteristics - view of pids table
-#   participantCharsPlots <- c("Age",
-#                              "Gender",
-#                              "Race")
-#
-#   dmp <- lapply(participantCharsPlots, test_barplot)
-#
-#   # Available Assay Data - assay data view
-#   test_barplot("SampleType")
-#
-#   heatmapSvg <- remDr$findElement('id', 'heatmap-heatmap1')
-#   expect_length(heatmapSvg, 1)
-#
-#   if ( length(heatmapSvg) > 0 ) {
-#     rectsContainer <- heatmapSvg$findChildElement('id', 'heatmap')
-#     rects <- rectsContainer$findChildElements('tag name', 'rect')
-#     expect_gt(length(rects), 0)
-#
-#     yAxisLabels <- heatmapSvg$findElement('id', 'yaxis-labels')
-#     expect_length(yAxisLabels, 1)
-#
-#     xAxisLabels <- heatmapSvg$findElement('id', 'xaxis-labels')
-#     expect_length(xAxisLabels, 1)
-#   }
-#
-# })
-#
-#
-# test_that("Outputs change when filters are applied", {
-#
-#   getPlotValues <- function(plotName){
-#     barplot <- remDr$findElement('id', paste0('barplot', plotName))
-#     bars <- barplot$findChildElements('class', 'rect')
-#     values <- sapply(bars, function(bar){
-#       return(as.numeric(unlist(bar$getElementAttribute('width'))))
-#     })
-#   }
-#
-#   getBannerValues <- function(){
-#     bannerDiv <- remDr$findElement('id','filters-banner')
-#     ems <- bannerDiv$findChildElements('class', 'filter-indicator')
-#     innerTexts <- sapply(ems, function(em){
-#       return(unlist(em$getElementText()))
-#     })
-#   }
-#
-#   preSelectConditionPlotValues <- getPlotValues('Condition')
-#   expect_true(all(preSelectConditionPlotValues > 0))
-#
-#   preSelectRacePlotValues <- getPlotValues('Race')
-#   expect_true(all(preSelectRacePlotValues > 0))
-#
-#   # Get original values for Banner - empty
-#   preSelectBannerValues <- getBannerValues()
-#   expect_true(all(preSelectBannerValues == "No filters currently applied"))
-#
-#   # select filters
-#   conditionFilter <- remDr$findElement('id', 'Condition-filter-dropdown')
-#   conditionFilter$clickElement()
-#   influenzaCheckBox <- conditionFilter$findChildElement('xpath',
-#                                                         '//*/input[@value="Influenza"]')
-#   influenzaCheckBox$clickElement()
-#
-#   genderFilter <- remDr$findElement('id', 'Gender-filter-dropdown')
-#   genderFilter$clickElement()
-#   femaleCheckBox <- genderFilter$findChildElement('xpath',
-#                                                   '//*/input[@value="Female"]')
-#   femaleCheckBox$clickElement()
-#
-#   # apply filters
-#   applyBtn <- remDr$findElement('id', 'action-button-Apply')
-#   applyBtn$clickElement()
-#
-#   sleep_for(4)
-#
-#   # filter banner changes
-#   postSelectBannerValues <- getBannerValues()
-#   expectedBannerValues <- c("Condition: Influenza",
-#                             "Gender: Female",
-#                             "No filters currently applied")
-#   expect_true(all.equal(postSelectBannerValues, expectedBannerValues))
-#
-#   postSelectConditionPlotValues <- getPlotValues('Condition')
-#   conditionsWithPositiveValues <- sum(postSelectConditionPlotValues > 0)
-#   expect_true(conditionsWithPositiveValues == 1)
-#
-#   postSelectRacePlotValues <- getPlotValues('Race')
-#   expect_true(all(preSelectRacePlotValues != postSelectRacePlotValues))
-#
-#   # Click clear
-#   clearAllBtn <- remDr$findElement('id', 'Clear-participant-group-btn')
-#   clearAllBtn$clickElement()
-#   clearAllLink <- remDr$findElement('id', 'Clear-All-link')
-#   clearAllLink$clickElement()
-#
-#   sleep_for(3)
-#
-#   # check original condition bar plot vals are back
-#   postClearConditionPlotValues <- getPlotValues('Condition')
-#   expect_true(all.equal(postClearConditionPlotValues, preSelectConditionPlotValues))
-#
-#   postClearRacePlotValues <- getPlotValues('Race')
-#   expect_true(all.equal(postClearRacePlotValues, preSelectRacePlotValues))
-#
-#   # Get original values for Banner - empty
-#   postClearBannerValues <- getBannerValues()
-#   expect_true(all.equal(postClearBannerValues, preSelectBannerValues))
-# })
 
