@@ -5,7 +5,7 @@ context_of("test-datafinder.R", "Data Finder", page_url)
 
 test_connection(remDr, page_url, "Find: /Studies")
 
-sleep_for(10)
+sleep_for(5)
 
 # TODO: rewrite once quick-help is added back
 # test_that("'Quick Help' is present", {
@@ -191,10 +191,10 @@ test_that("Outputs change when filters are applied", {
   }
 
   preSelectConditionPlotValues <- getPlotValues('Condition')
-  expect_true(all(preSelectionConditionValues > 0))
+  expect_true(all(preSelectConditionPlotValues > 0))
 
   preSelectRacePlotValues <- getPlotValues('Race')
-  expect_true(all(preSelectionRaceValues > 0))
+  expect_true(all(preSelectRacePlotValues > 0))
 
   # Get original values for Banner - empty
   preSelectBannerValues <- getBannerValues()
