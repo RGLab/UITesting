@@ -116,6 +116,7 @@ test_that("Study Statistics tab has correct elements", {
 
   # Most accessed studies
   reportOptions[[1]]$clickElement()
+  sleep_for(2)
 
   mostAccessedDiv <- remDr$findElement('id', '#most-accessed')
   h2 <- mostAccessedDiv$findChildElement('tag name', 'h2')
@@ -147,6 +148,7 @@ test_that("Study Statistics tab has correct elements", {
   expect_true(all.equal(orderOptions, expectedOrderOptions))
 
   ahrefs[[1]]$clickElement()
+  sleep_for(2)
   plot <- remDr$findElement('id', 'ma-barplot-byStudy')
   rects <- plot$findChildElements('tag name', 'rect')
   pageViewWidths <- getBarPlotWidths(rects)
@@ -159,6 +161,7 @@ test_that("Study Statistics tab has correct elements", {
   ahrefs <- parentDiv$findChildElements('tag name', 'a')
 
   ahrefs[[2]]$clickElement()
+  sleep_for(2)
   plot <- remDr$findElement('id', 'ma-barplot-byStudy')
   rects <- plot$findChildElements('tag name', 'rect')
   isrConnectionsWidths <- getBarPlotWidths(rects)
@@ -179,6 +182,7 @@ test_that("Study Statistics tab has correct elements", {
                                "By Month")
   expect_true(all.equal(plotTypeOptions, expectedPlotTypeOptions))
   ahrefs[[2]]$clickElement()
+  sleep_for(2)
 
   selectOrderBtn <- remDr$findElements('id', 'ma-bar-order-select-dropdown')
   expect_length(selectOrderBtn, 0)
@@ -193,6 +197,7 @@ test_that("Study Statistics tab has correct elements", {
   navbarLi <- remDr$findElement('id', 'navbar-link-study-stats')
   reportOptions <- navbarLi$findChildElements('tag name', 'li')
   reportOptions[[2]]$clickElement()
+  sleep_for(2)
 
   mostCitedDiv <- remDr$findElement('id', '#most-cited')
   h2 <- mostCitedDiv$findChildElement('tag name', 'h2')
@@ -224,6 +229,8 @@ test_that("Study Statistics tab has correct elements", {
   expect_true(all.equal(orderOptions, expectedOrderOptions))
 
   ahrefs[[1]]$clickElement()
+  sleep_for(2)
+
   plot <- remDr$findElement('id', 'barplot-byPubId')
   rects <- plot$findChildElements('tag name', 'rect')
   byMostCitedWidths <- getBarPlotWidths(rects)
@@ -236,6 +243,7 @@ test_that("Study Statistics tab has correct elements", {
   navbarLi <- remDr$findElement('id', 'navbar-link-study-stats')
   reportOptions <- navbarLi$findChildElements('tag name', 'li')
   reportOptions[[3]]$clickElement()
+  sleep_for(2)
 
   similarStudiesDiv <- remDr$findElement('id', '#similar-studies')
   h2 <- similarStudiesDiv$findChildElement('tag name', 'h2')
@@ -272,6 +280,7 @@ test_that("Study Statistics tab has correct elements", {
   expect_true(all.equal(orderOptions, expectedOrderOptions))
 
   ahrefs[[2]]$clickElement()
+  sleep_for(2)
 
   similarStudiesDiv <- remDr$findElement('id', '#similar-studies')
   plots <- similarStudiesDiv$findChildElements('tag name', 'svg')
