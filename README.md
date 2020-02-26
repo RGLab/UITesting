@@ -142,11 +142,9 @@ Even though this is not a package, [DESCRIPTION](DESCRIPTION) file is [needed](h
 ## Available tests
 
 - Front page ([`test-0-front.R`](tests/test-0-front.R))
-- Home page ([`test-home.R`](tests/test-home.R))
 - Overview page ([`test-overview.R`](tests/test-overview.R))
 - Data Finder page ([`test-datafinder.R`](tests/test-datafinder.R))
-- Participants page ([`test-participants.R`](tests/test-participants.R))
-- Clinical and Assay Data page ([`test-data.R`](tests/test-data.R))
+- Resources page ([`test-resources.R`](tests/test-resources.R))
 - Modules page ([`test-modules.R`](tests/test-modules.R))
     - Data Explorer ([`test-modules-de.R`](tests/test-modules-de.R))
     - Gene Expression Explorer ([`test-modules-gee.R`](tests/test-modules-gee.R))
