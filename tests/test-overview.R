@@ -40,17 +40,11 @@ studies <- list(
     GEO = "GSE41080",
     assoc_studies = c(
       "SDY112",
-      "SDY113",
       "SDY215",
-      "SDY305",
       "SDY312",
       "SDY315",
       "SDY460",
-      "SDY472",
       "SDY478",
-      "SDY514",
-      "SDY515",
-      "SDY519",
       "SDY773",
       "SDY887"
     )
@@ -65,17 +59,8 @@ studies <- list(
     ),
     organization = "Ellison Foundation (HIPC funded)",
     assoc_studies = c(
-      "SDY112",
-      "SDY113",
       "SDY212",
-      "SDY305",
-      "SDY312",
-      "SDY315",
-      "SDY472",
-      "SDY478",
-      "SDY514",
-      "SDY515",
-      "SDY519"
+      "SDY312"
     )
   ),
   SDY1097 = list(
