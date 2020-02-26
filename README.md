@@ -97,24 +97,27 @@ rD[["server"]]$stop()
 ```
 
 ### To debug with a dockerized selenium container
-```Bash
-# Setup a VNC viewer so you can look at the output of the VNC server in the container
+- Setup a VNC viewer so you can look at the output of the VNC server in the container
 https://www.realvnc.com/en/connect/download/viewer/
 
-# Background on VNCs with Selenium and Docker Here:
+- Background on VNCs with Selenium and Docker Here:
 https://qxf2.com/blog/view-docker-container-display-using-vnc-viewer/
 
+```sh
 # Run the standalone debug server
 docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:3.141.59-zirconium
+```
 
-# Use the viewer to checkout what is going on:
+Use the viewer to check out what is going on:
 - Open the viewer utility through the UI (search vncviewer)
 - Connect to 'localhost:5900'
 - enter the password given by Selenium - aka 'secret'
-```
 
-# Note on Developing React Modules: 
-Dev versions of a webpart will not be available in your dockerized test environment unless you map the npm dev server port (e.g. 3001) to that same port in the docker environment.  
+### Notes on running against a local development machine
+- Developing React Modules: Dev versions of a webpart will not be available in your dockerized test environment unless you map the npm dev server port (e.g. 3001) to that same port in the docker environment.  
+- netrc files: unlike the servers, where a separate unix user is running the R session, your local instance will have an R engine that depends on there being a viable .netrc in the home directory.  If you do not want to use your credentials, you will need to replace them (e.g. with a non-admin dummy user).
+
+
 
 ## Setup in Travis CI
 
