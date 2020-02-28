@@ -390,3 +390,25 @@ test_filtering <- function() {
   buttons[[1]]$clickElement()
   sleep_for(2)
 }
+
+test_presence_of_single_item <- function(itemId){
+  el <- remDr$findElement("id", itemId)
+  expect_length(el, 1)
+}
+
+test_presence_of_single_img <- function(el){
+  img <- el$findChildElement('tag name', 'img')
+  expect_length(img, 1)
+
+  if(length(img) > 0){
+    imgSrc <- img$getElementAttribute('src')[[1]]
+    res <- httr::GET(imgSrc)
+    expect_true(res$status_code == 200)
+  }
+}
+
+navigate_to_link <- function(linkName){
+  navbarLi <- remDr$findElement('id', paste0('navbar-link-', linkName))
+  ahref <- navbarLi$findChildElement('tag name', 'a')
+  ahref$clickElement()
+}
