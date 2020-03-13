@@ -4,7 +4,7 @@ page_url <- paste0(site_url, "/project/Studies/begin.view?")
 context_of("test-datafinder.R", "Data Finder", page_url)
 
 test_connection(remDr, page_url, "Find: /Studies")
-
+test_presence_of_single_item("loader-1")
 sleep_for(5)
 
 # TODO: rewrite once quick-help is added back
@@ -71,7 +71,15 @@ test_that("Current participant group info is present", {
 })
 
 test_that("Filter banner is present", {
-  test_presence_of_single_item("filters-banner")
+  test_presence_of_single_item("df-active-filter-bar")
+
+  # Test for hidden banner
+  hiddenBanner <- remDr$findElements("class name", "df-banner-wrapper")
+  expect_equal(length(hiddenBanner), 1)
+
+  # Make sure it's hidden
+  expect_true(all(hiddenBanner[[1]]$getElementSize() == 0))
+
 })
 
 test_that("Filter selector buttons are present", {
@@ -183,7 +191,7 @@ test_that("Outputs change when filters are applied", {
   }
 
   getBannerValues <- function(){
-    bannerDiv <- remDr$findElement('id','filters-banner')
+    bannerDiv <- remDr$findElement('id','df-active-filter-bar')
     ems <- bannerDiv$findChildElements('class', 'filter-indicator')
     innerTexts <- sapply(ems, function(em){
       return(unlist(em$getElementText()))
