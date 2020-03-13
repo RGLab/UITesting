@@ -90,7 +90,7 @@ test_that("Filter selector buttons are present", {
                                participantCharacteristics,
                                availableData)
   lapply(dropdownButtonGroups, function(subgroupIds){
-    subgroupIds <- paste0(subgroupIds, "-filter-dropdown")
+    subgroupIds <- paste0("df-content-dropdown-", subgroupIds)
     lapply(subgroupIds, test_presence_of_single_item)
   })
 
@@ -201,13 +201,13 @@ test_that("Outputs change when filters are applied", {
   expect_true(all(preSelectBannerValues == "No filters currently applied"))
 
   # select filters
-  conditionFilter <- remDr$findElement('id', 'Condition-filter-dropdown')
+  conditionFilter <- remDr$findElement('id', "df-content-dropdown-Condition")
   conditionFilter$clickElement()
   influenzaCheckBox <- conditionFilter$findChildElement('xpath',
                                                         '//*/input[@value="Influenza"]')
   influenzaCheckBox$clickElement()
 
-  genderFilter <- remDr$findElement('id', 'Gender-filter-dropdown')
+  genderFilter <- remDr$findElement('id', 'df-content-dropdown-Gender')
   genderFilter$clickElement()
   femaleCheckBox <- genderFilter$findChildElement('xpath',
                                                   '//*/input[@value="Female"]')
