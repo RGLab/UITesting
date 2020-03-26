@@ -4,6 +4,9 @@ page_url <- paste0(site_url, "/project/Studies/begin.view?")
 context_of("test-datafinder.R", "Data Finder", page_url)
 
 test_connection(remDr, page_url, "Find: /Studies")
+
+# reload page to get laoder wheel
+remDr$navigate(page_url)
 test_presence_of_single_item("loader-1")
 sleep_for(5)
 
