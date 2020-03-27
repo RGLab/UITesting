@@ -81,7 +81,7 @@ test_that("Filter banner is present", {
   expect_equal(length(hiddenBanner), 1)
 
   # Make sure it's hidden
-  expect_true(all(unlist(hiddenBanner[[1]]$getElementSize() == 0)))
+  expect_true(hiddenBanner[[1]]$getElementSize()$width == 0)
 
 })
 
