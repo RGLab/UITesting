@@ -5,6 +5,9 @@ context_of("test-datafinder.R", "Data Finder", page_url)
 
 test_connection(remDr, page_url, "Find: /Studies")
 
+# reload page to get laoder wheel
+remDr$navigate(page_url)
+test_presence_of_single_item("loader-1")
 sleep_for(5)
 
 # TODO: rewrite once quick-help is added back
@@ -71,7 +74,15 @@ test_that("Current participant group info is present", {
 })
 
 test_that("Filter banner is present", {
-  test_presence_of_single_item("filters-banner")
+  test_presence_of_single_item("df-active-filter-bar")
+
+  # Test for hidden banner
+  hiddenBanner <- remDr$findElements("class name", "df-banner-wrapper")
+  expect_equal(length(hiddenBanner), 1)
+
+  # Make sure it's hidden
+  expect_true(hiddenBanner[[1]]$getElementSize()$width == 0)
+
 })
 
 test_that("Filter selector buttons are present", {
@@ -90,7 +101,7 @@ test_that("Filter selector buttons are present", {
                                participantCharacteristics,
                                availableData)
   lapply(dropdownButtonGroups, function(subgroupIds){
-    subgroupIds <- paste0(subgroupIds, "-filter-dropdown")
+    subgroupIds <- paste0("df-content-dropdown-", subgroupIds)
     lapply(subgroupIds, test_presence_of_single_item)
   })
 
@@ -183,7 +194,7 @@ test_that("Outputs change when filters are applied", {
   }
 
   getBannerValues <- function(){
-    bannerDiv <- remDr$findElement('id','filters-banner')
+    bannerDiv <- remDr$findElement('id','df-active-filter-bar')
     ems <- bannerDiv$findChildElements('class', 'filter-indicator')
     innerTexts <- sapply(ems, function(em){
       return(unlist(em$getElementText()))
@@ -201,13 +212,13 @@ test_that("Outputs change when filters are applied", {
   expect_true(all(preSelectBannerValues == "No filters currently applied"))
 
   # select filters
-  conditionFilter <- remDr$findElement('id', 'Condition-filter-dropdown')
+  conditionFilter <- remDr$findElement('id', "df-content-dropdown-Condition")
   conditionFilter$clickElement()
   influenzaCheckBox <- conditionFilter$findChildElement('xpath',
                                                         '//*/input[@value="Influenza"]')
   influenzaCheckBox$clickElement()
 
-  genderFilter <- remDr$findElement('id', 'Gender-filter-dropdown')
+  genderFilter <- remDr$findElement('id', 'df-content-dropdown-Gender')
   genderFilter$clickElement()
   femaleCheckBox <- genderFilter$findChildElement('xpath',
                                                   '//*/input[@value="Female"]')
