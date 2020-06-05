@@ -5,10 +5,28 @@ context_of("test-datafinder.R", "Data Finder", page_url)
 
 test_connection(remDr, page_url, "Find: /Studies")
 
-# reload page to get laoder wheel
+# reload page to get loader wheel
 remDr$navigate(page_url)
 test_presence_of_single_item("loader-1")
 sleep_for(5)
+
+hiddenBanner <- remDr$findElements("class name", "df-banner-wrapper")
+
+test_main_menu_tab()
+
+# check for tabs
+# Note: Need to rm whitespace inserted by LabKey
+test_that("Correct tabs are present", {
+  nav_tab <- remDr$findElement("id", "nav_tabs")
+  tabs_ul <- nav_tab$findChildElement("css selector", "ul[id=lk-nav-tabs-separate]")
+  tabs <- tabs_ul$findChildElements("css selector", "a")
+  tab_names <- sapply(tabs, function(x){
+    name <- x$getElementText()
+    name <- gsub(" ", "", name)
+  })
+  expected_names <- c("Find", "Visualize", "QC", "Analyze")
+  expect_equal(expected_names, tab_names)
+})
 
 # TODO: rewrite once quick-help is added back
 # test_that("'Quick Help' is present", {
@@ -51,8 +69,6 @@ sleep_for(5)
 #     }
 #   }
 # })
-
-test_studies_tab()
 
 test_that("'Data Finder' module is present", {
   test_presence_of_single_item("app")
