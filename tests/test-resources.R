@@ -1,6 +1,7 @@
 if (!exists("remDr")) source("initialize.R")
 
 page_url <- paste0(site_url, "/project/Studies/begin.view?pageId=Resources")
+
 context_of("test-resourcesPage.R", "Resources Page", page_url)
 
 test_connection(remDr, page_url, "Resources: /Studies")
@@ -9,51 +10,6 @@ sleep_for(5)
 
 test_that("all webpart is present", {
   test_presence_of_single_item('app')
-})
-
-test_that("About tab has correct elements", {
-
-  div <- remDr$findElement('id', 'About')
-  expect_length(div, 1)
-
-  paragraphs <- div$findChildElements('tag name', 'p')
-  expect_length(paragraphs, 3)
-
-  test_presence_of_single_img(div)
-})
-
-test_that("Data Standards tab has correct elements", {
-
-  tab <- remDr$findElement('id', 'DataStandardsDropdown')
-  tab$clickElement()
-
-  navbarLi <- remDr$findElement('id', 'navbar-link-data-standards')
-  assayOptions <- navbarLi$findChildElements('tag name', 'li')
-  expect_length(assayOptions, 3)
-
-  assayTitles <- sapply(assayOptions, function(li){
-    ahref <- li$findChildElement('tag name', 'a')
-    innerText <- ahref$getElementText()[[1]]
-  })
-  expectedAssayTitles <- c("Cytometry",
-                          "Gene Expression",
-                          "Immune Response")
-  expect_true(all.equal(assayTitles, expectedAssayTitles))
-
-  assayOptions[[2]]$clickElement()
-
-  div <- remDr$findElement('id', 'DataStandards')
-  test_presence_of_single_img(div)
-})
-
-test_that("HIPC Tools tab has correct elements", {
-  navigate_to_link("tools")
-
-  div <- remDr$findElement('id', 'Tools')
-  expect_length(div, 1)
-
-  sections <- div$findChildElements('tag name', 'p')
-  expect_length(sections, 4)
 })
 
 test_that("Highlighted Reports tab has correct elements", {
@@ -110,8 +66,8 @@ test_that("Study Statistics tab has correct elements", {
     innerText <- ahref$getElementText()[[1]]
   })
   expectedReportTitles <- c("Most Accessed",
-                          "Most Cited",
-                          "Similar Studies")
+                            "Most Cited",
+                            "Similar Studies")
   expect_true(all.equal(reportTitles, expectedReportTitles))
 
   # Most accessed studies
@@ -296,6 +252,18 @@ test_that("Study Statistics tab has correct elements", {
   expect_true(!isTRUE(all.equal(byAssayIds, byStudyDesignIds)))
 
 })
+
+test_that("HIPC Tools tab has correct elements", {
+  navigate_to_link("tools")
+
+  div <- remDr$findElement('id', 'Tools')
+  expect_length(div, 1)
+
+  sections <- div$findChildElements('tag name', 'p')
+  expect_length(sections, 4)
+})
+
+
 
 
 
