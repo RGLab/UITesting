@@ -8,8 +8,6 @@ env:
 sudo: false
 cache:
   packages: true
-addons:
-  sauce_connect: true
 script: Rscript test.R
 after_success:
   - ". ./SAUCE"
