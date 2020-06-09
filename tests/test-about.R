@@ -26,10 +26,19 @@ test_that("About tab has correct elements", {
 
 test_that("Data Standards tab has correct elements", {
 
-  tab <- remDr$findElement('id', 'DataStandardsDropdown')
+  div <- remDr$findElement('id', 'DataStandards')
+  expect_length(div, 1)
+
+  paragraphs <- div$findChildElements('tag name', 'p')
+  expect_true(length(paragraphs) >= 7)
+})
+
+test_that("Data Processing tab has correct elements", {
+
+  tab <- remDr$findElement('id', 'DataProcessingDropdown')
   tab$clickElement()
 
-  navbarLi <- remDr$findElement('id', 'navbar-link-data-standards')
+  navbarLi <- remDr$findElement('id', 'navbar-link-data-processing')
   assayOptions <- navbarLi$findChildElements('tag name', 'li')
   expect_length(assayOptions, 3)
 
@@ -44,6 +53,6 @@ test_that("Data Standards tab has correct elements", {
 
   assayOptions[[2]]$clickElement()
 
-  div <- remDr$findElement('id', 'DataStandards')
+  div <- remDr$findElement('id', 'DataProcessing')
   test_presence_of_single_img(div)
 })
