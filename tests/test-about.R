@@ -25,12 +25,14 @@ test_that("About tab has correct elements", {
 })
 
 test_that("Data Standards tab has correct elements", {
+  tab <- remDr$findElement('id', 'navbar-link-data-standards')
+  tab$clickElement()
 
   div <- remDr$findElement('id', 'DataStandards')
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements('tag name', 'p')
-  expect_true(length(paragraphs) >= 7)
+  expect_length(paragraphs, 13)
 })
 
 test_that("Data Processing tab has correct elements", {
