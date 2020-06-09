@@ -59,7 +59,7 @@ if (selenium_server == "SAUCELABS") {
     "ondemand.saucelabs.com"
   )
   remote_server <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@", sauce_url)
-  port <- ifelse(machine == "TRAVIS", 4445L, 80L)
+  port <- ifelse(machine == "TRAVIS", 443L, 80L)
 
   extra_capabilities <- list(
     name = job_name,
