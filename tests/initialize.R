@@ -53,13 +53,9 @@ if (selenium_server == "SAUCELABS") {
     paste0("UI testing `", server, "` by ", Sys.info()["nodename"])
   )
 
-  sauce_url <- ifelse(
-    machine == "TRAVIS",
-    "localhost",
-    "ondemand.saucelabs.com"
-  )
+  sauce_url <- "ondemand.saucelabs.com"
   remote_server <- paste0(SAUCE_USERNAME, ":", SAUCE_ACCESS_KEY, "@", sauce_url)
-  port <- ifelse(machine == "TRAVIS", 80L, 80L)
+  port <- 80L
 
   extra_capabilities <- list(
     name = job_name,
