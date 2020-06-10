@@ -19,14 +19,14 @@ test_parameter <- function(param, formItem, paramConfig) {
   items <- combo_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   expect_equal(length(items), length(paramConfig$expected), info = param)
   items[[paramConfig$choice]]$clickElement()
-  sleep_for(3)
+  sleep_for(5)
 
   clear <- formItem$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(clear), 1, info = param)
 
   if (param %in% c("training", "testing")) {
     arrow[[1]]$clickElement()
-    sleep_for(3)
+    sleep_for(5)
   }
 }
 
