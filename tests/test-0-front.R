@@ -84,7 +84,7 @@ test_that("can log in", {
   page_title <- remDr$getTitle()[[1]]
   expect_equal(page_title, "Reset Password: /home")
 
-  email_input <- remDr$findElements("id", "EmailInput")
+  email_input <- remDr$findElements("id", "email")
   expect_equal(length(email_input), 1)
 
   if (page_title != "Welcome to ImmuneSpace") remDr$goBack()
