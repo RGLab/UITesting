@@ -1,5 +1,35 @@
 if (!exists("remDr")) source("initialize.R")
 
+
+expect_hidden_element <- function(el) {
+  expect_equal(el$getElementSize()$width, 0)
+  expect_equal(el$getElementSize()$height, 0)
+}
+
+expect_visible_element <- function(el) {
+  expect_gt(el$getElementSize()$width, 0)
+  expect_gt(el$getElementSize()$height, 0)
+}
+
+test_summary_and_visualizations <- function() {
+  summaryTextEl <- remDr$findElement("id", "data-finder-app-banner")$findChildElement("class", "df-group-summary-counts")
+  summaryText <- summaryTextEl$getElementText()[[1]]
+
+  # Make sure barplots have rendered
+  selectedParticipantsTitle <- remDr$findElements("class", "df-tab-title")[[1]]
+  selectedParticipantsTitle$clickElement()
+
+  studyCards <- remDr$findElements("class", "study-card")
+  totalStudies <- length(studyCards)
+
+  genderNumberEls <- remDr$findElement("id", "barplot-container-Gender")$findChildElements("class", "label-number")
+  genderNumbers <- unlist(lapply(genderNumberEls, function(el) as.numeric(el$getElementText()[[1]])))
+  totalParticipants <- sum(genderNumbers)
+
+  expect_equal(summaryText, paste0(totalParticipants, " participants from ", totalStudies, " studies"))
+}
+
+
 page_url <- paste0(site_url, "/project/Studies/begin.view?")
 context_of("test-datafinder.R", "Data Finder", page_url)
 
@@ -8,7 +38,7 @@ test_connection(remDr, page_url, "Studies: /Studies")
 # reload page to get loader wheel
 remDr$navigate(page_url)
 test_presence_of_single_item("loader-1")
-sleep_for(20)
+sleep_for(5)
 
 test_main_menu_tab()
 
@@ -16,8 +46,7 @@ test_main_menu_tab()
 test_that("Correct tabs are present", {
   nav_tab <- remDr$findElement("id", "nav_tabs")
   tabs_ul <- nav_tab$findChildElement("css selector", "ul[id=lk-nav-tabs-separate]")
-  tabs <- tabs_ul$findChildElements("css selector", "a")
-  expect_length(tabs, 0)
+  expect_hidden_element(tabs_ul)
 })
 
 # TODO: rewrite once quick-help is added back
@@ -72,15 +101,13 @@ test_that("Correct banner is present", {
   hiddenBanner <- remDr$findElement("id", "filter-banner")
   expect_length(hiddenBanner, 1)
 
-  # Make sure it's hidden
-  expect_true(hiddenBanner$getElementSize()$width == 0)
+  expect_hidden_element(hiddenBanner)
 
   # Test for data finder banner
   activeBanner <- remDr$findElement("id", "data-finder-app-banner")
   expect_length(activeBanner, 1)
 
-  # Make sure it's visible
-  expect_true(activeBanner$getElementSize()$width > 0)
+  expect_visible_element(activeBanner)
 
 })
 
@@ -96,9 +123,9 @@ test_that("banner dropdown menus work", {
 
   exploreDataDropdown <- bannerDropdowns[[1]]
   exploreDataOptions <- exploreDataDropdown$findChildElement("css selector", "ul")
-  expect_true(exploreDataOptions$getElementSize()$width == 0)
+  expect_hidden_element(exploreDataOptions)
   exploreDataDropdown$clickElement()
-  expect_true(exploreDataOptions$getElementSize()$width > 0)
+  expect_visible_element(exploreDataOptions)
   exploreDataOptionsText <- c("Select Participants", "Visualize", "QC", "Analyze")
   expect_equal(
     unlist(lapply(exploreDataOptions$findChildElements("css selector", "li"),
@@ -108,9 +135,9 @@ test_that("banner dropdown menus work", {
 
   optionsDropdown <- bannerDropdowns[[2]]
   optionsDropdownOptions <- optionsDropdown$findChildElement("css selector", "ul")
-  expect_true(optionsDropdownOptions$getElementSize()$width == 0)
+  expect_hidden_element(optionsDropdownOptions)
   optionsDropdown$clickElement()
-  expect_true(optionsDropdownOptions$getElementSize()$width > 0)
+  expect_visible_element(optionsDropdownOptions)
   optionsList <- optionsDropdown$findChildElements("css selector", ".btn>ul>li")
   expect_equal(
     unlist(lapply(optionsList, function(x){x$getElementText()})),
@@ -119,13 +146,13 @@ test_that("banner dropdown menus work", {
 
   loadGroupsDropdown <- optionsList[[5]]
   loadGroupsOptions <- loadGroupsDropdown$findChildElements("css selector", "li")
-  expect_true(loadGroupsOptions[[1]]$getElementSize()$width == 0)
+  expect_hidden_element(loadGroupsOptions[[1]])
   loadGroupsDropdown$clickElement()
-  expect_true(loadGroupsOptions[[1]]$getElementSize()$width > 0)
+  expect_visible_element(loadGroupsOptions[[1]])
 
   optionsDropdown$clickElement()
-  expect_true(loadGroupsOptions[[1]]$getElementSize()$width == 0)
-  expect_true(optionsDropdownOptions$getElementSize()$width == 0)
+  expect_hidden_element(loadGroupsOptions[[1]])
+  expect_hidden_element(optionsDropdownOptions)
 
 })
 
@@ -150,11 +177,11 @@ test_that("Filter dropdown works", {
   filterDropdown <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
   expect_equal(filterDropdown$findChildElement("css selector", "button")$getElementText()[[1]], "Filters")
   filterContent <- filterDropdown$findChildElement("class", "dropdown-menu")
-  expect_true(filterContent$getElementSize()$width == 0)
+  expect_hidden_element(filterContent)
   filterDropdown$clickElement()
-  expect_true(filterContent$getElementSize()$width > 0)
+  expect_visible_element(filterContent)
   filterDropdown$clickElement()
-  expect_true(filterContent$getElementSize()$width == 0)
+  expect_hidden_element(filterContent)
 })
 
 test_that("Filter selector buttons are present", {
@@ -190,9 +217,9 @@ test_that("Filter selector choices are present", {
     lapply(filterSet$findChildElements("class", "df-filter-dropdown"), function(filterDropdown){
       dropdownButton <- filterDropdown$findChildElement("css selector", "button")
       dropdownMenu <- filterDropdown$findChildElement("class", "filter-menu")
-      expect_equal(dropdownMenu$getElementSize()$width, 0)
+      expect_hidden_element(dropdownMenu)
       dropdownButton$clickElement()
-      expect_gt(dropdownMenu$getElementSize()$width, 0)
+      expect_visible_element(dropdownMenu)
       filterOptions <- dropdownMenu$findChildElements("class", "checkbox")
       expect_gt(length(filterOptions), 0)
       dropdownButton$clickElement()
@@ -201,6 +228,27 @@ test_that("Filter selector choices are present", {
   filterDropdownButton$clickElement()
 })
 
+test_that("Assay data selector works", {
+  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
+  filterDropdownButton$clickElement()
+  assaySelector <- remDr$findElement("class", "df-assay-data-selector")
+  expect_length(assaySelector, 1)
+  dropdowns <- remDr$findElements("class", "assay-data-dropdown")
+  expect_length(dropdowns, 3)
+  dropdownMenus <- lapply(dropdowns, function(dropdown) dropdown$findChildElement("class", "df-dropdown"))
+  lapply(dropdownMenus, expect_hidden_element)
+
+
+  assayDropdown <- remDr$findElement("id", "df-assay-dropdown")
+  timepointDropdown <- remDr$findElement("id", "df-timepoint-dropdown")
+  sampletypeDropdown <- remDr$findElement("id", "df-sampletype-dropdown")
+
+
+
+
+
+  filterDropdownButton$clickElement()
+})
 
 # -------- Plot tabs -------------------
 
@@ -219,21 +267,21 @@ test_that("Plot tabs work", {
   selectedStudiesContent <- remDr$findElement("id", "df-tab-selected-studies")
 
   selectedParticipantsTitle$clickElement()
-  expect_gt(selectedParticipantsContent$getElementSize()$width, 0)
+  expect_visible_element(selectedParticipantsContent)
   expect_true(grepl("active", selectedParticipantsContent$getElementAttribute("class")))
-  expect_equal(selectedStudiesContent$getElementSize()$width, 0)
+  expect_hidden_element(selectedStudiesContent)
   expect_false(grepl("active", selectedStudiesContent$getElementAttribute("class")))
 
   selectedStudiesTitle$clickElement()
-  expect_equal(selectedParticipantsContent$getElementSize()$width, 0)
+  expect_hidden_element(selectedParticipantsContent)
   expect_false(grepl("active", selectedParticipantsContent$getElementAttribute("class")))
-  expect_gt(selectedStudiesContent$getElementSize()$width, 0)
+  expect_visible_element(selectedStudiesContent)
   expect_true(grepl("active", selectedStudiesContent$getElementAttribute("class")))
 
   selectedParticipantsTitle$clickElement()
-  expect_gt(selectedParticipantsContent$getElementSize()$width, 0)
+  expect_visible_element(selectedParticipantsContent)
   expect_true(grepl("active", selectedParticipantsContent$getElementAttribute("class")))
-  expect_equal(selectedStudiesContent$getElementSize()$width, 0)
+  expect_hidden_element(selectedStudiesContent)
   expect_false(grepl("active", selectedStudiesContent$getElementAttribute("class")))
 })
 
@@ -312,27 +360,31 @@ test_that("Study Cards are present", {
   selectedStudiesTitle$clickElement()
   studyCards <- remDr$findElements("class", "study-card")
   expect_gt(length(studyCards), 100)
+  selectedParticipantsTitle <- remDr$findElements("class", "df-tab-title")[[1]]
+  selectedParticipantsTitle$clickElement()
 })
 
 # --------------------- APPLYING FILTERS -------------------------------
 
+getPlotValues <- function(plotName){
+  barplot <- remDr$findElement('id', paste0('bars-', plotName))
+  bars <- barplot$findChildElements('class', 'rect')
+  values <- sapply(bars, function(bar){
+    return(as.numeric(unlist(bar$getElementAttribute('width'))))
+  })
+}
+
+getBannerValues <- function(){
+  bannerDiv <- remDr$findElement('id','data-finder-app-banner')
+  ems <- bannerDiv$findChildElements('class', 'filter-indicator')
+  innerTexts <- sapply(ems, function(em){
+    return(unlist(em$getElementText()))
+  })
+}
+
 test_that("Outputs change when filters are applied", {
 
-  getPlotValues <- function(plotName){
-    barplot <- remDr$findElement('id', paste0('bars-', plotName))
-    bars <- barplot$findChildElements('class', 'rect')
-    values <- sapply(bars, function(bar){
-      return(as.numeric(unlist(bar$getElementAttribute('width'))))
-    })
-  }
-
-  getBannerValues <- function(){
-    bannerDiv <- remDr$findElement('id','data-finder-app-banner')
-    ems <- bannerDiv$findChildElements('class', 'filter-indicator')
-    innerTexts <- sapply(ems, function(em){
-      return(unlist(em$getElementText()))
-    })
-  }
+  test_summary_and_visualizations()
 
   preSelectConditionPlotValues <- getPlotValues('Condition')
   expect_true(all(preSelectConditionPlotValues > 0))
@@ -377,6 +429,8 @@ test_that("Outputs change when filters are applied", {
   postSelectRacePlotValues <- getPlotValues('Race')
   expect_true(all(preSelectRacePlotValues != postSelectRacePlotValues))
 
+  test_summary_and_visualizations()
+
   # Click clear
   clearAllBtn <- remDr$findElement('id', 'clear-all-button')
   clearAllBtn$clickElement()
@@ -395,23 +449,123 @@ test_that("Outputs change when filters are applied", {
   expect_true(all.equal(postClearBannerValues, preSelectBannerValues))
 })
 
+test_that("Outputs change when assay filters are applied", {
+
+  test_summary_and_visualizations()
+
+  preSelectConditionPlotValues <- getPlotValues('Condition')
+  expect_true(all(preSelectConditionPlotValues > 0))
+
+  preSelectRacePlotValues <- getPlotValues('Race')
+  expect_true(all(preSelectRacePlotValues > 0))
+
+  # Get original values for Banner - empty
+  preSelectBannerValues <- getBannerValues()
+  expect_true(all(preSelectBannerValues == "No filters currently applied"))
+
+  # Add filters
+
+  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
+  filterDropdownButton$clickElement()
+
+  # ELISA at day 0
+
+  assayBtn <- remDr$findElement("id", "df-assay-dropdown")
+  assayBtn$clickElement()
+  assayOptions <- assayBtn$findChildElements("class", "df-dropdown-option")
+  optionsText <- unlist(lapply(assayOptions, function(x) x$getElementText()))
+  elisa <- assayOptions[[which(optionsText == "ELISA")]]
+  elisa$clickElement()
+
+  timepointBtn <- remDr$findElement("id", "df-timepoint-dropdown")
+  timepointBtn$clickElement()
+  timepointOptions <- timepointBtn$findChildElements("class", "df-dropdown-option")
+  optionsText <- unlist(lapply(timepointOptions, function(x) x$getElementText()))
+  day0 <- timepointOptions[[which(optionsText == "Day 0")]]
+  day0$clickElement()
+
+  addBtn <- remDr$findElement("class", "fa-plus")
+  addBtn$clickElement()
+
+  test_summary_and_visualizations()
+
+  # filter banner changes
+  postSelectBannerValues <- getBannerValues()
+  expectedBannerValues <- c("No filters currently applied",
+                            "No filters currently applied",
+                            "Assays at Timepoint: ELISA at Day 0")
+  expect_true(all.equal(postSelectBannerValues, expectedBannerValues))
+
+  postSelectRacePlotValues <- getPlotValues('Race')
+  expect_true(all(preSelectRacePlotValues != postSelectRacePlotValues))
+
+  test_summary_and_visualizations()
+
+  # Click clear
+  clearAllBtn <- remDr$findElement('id', 'clear-all-button')
+  clearAllBtn$clickElement()
+
+  sleep_for(3)
+
+  test_summary_and_visualizations()
+
+  # check original condition bar plot vals are back
+  postClearConditionPlotValues <- getPlotValues('Condition')
+  expect_true(all.equal(postClearConditionPlotValues, preSelectConditionPlotValues))
+
+  postClearRacePlotValues <- getPlotValues('Race')
+  expect_true(all.equal(postClearRacePlotValues, preSelectRacePlotValues))
+
+  # Get original values for Banner - empty
+  postClearBannerValues <- getBannerValues()
+  expect_true(all.equal(postClearBannerValues, preSelectBannerValues))
+})
+
 # --------------------- OTHER -------------------------
 
-test_that("Summary numbers match visualizations", {
-  summaryTextEl <- remDr$findElement("id", "data-finder-app-banner")$findChildElement("class", "df-group-summary-counts")
-  summaryText <- summaryTextEl$getElementText()[[1]]
+test_that("Load group works", {
+  banner <- remDr$findElement("id", "data-finder-app-banner")
+  bannerButtons <- banner$findChildElements("class", "df-banner-button")
+  manageDropdown <- bannerButtons[[2]]
+  manageDropdown$clickElement()
+  loadDropdown <- manageDropdown$findChildElement("class", "df-sub-dropdown")
+  loadDropdown$clickElement()
+  groups <- loadDropdown$findChildElements("class", "df-dropdown-option")
+  groupsText <- unlist(lapply(groups, function(group) {group$getElementText()}))
+  groups[[which(groupsText == "datafinder_test")]]$clickElement()
 
-  # Make sure barplots have rendered
-  selectedParticipantsTitle <- remDr$findElements("class", "df-tab-title")[[1]]
-  selectedParticipantsTitle$clickElement()
+  sleep_for(4)
 
-  studyCards <- remDr$findElements("class", "study-card")
-  totalStudies <- length(studyCards)
+  bannerValues <- getBannerValues()
+  groupBannerValues <- c(
+    'No filters currently applied',
+    'Age: 11-20',
+    'Assays at Timepoint: Gene Expression at Day 0'
+  )
+  expect_equal(bannerValues, groupBannerValues)
 
-  genderNumberEls <- remDr$findElement("id", "barplot-container-Gender")$findChildElements("class", "label-number")
-  genderNumbers <- unlist(lapply(genderNumberEls, function(el) as.numeric(el$getElementText()[[1]])))
-  totalParticipants <- sum(genderNumbers)
+  agePlotValues <- getPlotValues("Age")
+  expect_equal(sum(agePlotValues > 0), 1)
 
-  expect_equal(summaryText, paste0(totalParticipants, " participants from ", totalStudies, " studies"))
+  test_summary_and_visualizations()
+
+})
+
+test_that("Banner is visible on other pages", {
+  banner <- remDr$findElement("id", "data-finder-app-banner")
+  bannerButtons <- banner$findChildElements("class", "df-banner-button")
+  exploreDataButton <- bannerButtons[[1]]
+  exploreDataButton$clickElement()
+  exploreDataOptions <- exploreDataButton$findChildElements("class", "df-dropdown-option")
+
+  exploreDataOptions[[2]]$clickElement()
+
+  sleep_for(2)
+
+  test_presence_of_single_item("data-finder-banner")
+  banner <- remDr$findElement("id", "data-finder-banner")
+
+  expect_visible_element(banner)
+
 })
 
