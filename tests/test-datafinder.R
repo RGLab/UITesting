@@ -1,6 +1,7 @@
 if (!exists("remDr")) source("initialize.R")
 
-
+# This doesn't work on chrome for some reason...
+# Will need to devise a different method for checking element visibility on chrome.
 expect_hidden_element <- function(el) {
   expect_equal(el$getElementSize()$width, 0)
   expect_equal(el$getElementSize()$height, 0)
