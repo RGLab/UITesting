@@ -491,6 +491,9 @@ test_that("Outputs change when assay filters are applied", {
   addBtn <- remDr$findElement("class", "fa-plus")
   addBtn$clickElement()
 
+  # Close filter dropdown
+  filterDropdownButton$clickElement()
+
   test_summary_and_visualizations()
 
   # filter banner changes
