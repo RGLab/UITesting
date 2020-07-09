@@ -106,5 +106,5 @@ test_that("can log in", {
   sleep_for(2)
 
   page_title <- remDr$getTitle()[[1]]
-  expect_equal(page_title, "Find: /Studies")
+  expect_equal(page_title, "Studies: /Studies")
 })

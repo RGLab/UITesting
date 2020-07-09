@@ -160,7 +160,7 @@ test_that("banner dropdown menus work", {
 test_that("banner buttons are present", {
   buttonText <- c("Download Data", "Open In RStudio")
   buttonHref <- paste0(site_url,
-                       c("immport/Studies/exportStudyDatasets.view?", "rstudio/start.view?"))
+                       c("/immport/Studies/exportStudyDatasets.view?", "/rstudio/start.view?"))
 
   bannerButtons <- remDr$findElements("css selector", "#data-finder-app-banner .df-highlighted-button")
   expect_length(bannerButtons, 2)
@@ -190,7 +190,7 @@ test_that("Filter selector buttons are present", {
   filterDropdownButton$clickElement()
   filterDropdown <- remDr$findElement("css selector", "#data-finder-filters .dropdown-menu")
 
-  studyDesignOptions <- c("Condition",
+    studyDesignOptions <- c("Condition",
                    "Research Focus",
                    "Study")
   participantCharacteristicsOptions <- c("Gender",
@@ -413,6 +413,9 @@ test_that("Outputs change when filters are applied", {
   femaleCheckBox <- genderFilter$findChildElement('xpath',
                                                   '//*/input[@value="Female"]')
   femaleCheckBox$clickElement()
+
+  # Close dropdown
+  filterDropdownButton$clickElement()
 
   sleep_for(4)
 
