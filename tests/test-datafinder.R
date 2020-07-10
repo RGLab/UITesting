@@ -1,5 +1,9 @@
 if (!exists("remDr")) source("initialize.R")
 
+# NOTE:  These tests assume that there is a group called "datafinder_test"
+# NOTE:  with two filters: "Age: 11-20", "Assay at Timepoint: Gene Expression at Day 0"
+
+
 # This doesn't work on chrome for some reason...
 # Will need to devise a different method for checking element visibility on chrome.
 expect_hidden_element <- function(el) {
@@ -128,7 +132,7 @@ test_that("banner dropdown menus work", {
   expect_hidden_element(exploreDataOptions)
   exploreDataDropdown$clickElement()
   expect_visible_element(exploreDataOptions)
-  exploreDataOptionsText <- c("Select Participants", "Visualize", "QC", "Analyze")
+  exploreDataOptionsText <- c("Select Participants", "Visualize", "Analyze")
   expect_equal(
     unlist(lapply(exploreDataOptions$findChildElements("css selector", "li"),
                   function(x){x$getElementText()})),
