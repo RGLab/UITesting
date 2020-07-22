@@ -263,6 +263,17 @@ test_that("HIPC Tools tab has correct elements", {
   expect_length(sections, 4)
 })
 
+test_that("HIPC Tools tab has correct elements", {
+  navigate_to_link("immunespacer")
+
+  sleep_for(3)
+
+  iframe <- remDr$findElement('tag', 'iframe')
+  expect_length(iframe, 1)
+
+  # TODO: how to inspect iframe contents?
+})
+
 
 
 
