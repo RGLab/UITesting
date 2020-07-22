@@ -93,7 +93,7 @@ test_that("`Main Menu` tab shows options properly", {
       txt <- x$getElementText()
     }))
 
-    expected_link_names <- c("Home", "Resources", "About")
+    expected_link_names <- c("Find Participants", "Resources", "About")
     expect_equal(link_names, expected_link_names)
 
     main_menu_tab[[1]]$clickElement()
