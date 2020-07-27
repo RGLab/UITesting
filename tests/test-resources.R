@@ -35,12 +35,12 @@ test_that("Highlighted Reports tab has correct elements", {
     headerText <- header$getElementText()
   }))
 
-  expectedHeaders <- c("SDY144",
-                       "SDY180",
-                       "SDY207",
-                       "SDY269",
-                       "ImmuneSignatures 1",
-                       "Lyoplate")
+  expectedHeaders <- c('Correlation of HAI/VN and plasma cell counts',
+                       'Measuring plasmablast abundance by multi-parameter flow cytometry',
+                       'Multiple custom reports related to CyTOF and Flow Cytometry Data',
+                       'Correlating HAI with flow cytometry and ELISPOT results',
+                       'Influenza Vaccine Meta-Analysis to define genetic predictors of vaccine response',
+                       'Standardizing Flow Cytometry Immunophenotyping from Reagents to Analyses:  Results of the Human ImmunoPhenotyping Consortium')
 
   expect_true(all.equal(actualHeaders, expectedHeaders))
 
