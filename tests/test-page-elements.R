@@ -1,6 +1,7 @@
 if (!exists("context_of")) source("initialize.R")
 
 test_link <- function(element, linkText, linkTitle) {
+  if (element$getElementAttribute("href")[[1]] == "mailto:ops@immunespace.org") return()
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(element$getElementText()[[1]], linkText)
   element$clickElement()
@@ -44,28 +45,32 @@ test_that("Custom footer is present", {
 
 test_that("Custom footer is styled correctly", {
   footer <- remDr$findElement("id", "immunespace-custom-footer")
-  icon <- footer$findChildElement("tag name", "svg")
+  icon <- footer$findChildElement("tag name", "i")
   expect_lt(icon$getElementSize()$height, 20)
 })
 
 test_that("Footer links work", {
   footer <- remDr$findElement("id", "immunespace-custom-footer")
   links <- footer$findChildElements("tag name", "a")
-  expect_length(links, 5)
+  expect_length(links, 6)
   linkText <- c(
     "LabKey Software",
     "HIPC",
     "NIAID",
+    "",
+    "",
     ""
   )
   linkTitles <- c(
     "Research Data Management Software - LabKey",
     "Human Immunology Project Consortium",
     "NIH: National Institute of Allergy and Infectious Diseases",
-    "ImmuneSpace \\(@ImmuneSpace\\) / Twitter"
+    "ImmuneSpace \\(@ImmuneSpace\\) / Twitter",
+    "",
+    "Join ImmuneSpace on Slack!"
   )
 
-  mapply(test_link, links[1:4], linkText, linkTitles)
+  mapply(test_link, links, linkText, linkTitles)
 
 })
 
