@@ -7,13 +7,17 @@ if (!exists("remDr")) source("initialize.R")
 # This doesn't work on chrome for some reason...
 # Will need to devise a different method for checking element visibility on chrome.
 expect_hidden_element <- function(el) {
-  expect_equal(el$getElementSize()$width, 0)
-  expect_equal(el$getElementSize()$height, 0)
+  zeroHeight <- el$getElementSize()$height == 0
+  zeroWidth <- el$getElementSize()$width == 0
+  display <- el$getElementValueOfCssProperty("display")[[1]] == "none"
+  expect_true(any(zeroHeight, zeroWidth, display))
 }
 
 expect_visible_element <- function(el) {
-  expect_gt(el$getElementSize()$width, 0)
-  expect_gt(el$getElementSize()$height, 0)
+  zeroHeight <- el$getElementSize()$height == 0
+  zeroWidth <- el$getElementSize()$width == 0
+  display <- el$getElementValueOfCssProperty("display")[[1]] == "none"
+  expect_false(any(zeroHeight, zeroWidth, display))
 }
 
 test_summary_and_visualizations <- function() {
@@ -46,7 +50,6 @@ test_connection(remDr, page_url, "Studies: /Studies")
 # test_presence_of_single_item("loader-1")
 # sleep_for(5)
 
-test_main_menu_tab()
 
 # check for tabs -- there should be none.
 test_that("Correct tabs are present", {
@@ -117,34 +120,22 @@ test_that("Correct banner is present", {
 
 })
 
-test_that("banner dropdown menus work", {
+test_that("Manage Groups dropdown works", {
   bannerDropdowns <- remDr$findElements("css selector", "#data-finder-app-banner .df-outer-dropdown")
-  buttonText <- c("Select Participants", "Manage")
+  buttonText <- c("Manage Groups")
 
-  expect_equal(length(bannerDropdowns), 2)
+  expect_equal(length(bannerDropdowns), 1)
   expect_equal(
     unlist(lapply(bannerDropdowns, function(x){return(x$getElementText())})),
     buttonText
   )
 
-  exploreDataDropdown <- bannerDropdowns[[1]]
-  exploreDataOptions <- exploreDataDropdown$findChildElement("css selector", "ul")
-  expect_hidden_element(exploreDataOptions)
-  exploreDataDropdown$clickElement()
-  expect_visible_element(exploreDataOptions)
-  exploreDataOptionsText <- c("Select Participants", "Visualize", "Analyze")
-  expect_equal(
-    unlist(lapply(exploreDataOptions$findChildElements("css selector", "li"),
-                  function(x){x$getElementText()})),
-    exploreDataOptionsText
-  )
-
-  optionsDropdown <- bannerDropdowns[[2]]
-  optionsDropdownOptions <- optionsDropdown$findChildElement("css selector", "ul")
-  expect_hidden_element(optionsDropdownOptions)
-  optionsDropdown$clickElement()
-  expect_visible_element(optionsDropdownOptions)
-  optionsList <- optionsDropdown$findChildElements("css selector", ".btn>ul>li")
+  manageGroupsDropdown <- bannerDropdowns[[1]]
+  manageGroupsDropdownOptions <- manageGroupsDropdown$findChildElement("css selector", "ul")
+  expect_hidden_element(manageGroupsDropdownOptions)
+  manageGroupsDropdown$clickElement()
+  expect_visible_element(manageGroupsDropdownOptions)
+  optionsList <- manageGroupsDropdown$findChildElements("css selector", ".btn>ul>li")
   expect_equal(
     unlist(lapply(optionsList, function(x){x$getElementText()})),
     c("Save", "Save As", "My Groups Dashboard", "Send", "Load")
@@ -156,19 +147,21 @@ test_that("banner dropdown menus work", {
   loadGroupsDropdown$clickElement()
   expect_visible_element(loadGroupsOptions[[1]])
 
-  optionsDropdown$clickElement()
+  manageGroupsDropdown$clickElement()
   expect_hidden_element(loadGroupsOptions[[1]])
-  expect_hidden_element(optionsDropdownOptions)
 
 })
 
 test_that("banner buttons are present", {
-  buttonText <- c("Download Data", "Open In RStudio")
+  buttonText <- c("Visualize", "Analyze", "Download", "Open In RStudio")
   buttonHref <- paste0(site_url,
-                       c("/immport/Studies/exportStudyDatasets.view?", "/rstudio/start.view?"))
+                       c("/project/Studies/begin.view?pageId=visualize",
+                         "/project/Studies/begin.view?pageId=analyze",
+                         "/immport/Studies/exportStudyDatasets.view?",
+                         "/rstudio/start.view?"))
 
   bannerButtons <- remDr$findElements("css selector", "#data-finder-app-banner .df-highlighted-button")
-  expect_length(bannerButtons, 2)
+  expect_length(bannerButtons, 4)
   expect_equal(unlist(lapply(bannerButtons, function(x)x$getElementText())),
                buttonText)
   expect_equal(unlist(lapply(bannerButtons, function(x)x$getElementAttribute("href"))),
@@ -498,6 +491,7 @@ test_that("Outputs change when assay filters are applied", {
 
   # Close filter dropdown
   filterDropdownButton$clickElement()
+  sleep_for(1)
 
   test_summary_and_visualizations()
 
@@ -511,7 +505,6 @@ test_that("Outputs change when assay filters are applied", {
   postSelectRacePlotValues <- getPlotValues('Race')
   expect_true(all(preSelectRacePlotValues != postSelectRacePlotValues))
 
-  test_summary_and_visualizations()
 
   # Click clear
   clearAllBtn <- remDr$findElement('id', 'clear-all-button')
@@ -538,7 +531,7 @@ test_that("Outputs change when assay filters are applied", {
 test_that("Load group works", {
   banner <- remDr$findElement("id", "data-finder-app-banner")
   bannerButtons <- banner$findChildElements("class", "df-banner-button")
-  manageDropdown <- bannerButtons[[2]]
+  manageDropdown <- bannerButtons[[1]]
   manageDropdown$clickElement()
   loadDropdown <- manageDropdown$findChildElement("class", "df-sub-dropdown")
   loadDropdown$clickElement()
@@ -565,12 +558,8 @@ test_that("Load group works", {
 
 test_that("Banner is visible on other pages", {
   banner <- remDr$findElement("id", "data-finder-app-banner")
-  bannerButtons <- banner$findChildElements("class", "df-banner-button")
-  exploreDataButton <- bannerButtons[[1]]
-  exploreDataButton$clickElement()
-  exploreDataOptions <- exploreDataButton$findChildElements("class", "df-dropdown-option")
-
-  exploreDataOptions[[2]]$clickElement()
+  bannerButtons <- banner$findChildElements("class", "df-highlighted-button")
+  bannerButtons[[1]]$clickElement()
 
   sleep_for(2)
 
@@ -579,5 +568,7 @@ test_that("Banner is visible on other pages", {
 
   expect_visible_element(banner)
 
+  bannerButtons <- banner$findChildElements("class", "df-highlighted-button")
+  bannerButtons[[1]]$clickElement()
 })
 
