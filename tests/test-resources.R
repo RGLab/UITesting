@@ -40,7 +40,7 @@ test_that("Highlighted Reports tab has correct elements", {
                        'Multiple custom reports related to CyTOF and Flow Cytometry Data',
                        'Correlating HAI with flow cytometry and ELISPOT results',
                        'Influenza Vaccine Meta-Analysis to define genetic predictors of vaccine response',
-                       'Standardizing Flow Cytometry Immunophenotyping from Reagents to Analyses:  Results of the Human ImmunoPhenotyping Consortium')
+                       'Standardizing Flow Cytometry Immunophenotyping from Reagents to Analyses: Results of the Human ImmunoPhenotyping Consortium')
 
   expect_true(all.equal(actualHeaders, expectedHeaders))
 
