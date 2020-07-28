@@ -5,7 +5,7 @@ test_link <- function(element, linkText, linkTitle) {
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(element$getElementText()[[1]], linkText)
   element$clickElement()
-  sleep_for(1)
+  sleep_for(3)
   tabs <- remDr$getWindowHandles()
   expect_equal(length(tabs), 2, info = paste0("Couldn't open the link: ", linkText))
 
