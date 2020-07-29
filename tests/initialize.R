@@ -251,111 +251,73 @@ test_tabs <- function(x) {
   })
 }
 
-test_studies_tab <- function() {
-  test_that("`Studies` tab shows studies properly", {
-    study_tab <- remDr$findElements("css selector", "li[data-name=StudiesMenu]")
-    expect_length(study_tab, 1)
 
-    if (length(study_tab) == 1) {
-      study_tab[[1]]$clickElement()
-
-      study_list <- remDr$findElements("css selector", "div[id=studies]")
-      expect_equal(length(study_list), 1, info = "Does 'Studies' tab exist?")
-
-      sleep_for(3)
-
-      study_list_displayed <- study_list[[1]]$isElementDisplayed()[[1]]
-      expect_true(study_list_displayed)
-
-      if (study_list_displayed) {
-        study_list_text <- study_list[[1]]$getElementText()[[1]]
-        study_elems <- strsplit(study_list_text, "\n")[[1]]
-        studies <- study_elems[grepl("SDY\\d+", study_elems)]
-        expect_gt(length(studies), 0)
-
-        if (length(studies) > 0) {
-          study_number <- as.integer(sub("\\*", "", sub("SDY", "", studies)))
-          expect_equal(
-            study_number, sort(study_number),
-            info = "Are studies in order?"
-          )
-
-          HIPC <- grepl("\\*", studies)
-          expect_gt(sum(HIPC), 0)
-        }
-
-        study_tab[[1]]$clickElement()
-        sleep_for(1)
-      }
-    }
-  })
-}
-
-test_tutorials_tab <- function() {
-  test_that("`Tutorials` tab shows studies properly", {
-    tutorial_tab <- remDr$findElements(
-      "css selector", "li[data-name='Wiki Menu']"
-    )
-    expect_equal(length(tutorial_tab), 1)
-
-    if (length(tutorial_tab) == 1) {
-      tutorial_tab[[1]]$clickElement()
-
-      tutorial_list <- remDr$findElements("css selector", "div[id=tutorials]")
-      expect_equal(
-        length(tutorial_list), 1,
-        info = "Does 'Tutorials' tab exist?"
-      )
-
-      sleep_for(3)
-
-      tutorial_list_displayed <- tutorial_list[[1]]$isElementDisplayed()[[1]]
-      expect_true(tutorial_list_displayed)
-
-      if (tutorial_list_displayed) {
-        tutorial_elems <- strsplit(
-          tutorial_list[[1]]$getElementText()[[1]],
-          split = "\n"
-        )[[1]]
-        expect_length(tutorial_elems, 7)
-
-        if (length(tutorial_elems) == 7) {
-          expect_equal(
-            tutorial_elems[1],
-            "Overall introduction to ImmuneSpace"
-          )
-          expect_equal(
-            tutorial_elems[2],
-            "Exploring a study in ImmuneSpace"
-          )
-          expect_equal(
-            tutorial_elems[3],
-            "Identifying data of interest using the Data Finder"
-          )
-          expect_equal(
-            tutorial_elems[4],
-            "Working with tabular data in ImmuneSpace"
-          )
-          expect_equal(
-            tutorial_elems[5],
-            "Visualizing immunological data using the Data Explorer"
-          )
-          expect_equal(
-            tutorial_elems[6],
-            "Correlating gene expression and immunological data"
-          )
-          expect_equal(
-            tutorial_elems[7],
-            "Performing a gene set enrichment analysis in ImmuneSpace"
-          )
-        }
-
-        tutorial_tab[[1]]$clickElement()
-        sleep_for(1)
-      }
-    }
-  })
-}
+# KEEP FOR FUTURE UPDATES
+# test_tutorials_tab <- function() {
+#   test_that("`Tutorials` tab shows studies properly", {
+#     tutorial_tab <- remDr$findElements(
+#       "css selector", "li[data-name='Wiki Menu']"
+#     )
+#     expect_equal(length(tutorial_tab), 1)
+#
+#     if (length(tutorial_tab) == 1) {
+#       tutorial_tab[[1]]$clickElement()
+#
+#       tutorial_list <- remDr$findElements("css selector", "div[id=tutorials]")
+#       expect_equal(
+#         length(tutorial_list), 1,
+#         info = "Does 'Tutorials' tab exist?"
+#       )
+#
+#       sleep_for(3)
+#
+#       tutorial_list_displayed <- tutorial_list[[1]]$isElementDisplayed()[[1]]
+#       expect_true(tutorial_list_displayed)
+#
+#       if (tutorial_list_displayed) {
+#         tutorial_elems <- strsplit(
+#           tutorial_list[[1]]$getElementText()[[1]],
+#           split = "\n"
+#         )[[1]]
+#         expect_length(tutorial_elems, 7)
+#
+#         if (length(tutorial_elems) == 7) {
+#           expect_equal(
+#             tutorial_elems[1],
+#             "Overall introduction to ImmuneSpace"
+#           )
+#           expect_equal(
+#             tutorial_elems[2],
+#             "Exploring a study in ImmuneSpace"
+#           )
+#           expect_equal(
+#             tutorial_elems[3],
+#             "Identifying data of interest using the Data Finder"
+#           )
+#           expect_equal(
+#             tutorial_elems[4],
+#             "Working with tabular data in ImmuneSpace"
+#           )
+#           expect_equal(
+#             tutorial_elems[5],
+#             "Visualizing immunological data using the Data Explorer"
+#           )
+#           expect_equal(
+#             tutorial_elems[6],
+#             "Correlating gene expression and immunological data"
+#           )
+#           expect_equal(
+#             tutorial_elems[7],
+#             "Performing a gene set enrichment analysis in ImmuneSpace"
+#           )
+#         }
+#
+#         tutorial_tab[[1]]$clickElement()
+#         sleep_for(1)
+#       }
+#     }
+#   })
+# }
 
 test_filtering <- function() {
   gender <- remDr$findElements("css selector", "th[title$=gender]")
@@ -385,4 +347,26 @@ test_filtering <- function() {
   expect_equal(length(buttons), 4)
   buttons[[1]]$clickElement()
   sleep_for(2)
+}
+
+test_presence_of_single_item <- function(itemId){
+  el <- remDr$findElement("id", itemId)
+  expect_length(el, 1)
+}
+
+test_presence_of_single_img <- function(el){
+  img <- el$findChildElement('tag name', 'img')
+  expect_length(img, 1)
+
+  if(length(img) > 0){
+    imgSrc <- img$getElementAttribute('src')[[1]]
+    res <- httr::GET(imgSrc)
+    expect_true(res$status_code == 200)
+  }
+}
+
+navigate_to_link <- function(linkName){
+  navbarLi <- remDr$findElement('id', paste0('navbar-link-', linkName))
+  ahref <- navbarLi$findChildElement('tag name', 'a')
+  ahref$clickElement()
 }

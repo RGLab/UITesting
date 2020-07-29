@@ -41,6 +41,10 @@ studies <- list(
     assoc_studies = c(
       "SDY112",
       "SDY113",
+      "SDY1466",
+      "SDY1468",
+      "SDY1469",
+      "SDY1471",
       "SDY215",
       "SDY305",
       "SDY312",
@@ -67,6 +71,10 @@ studies <- list(
     assoc_studies = c(
       "SDY112",
       "SDY113",
+      "SDY1466",
+      "SDY1468",
+      "SDY1469",
+      "SDY1471",
       "SDY212",
       "SDY305",
       "SDY312",

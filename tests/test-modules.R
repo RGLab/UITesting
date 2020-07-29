@@ -11,9 +11,6 @@ test_that("'Active Modules' module is present", {
   panel <- remDr$findElements(using = "class", value = "x-panel")
   expect_equal(length(panel), 1)
 
-  de_link <- remDr$findElements(using = "css selector", value = "a[href$='/DataExplorer/Studies/SDY269/begin.view']")
-  expect_equal(length(de_link), 1)
-
   gee_link <- remDr$findElements(using = "css selector", value = "a[href$='/GeneExpressionExplorer/Studies/SDY269/begin.view']")
   expect_equal(length(gee_link), 1)
 

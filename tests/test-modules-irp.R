@@ -8,7 +8,7 @@ test_parameter <- function(param, formItem, paramConfig) {
   arrow <- formItem$findChildElements(using = "class", value = "x-form-arrow-trigger")
   expect_equal(length(arrow), 1, info = param)
   arrow[[1]]$clickElement()
-  sleep_for(1)
+  sleep_for(3)
 
   combo_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
   expect_equal(length(combo_list), 1, info = param)
@@ -19,14 +19,14 @@ test_parameter <- function(param, formItem, paramConfig) {
   items <- combo_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
   expect_equal(length(items), length(paramConfig$expected), info = param)
   items[[paramConfig$choice]]$clickElement()
-  sleep_for(1)
+  sleep_for(8)
 
   clear <- formItem$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(clear), 1, info = param)
 
   if (param %in% c("training", "testing")) {
     arrow[[1]]$clickElement()
-    sleep_for(1)
+    sleep_for(8)
   }
 }
 
@@ -71,7 +71,7 @@ test_irp <- function(config) {
     expect_equal(length(dich), 1,
                  info = "'Dichotomize' checkbox is not present.")
     dich[[1]]$clickElement()
-    sleep_for(1)
+    sleep_for(3)
 
     dich_threshold <- formItems[[6]]$findChildElements(using = "class", value = "ui-test-dichotomize-value")
     expect_equal(length(dich_threshold), 1,
@@ -84,7 +84,7 @@ test_irp <- function(config) {
 
     additionalOptions_header <- additionalOptions[[1]]$findChildElements(using = "class", value = "x-fieldset-header")
     additionalOptions_header[[1]]$clickElement()
-    sleep_for(1)
+    sleep_for(3)
 
     AFC <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-foldchange")
     expect_equal(length(AFC), 1,
@@ -99,7 +99,7 @@ test_irp <- function(config) {
                  info = "'Use gene...' checkbox is not present.")
 
     additionalOptions_header[[1]]$clickElement()
-    sleep_for(1)
+    sleep_for(3)
   })
 
   test_that("buttons are present", {
@@ -144,7 +144,7 @@ test_irp <- function(config) {
         i <- sample(1:length(links), 1)
 
         links[[i]]$clickElement()
-        sleep_for(1)
+        sleep_for(3)
 
         tabs <- remDr$getWindowHandles()
         expect_equal(length(tabs), 2, info = "Couldn't open the link")
@@ -152,17 +152,17 @@ test_irp <- function(config) {
         if (length(tabs) == 2) {
           # switch to the new tab
           remDr$switchToWindow(tabs[[2]])
-          sleep_for(1)
+          sleep_for(2)
           expect_match(remDr$getTitle()[[1]], "ImmuNet")
 
           if (grepl("ImmuNet", remDr$getTitle()[[1]])) {
             # close the new tab
             remDr$closeWindow()
-            sleep_for(1)
+            sleep_for(2)
 
             # switchback to the original tab
             remDr$switchToWindow(tabs[[1]])
-            sleep_for(1)
+            sleep_for(2)
             expect_match(remDr$getTitle()[[1]], "Immune Response Predictor")
           }
         }
