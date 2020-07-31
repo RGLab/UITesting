@@ -4,7 +4,7 @@ page_url <- paste0(site_url, "/project/Studies/begin.view?pageId=Resources")
 
 context_of("test-resourcesPage.R", "Resources Page", page_url)
 
-test_connection(remDr, page_url, "Resources: /Studies")
+test_connection(remDr, page_url, "Studies: /Studies")
 
 sleep_for(5)
 
@@ -263,7 +263,7 @@ test_that("HIPC Tools tab has correct elements", {
   expect_length(sections, 4)
 })
 
-test_that("HIPC Tools tab has correct elements", {
+test_that("HIPC ImmuneSpaceR tab has correct elements", {
   navigate_to_link("immunespacer")
 
   sleep_for(3)
