@@ -5,14 +5,16 @@ test_link <- function(element, linkText, linkTitle) {
   pageTitle <- remDr$getTitle()[[1]]
   expect_equal(element$getElementText()[[1]], linkText)
   element$clickElement()
-  sleep_for(3)
+  sleep_for(1)
   tabs <- remDr$getWindowHandles()
   expect_equal(length(tabs), 2, info = paste0("Couldn't open the link: ", linkText))
 
   if (length(tabs) == 2) {
     # switch to the new tab
     remDr$switchToWindow(tabs[[2]])
-    sleep_for(2)
+    # NOTE:  slack link sometimes takes a long time
+    if (element$getElementAttribute("href")[[1]] == "https://immunespace.herokuapp.com/") sleep_for(6)
+    sleep_for(1)
     expect_match(remDr$getTitle()[[1]], linkTitle)
 
     # close the new tab
