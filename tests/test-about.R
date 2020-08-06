@@ -4,7 +4,7 @@ page_url <- paste0(site_url, "/project/Studies/begin.view?pageId=About")
 
 context_of("test-aboutPage.R", "About Page", page_url)
 
-test_connection(remDr, page_url, "About: /Studies")
+test_connection(remDr, page_url, "Studies: /Studies")
 
 sleep_for(5)
 
