@@ -1,31 +1,35 @@
 if (!exists("context_of")) source("initialize.R")
 
 test_link <- function(element, linkText, linkTitle) {
-  if (element$getElementAttribute("href")[[1]] == "mailto:ops@immunespace.org") return()
-  pageTitle <- remDr$getTitle()[[1]]
   expect_equal(element$getElementText()[[1]], linkText)
-  element$clickElement()
-  sleep_for(1)
-  tabs <- remDr$getWindowHandles()
-  expect_equal(length(tabs), 2, info = paste0("Couldn't open the link: ", linkText))
 
-  if (length(tabs) == 2) {
-    # switch to the new tab
-    remDr$switchToWindow(tabs[[2]])
-    # NOTE:  slack link sometimes takes a long time
-    if (element$getElementAttribute("href")[[1]] == "https://immunespace.herokuapp.com/") sleep_for(6)
-    sleep_for(1)
-    expect_match(remDr$getTitle()[[1]], linkTitle)
+  # NOTE:  on Saucelabs, the links seem to open in the same window, breaking all subsequent tests.
+  # TODO:  Find a better way to check links
 
-    # close the new tab
-    remDr$closeWindow()
-    sleep_for(1)
-
-    # switchback to the original tab
-    remDr$switchToWindow(tabs[[1]])
-    sleep_for(1)
-    expect_match(remDr$getTitle()[[1]], pageTitle)
-  }
+  # if (element$getElementAttribute("href")[[1]] == "mailto:ops@immunespace.org") return()
+  # pageTitle <- remDr$getTitle()[[1]]
+  # element$clickElement()
+  # sleep_for(1)
+  # tabs <- remDr$getWindowHandles()
+  # expect_equal(length(tabs), 2, info = paste0("Couldn't open the link: ", linkText))
+  #
+  # if (length(tabs) == 2) {
+  #   # switch to the new tab
+  #   remDr$switchToWindow(tabs[[2]])
+  #   # NOTE:  slack link sometimes takes a long time
+  #   if (element$getElementAttribute("href")[[1]] == "https://immunespace.herokuapp.com/") sleep_for(6)
+  #   sleep_for(1)
+  #   expect_match(remDr$getTitle()[[1]], linkTitle)
+  #
+  #   # close the new tab
+  #   remDr$closeWindow()
+  #   sleep_for(1)
+  #
+  #   # switchback to the original tab
+  #   remDr$switchToWindow(tabs[[1]])
+  #   sleep_for(1)
+  #   expect_match(remDr$getTitle()[[1]], pageTitle)
+  # }
 
 }
 
