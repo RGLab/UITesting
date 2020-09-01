@@ -2,6 +2,7 @@
 
 dist: trusty
 language: R
+r: 3.6
 env:
  - TEST_BROWSER=chrome
  - TEST_BROWSER=firefox
