@@ -169,7 +169,7 @@ test_data_explorer <- function(applyFilter = FALSE) {
     expect_equal(headers_text,
                  c("Participant ID", "Age Reported", "Gender", "Race", "Cohort",
                    "Analyte", "Study Time Collected", "Study Time Collected Unit",
-                   "Value Reported", "Unit Reported"))
+                   "Value Preferred", "Unit Reported"))
 
     if (applyFilter) {
       test_filtering()
