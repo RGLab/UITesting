@@ -366,7 +366,27 @@ test_presence_of_single_img <- function(el){
 }
 
 navigate_to_link <- function(linkName){
-  navbarLi <- remDr$findElement('id', paste0('navbar-link-', linkName))
-  ahref <- navbarLi$findChildElement('tag name', 'a')
+  ahref <- remDr$findElement('id', linkName)
   ahref$clickElement()
+}
+
+click_target_dropdown <- function(target){
+  dropdowns <- remDr$findElements("xpath", "//a[@class='dropdown-toggle']")
+  innerTexts <- sapply(dropdowns, function(x){ x$getElementText() })
+  targetDropdown <- dropdowns[ innerTexts == target ]
+  targetDropdown[[1]]$clickElement()
+}
+
+get_dropdown_options <- function(){
+  openDropDownEl <- remDr$findElement("xpath", "//li[contains(@class, 'dropdown open')]")
+  dropdownMenu <- openDropDownEl$findChildElement("class", "dropdown-menu")
+  options <- dropdownMenu$findChildElements('tag name', 'li')
+}
+
+check_dropdown_titles <- function(expectedTitles, dropdownOptions){
+  actualTitles <- sapply(dropdownOptions, function(li){
+    ahref <- li$findChildElement('tag name', 'a')
+    innerText <- ahref$getElementText()[[1]]
+  })
+  expect_true(all.equal(actualTitles, expectedTitles))
 }
