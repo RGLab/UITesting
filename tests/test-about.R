@@ -45,7 +45,7 @@ test_that("Data Processing tab has correct elements", {
   expectedAssayTitles <- c("Cytometry",
                            "Gene Expression",
                            "Immune Response")
-  check_dropdown_titles(expectedAssayTitles)
+  check_dropdown_titles(expectedAssayTitles, assayOptions)
 
   assayOptions[[2]]$clickElement()
 
