@@ -37,24 +37,15 @@ test_that("Data Standards tab has correct elements", {
 
 test_that("Data Processing tab has correct elements", {
 
-  dropdowns <- remDr$findElements("xpath", "//a[@class='dropdown-toggle']")
-  innerTexts <- sapply(dropdowns, function(x){ x$getElementText() })
-  DataProcessingDropdown <- dropdowns[ innerTexts == "Data Processing" ]
-  DataProcessingDropdown[[1]]$clickElement()
+  click_target_dropdown("Data Processing")
 
-  openDropDownEl <- remDr$findElement("xpath", "//li[@class='dropdown open']")
-  dropdownMenu <- openDropDownEl$findChildElement("class", "dropdown-menu")
-  assayOptions <- dropdownMenu$findChildElements('tag name', 'li')
+  assayOptions <- get_dropdown_options()
   expect_length(assayOptions, 3)
 
-  assayTitles <- sapply(assayOptions, function(li){
-    ahref <- li$findChildElement('tag name', 'a')
-    innerText <- ahref$getElementText()[[1]]
-  })
   expectedAssayTitles <- c("Cytometry",
                            "Gene Expression",
                            "Immune Response")
-  expect_true(all.equal(assayTitles, expectedAssayTitles))
+  check_dropdown_titles(expectedAssayTitles)
 
   assayOptions[[2]]$clickElement()
 
