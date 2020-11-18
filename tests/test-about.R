@@ -15,7 +15,7 @@ test_that("all webpart is present", {
 
 test_that("About tab has correct elements", {
 
-  div <- remDr$findElement('id', 'About')
+  div <- remDr$findElement('id', 'About-content')
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements('tag name', 'p')
@@ -25,10 +25,10 @@ test_that("About tab has correct elements", {
 })
 
 test_that("Data Standards tab has correct elements", {
-  tab <- remDr$findElement('id', 'navbar-link-data-standards')
+  tab <- remDr$findElement('id', 'DataStandards')
   tab$clickElement()
 
-  div <- remDr$findElement('id', 'DataStandards')
+  div <- remDr$findElement('id', 'DataStandards-content')
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements('tag name', 'p')
@@ -37,33 +37,32 @@ test_that("Data Standards tab has correct elements", {
 
 test_that("Data Processing tab has correct elements", {
 
-  tab <- remDr$findElement('id', 'DataProcessingDropdown')
-  tab$clickElement()
+  click_target_dropdown("Data Processing")
 
-  navbarLi <- remDr$findElement('id', 'navbar-link-data-processing')
-  assayOptions <- navbarLi$findChildElements('tag name', 'li')
+  assayOptions <- get_dropdown_options()
   expect_length(assayOptions, 3)
 
-  assayTitles <- sapply(assayOptions, function(li){
-    ahref <- li$findChildElement('tag name', 'a')
-    innerText <- ahref$getElementText()[[1]]
-  })
   expectedAssayTitles <- c("Cytometry",
                            "Gene Expression",
                            "Immune Response")
-  expect_true(all.equal(assayTitles, expectedAssayTitles))
+  check_dropdown_titles(expectedAssayTitles, assayOptions)
 
   assayOptions[[2]]$clickElement()
 
-  div <- remDr$findElement('id', 'DataProcessing')
-  test_presence_of_single_img(div)
+  div <- remDr$findElement('id', 'gene-expression')
+  expect_length(div, 1)
+
+  if(length(div) == 1){
+    img <- remDr$findElement("xpath", "//img[@src='/AboutPage/images/ge_standardization.png']")
+    expect_length(img, 1)
+  }
 })
 
 test_that("Data Releases tab has correct elements", {
-  tab <- remDr$findElement('id', 'navbar-link-data-release')
+  tab <- remDr$findElement('id', 'DataReleases')
   tab$clickElement()
 
-  div <- remDr$findElement('id', 'DataReleases')
+  div <- remDr$findElement('id', 'DataReleases-content')
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements('tag name', 'p')
@@ -86,10 +85,10 @@ test_that("Data Releases tab has correct elements", {
 })
 
 test_that("Software Updates tab has correct elements", {
-  tab <- remDr$findElement('id', 'navbar-link-software-updates')
+  tab <- remDr$findElement('id', 'SoftwareUpdates')
   tab$clickElement()
 
-  div <- remDr$findElement('id', 'SoftwareUpdates')
+  div <- remDr$findElement('id', 'SoftwareUpdates-content')
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements('tag name', 'p')
@@ -97,7 +96,7 @@ test_that("Software Updates tab has correct elements", {
 })
 
 test_that("R Session Info tab has correct elements", {
-  tab <- remDr$findElement('id', 'navbar-link-r-session-info')
+  tab <- remDr$findElement('id', 'RSessionInfo')
   tab$clickElement()
 
   # Rmd html output is appended as child and there is no 'id' of the div directly
