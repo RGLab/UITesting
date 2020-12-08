@@ -56,3 +56,30 @@ test_that("grid is present", {
   rows <- grid[[1]]$findChildElements("tag", "tr")
   expect_gt(length(rows), 10)
 })
+
+test_that("data explorer button works", {
+  # select HAI
+  gridDropdowns <- remDr$findElements("css selector", ".labkey-button-bar>.lk-menu-drop")
+  chooseDatasetButton <- gridDropdowns[[1]]
+  chooseDatasetButton$clickElement()
+  children <- chooseDatasetButton$findChildElements("tag name", "li")
+  assaysButton <- children[[2]]
+  expect_equal(assaysButton$getElementText()[[1]], "Assays")
+  assaysButton$clickElement()
+  assays <- assaysButton$findChildElements("tag", "li")
+  expect_equal(length(assays), 10)
+  hai <- assays[[5]]
+  expect_equal(hai$getElementText()[[1]], "Hemagglutination inhibition (HAI)")
+  hai$clickElement()
+  sleep_for(3)
+  daTitle <- remDr$findElement("class", "data-access-title")
+  expect_equal(daTitle$getElementText()[[1]], "Hemagglutination inhibition (HAI)")
+
+  # Find data explorer button and click it
+  gridButtons <- remDr$findElements("css selector", ".labkey-button-bar>.labkey-button")
+  buttonText <- unlist(lapply(gridButtons, function(x) x$getElementText()))
+  expect_true("Data Explorer" %in% buttonText)
+  dataExplorerButton <- gridButtons[[which(buttonText == "Data Explorer")]]
+  dataExplorerButton$clickElement()
+  expect_equal(remDr$getCurrentUrl()[[1]], paste0(site_url, "/DataExplorer/Studies/begin.view?dataset=hai&schema=study"))
+})
