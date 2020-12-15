@@ -8,26 +8,31 @@ context_of(file = "test-modules-da.R",
 
 test_connection(remDr, pageURL, "DataAccess: /Studies")
 
+datasets <- c("Demographics",
+              "",
+              "Enzyme-linked immunosorbent assay (ELISA)",
+              "Enzyme-Linked ImmunoSpot (ELISPOT)",
+              "Flow cytometry analyzed results",
+              "Hemagglutination inhibition (HAI)",
+              "Human leukocyte antigen (HLA) typing",
+              "Multiplex bead array asssay",
+              "Neutralizing antibody titer",
+              "Polymerisation chain reaction (PCR)")
+
 test_that("choose dataset button is present and functioning", {
   # Find and open "choose dataset" button
   gridDropdowns <- remDr$findElements("css selector", ".labkey-button-bar>.lk-menu-drop")
   chooseDatasetButton <- gridDropdowns[[1]]
   expect_equal(chooseDatasetButton$getElementText()[[1]], "Choose Dataset")
   chooseDatasetButton$clickElement()
-  children <- chooseDatasetButton$findChildElements("tag name", "li")
-  childText <- unlist(lapply(children, function(x) x$getElementText()))
-  expect_equal(sort(unique(childText)), sort(c("Demographics", "Assays", "Analyzed Results", "")))
 
   # Check contents of choose dataset dropdown
-  assaysButton <- children[[2]]
-  expect_equal(assaysButton$getElementText()[[1]], "Assays")
-  assaysButton$clickElement()
-  assays <- assaysButton$findChildElements("tag", "li")
-  expect_equal(length(assays), 10)
-  hai <- assays[[5]]
-  expect_equal(hai$getElementText()[[1]], "Hemagglutination inhibition (HAI)")
+  children <- chooseDatasetButton$findChildElements("tag name", "li")
+  childText <- unlist(lapply(children, function(x) x$getElementText()))
+  expect_equal(childText, datasets)
 
   # Check that clicking HAI will change the title of the data grid
+  hai <- children[[which(grepl("HAI", childText))]]
   hai$clickElement()
   sleep_for(3)
   daTitle <- remDr$findElement("class", "data-access-title")
@@ -63,13 +68,8 @@ test_that("data explorer button works", {
   chooseDatasetButton <- gridDropdowns[[1]]
   chooseDatasetButton$clickElement()
   children <- chooseDatasetButton$findChildElements("tag name", "li")
-  assaysButton <- children[[2]]
-  expect_equal(assaysButton$getElementText()[[1]], "Assays")
-  assaysButton$clickElement()
-  assays <- assaysButton$findChildElements("tag", "li")
-  expect_equal(length(assays), 10)
-  hai <- assays[[5]]
-  expect_equal(hai$getElementText()[[1]], "Hemagglutination inhibition (HAI)")
+  childText <- unlist(lapply(children, function(x) x$getElementText()))
+  hai <- children[[which(grepl("HAI", childText))]]
   hai$clickElement()
   sleep_for(3)
   daTitle <- remDr$findElement("class", "data-access-title")
