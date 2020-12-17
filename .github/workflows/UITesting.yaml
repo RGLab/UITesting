@@ -18,6 +18,7 @@ jobs:
   UITesting:
     runs-on: macOS-latest
     strategy:
+      fail-fast: false
       matrix:
         browser: [chrome, firefox]
     env:

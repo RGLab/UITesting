@@ -2,7 +2,7 @@
 
 | [Production](https://www.immunespace.org/) | [Test](https://test.immunespace.org/) |
 |-----|-----|
-| [![R-CMD-check](https://github.com/RGLab/UITesting/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/RGLab/UITesting/actions?query=branch%3Amaster) | [![R-CMD-check](https://github.com/RGLab/UITesting/workflows/R-CMD-check/badge.svg?branch=dev)](https://github.com/RGLab/UITesting/actions?query=branch%3Adev) |
+| [![UITesting](https://github.com/RGLab/UITesting/workflows/UITesting/badge.svg?branch=master)](https://github.com/RGLab/UITesting/actions?query=branch:master) | [![UITesting](https://github.com/RGLab/UITesting/workflows/UITesting/badge.svg?branch=dev)](https://github.com/RGLab/UITesting/actions?query=branch:dev) |
 
 
 ## Requirments
