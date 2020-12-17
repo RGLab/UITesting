@@ -20,6 +20,8 @@ jobs:
         browser: [chrome, firefox]
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+      SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@v1
@@ -33,14 +35,15 @@ jobs:
           TEST_BROWSER: ${{ matrix.browser }}
           ISR_LOGIN: ${{ secrets.ISR_LOGIN }}
           ISR_PWD: ${{ secrets.ISR_PWD }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-        shell: Rscript test.R
+        run: Rscript test.R
       - name: Fail
         if: ${{ failure() }}
         run: |
-          . ./SAUCE
-          curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+          if [ -e SAUCE ]
+          then
+            . ./SAUCE
+            curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+          fi
       - name: Success
         if: ${{ success() }}
         run: |
