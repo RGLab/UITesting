@@ -40,9 +40,9 @@ jobs:
         if: ${{ failure() }}
         run: |
           . ./SAUCE
-          curl -X PUT -s -d '{\"passed\": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+          curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
       - name: Success
         if: ${{ success() }}
         run: |
           . ./SAUCE
-          curl -X PUT -s -d '{\"passed\": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+          curl -X PUT -s -d '{"passed": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
