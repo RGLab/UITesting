@@ -19,8 +19,8 @@ selenium_server <- ifelse(
   "LOCAL"
 )
 
-machine <- ifelse(Sys.getenv("TRAVIS") == "true", "TRAVIS", "LOCAL")
-server <- ifelse(Sys.getenv("TRAVIS_BRANCH") == "master", "www", "test")
+machine <- ifelse(Sys.getenv("GITHUB_ACTIONS") == "true", "GHA", "LOCAL")
+server <- ifelse(basename(Sys.getenv("GITHUB_REF")) == "master", "www", "test")
 
 if (machine == "LOCAL" & Sys.getenv("DEV_HOST") != "") {
   site_url <- Sys.getenv("DEV_HOST")
@@ -37,20 +37,15 @@ browser_name <- ifelse(
 
 # Initiate Selenium server ----
 if (selenium_server == "SAUCELABS") {
-  # With SauceLabs on Travis or local machine
+  # With SauceLabs on GitHub Actions or local machine
 
   # Set SauceLabs meta info
-  build <- Sys.getenv("TRAVIS_BUILD_NUMBER")
-
-  job <- Sys.getenv("TRAVIS_JOB_NUMBER")
-  job_url <- paste0(
-    "https://travis-ci.org/RGLab/UITesting/jobs/",
-    Sys.getenv("TRAVIS_JOB_ID")
-  )
+  build <- Sys.getenv("GITHUB_RUN_ID")
+  job_url <- paste0("https://github.com/RGLab/UITesting/actions/runs/", build)
   job_name <- ifelse(
-    machine == "TRAVIS",
-    paste0("UI testing `", server, "` by TRAVIS #", job, " ", job_url),
-    paste0("UI testing `", server, "` by ", Sys.info()["nodename"])
+    machine == "GHA",
+    paste0("Testing `", server, "` by GHA (", browser_name, ") ", job_url),
+    paste0("Testing `", server, "` by ", Sys.info()["nodename"])
   )
 
   sauce_url <- "ondemand.saucelabs.com"
@@ -87,7 +82,7 @@ if (selenium_server == "SAUCELABS") {
     "\nhttps://saucelabs.com/beta/tests/", remDr@.xData$sessionid, "\n",
     sep = ""
   )
-  if (machine == "TRAVIS") {
+  if (machine == "GHA") {
     write(paste0("export SAUCE_JOB=", remDr@.xData$sessionid), "SAUCE")
   }
 } else {

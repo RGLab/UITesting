@@ -2,7 +2,7 @@
 
 | [Production](https://www.immunespace.org/) | [Test](https://test.immunespace.org/) |
 |-----|-----|
-| [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=master)](https://travis-ci.org/RGLab/UITesting) | [![Build Status](https://travis-ci.org/RGLab/UITesting.svg?branch=dev)](https://travis-ci.org/RGLab/UITesting) |
+| [![R-CMD-check](https://github.com/RGLab/UITesting/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/RGLab/UITesting/actions?query=branch%3Amaster) | [![R-CMD-check](https://github.com/RGLab/UITesting/workflows/R-CMD-check/badge.svg?branch=dev)](https://github.com/RGLab/UITesting/actions?query=branch%3Adev) |
 
 
 ## Requirments
@@ -119,24 +119,22 @@ Use the viewer to check out what is going on:
 
 
 
-## Setup in Travis CI
+## Setup in GitHub Actions
 
-### Configure [`.travis.yml`](.travis.yml)
+### Configure [`UITesting.yaml`](.github/workflows/UITesting.yaml)
 
 - To install R and required packages
 - To cache packages
 - To run [`test.R`](test.R) script
-- To setup [Sauce Connect](https://docs.travis-ci.com/user/sauce-connect/)
 - To communicate with `Sauce Labs` after test
-- To notify a Slack channel
 
 ### Set environment variables
 
-See [Defining Variables in Repository Settings](https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings)
+See [Creating encrypted secrets for an environment](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
 
 ### Create DESCRIPTION file
 
-Even though this is not a package, [DESCRIPTION](DESCRIPTION) file is [needed](https://github.com/travis-ci/travis-ci/issues/5913#issuecomment-210733660) to run a builder in Travis in order to declare dependencies.
+Even though this is not a package, [`DESCRIPTION`](DESCRIPTION) file is needed to run a builder in GitHub Actions Workflow in order to declare dependencies (using `remotes::install_deps(dependencies = TRUE)`).
 
 
 ## Available tests
