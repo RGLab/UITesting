@@ -9,6 +9,8 @@ on:
     branches:
       - master
       - dev
+  schedule:
+    - cron: "0 12 * * *"
 
 name: UITesting
 
@@ -21,7 +23,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-      SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+      SAUCE_USERNAME: immunespace
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@v1
@@ -37,15 +39,15 @@ jobs:
           ISR_PWD: ${{ secrets.ISR_PWD }}
         run: Rscript test.R
       - name: Fail
-        if: ${{ failure() }}
+        if: ${{ failure() }} || ${{ cancelled() }}
         run: |
           if [ -e SAUCE ]
           then
             . ./SAUCE
-            curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+            curl -X PUT -s -d '{"passed": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
           fi
       - name: Success
         if: ${{ success() }}
         run: |
           . ./SAUCE
-          curl -X PUT -s -d '{"passed": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+          curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
