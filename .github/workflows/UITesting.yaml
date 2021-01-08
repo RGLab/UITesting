@@ -1,0 +1,54 @@
+# For help debugging build failures open an issue on the RStudio community with the 'github-actions' tag.
+# https://community.rstudio.com/new-topic?category=Package%20development&tags=github-actions
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+  schedule:
+    - cron: "0 12 * * *"
+
+name: UITesting
+
+jobs:
+  UITesting:
+    runs-on: macOS-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+      SAUCE_USERNAME: immunespace
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@v1
+      - name: Install dependencies
+        run: |
+          install.packages(c("remotes", "rcmdcheck"))
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+      - name: Test
+        env:
+          TEST_BROWSER: ${{ matrix.browser }}
+          ISR_LOGIN: ${{ secrets.ISR_LOGIN }}
+          ISR_PWD: ${{ secrets.ISR_PWD }}
+        run: Rscript test.R
+      - name: Fail
+        if: ${{ failure() }} || ${{ cancelled() }}
+        run: |
+          if [ -e SAUCE ]
+          then
+            . ./SAUCE
+            curl -X PUT -s -d '{"passed": false}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
+          fi
+      - name: Success
+        if: ${{ success() }}
+        run: |
+          . ./SAUCE
+          curl -X PUT -s -d '{"passed": true}' -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCE_JOB
