@@ -21,9 +21,9 @@ datasets <- c("Demographics",
 
 test_that("choose dataset button is present and functioning", {
   # Find and open "choose dataset" button
-  gridDropdowns <- remDr$findElements("css selector", ".labkey-button-bar>.lk-menu-drop")
+  gridDropdowns <- remDr$findElements("css selector", ".data-access-dropdown")
   chooseDatasetButton <- gridDropdowns[[1]]
-  expect_equal(chooseDatasetButton$getElementText()[[1]], "Choose Dataset")
+  expect_equal(chooseDatasetButton$getElementText()[[1]], "Demographics")
   chooseDatasetButton$clickElement()
 
   # Check contents of choose dataset dropdown
@@ -35,20 +35,18 @@ test_that("choose dataset button is present and functioning", {
   hai <- children[[which(grepl("HAI", childText))]]
   hai$clickElement()
   sleep_for(3)
-  daTitle <- remDr$findElement("class", "data-access-title")
-  expect_equal(daTitle$getElementText()[[1]], "Hemagglutination inhibition (HAI)")
+  expect_equal(chooseDatasetButton$getElementText()[[1]], "Hemagglutination Inhibition (HAI)")
 })
 
 test_that("grid is present", {
   # Select demographics
-  gridDropdowns <- remDr$findElements("css selector", ".labkey-button-bar>.lk-menu-drop")
+  gridDropdowns <- remDr$findElements("css selector", ".data-access-dropdown")
   chooseDatasetButton <- gridDropdowns[[1]]
   chooseDatasetButton$clickElement()
   children <- chooseDatasetButton$findChildElements("tag name", "li")
   children[[1]]$clickElement()
   sleep_for(3)
-  daTitle <- remDr$findElement("class", "data-access-title")
-  expect_equal(daTitle$getElementText()[[1]], "Demographics")
+  expect_equal(chooseDatasetButton$getElementText()[[1]], "Demographics")
 
   # Check that grid headers are what we expect for demographics
   grid <- remDr$findElements("class", "labkey-data-region")
@@ -64,7 +62,7 @@ test_that("grid is present", {
 
 test_that("data explorer button works", {
   # select HAI
-  gridDropdowns <- remDr$findElements("css selector", ".labkey-button-bar>.lk-menu-drop")
+  gridDropdowns <- remDr$findElements("css selector", ".data-access-dropdown")
   chooseDatasetButton <- gridDropdowns[[1]]
   chooseDatasetButton$clickElement()
   children <- chooseDatasetButton$findChildElements("tag name", "li")
@@ -72,9 +70,7 @@ test_that("data explorer button works", {
   hai <- children[[which(grepl("HAI", childText))]]
   hai$clickElement()
   sleep_for(3)
-  daTitle <- remDr$findElement("class", "data-access-title")
-  expect_equal(daTitle$getElementText()[[1]], "Hemagglutination inhibition (HAI)")
-
+  expect_equal(chooseDatasetButton$getElementText()[[1]], "Hemagglutination Inhibition (HAI)")
   # Find data explorer button and click it
   gridButtons <- remDr$findElements("css selector", ".labkey-button-bar>.labkey-button")
   buttonText <- unlist(lapply(gridButtons, function(x) x$getElementText()))
