@@ -157,7 +157,7 @@ test_that("banner buttons are present", {
   buttonHref <- paste0(site_url,
                        c("/project/Studies/begin.view?pageId=visualize",
                          "/project/Studies/begin.view?pageId=analyze",
-                         "/immport/Studies/exportStudyDatasets.view?",
+                         "/project/Studies/begin.view?pageId=DataAccess",
                          "/rstudio/start.view?"))
 
   bannerButtons <- remDr$findElements("css selector", "#data-finder-app-banner .df-highlighted-button")
@@ -237,14 +237,9 @@ test_that("Assay data selector works", {
   dropdownMenus <- lapply(dropdowns, function(dropdown) dropdown$findChildElement("class", "df-dropdown"))
   lapply(dropdownMenus, expect_hidden_element)
 
-
   assayDropdown <- remDr$findElement("id", "df-assay-dropdown")
   timepointDropdown <- remDr$findElement("id", "df-timepoint-dropdown")
   sampletypeDropdown <- remDr$findElement("id", "df-sampletype-dropdown")
-
-
-
-
 
   filterDropdownButton$clickElement()
 })
@@ -553,6 +548,12 @@ test_that("Load group works", {
   expect_equal(sum(agePlotValues > 0), 1)
 
   test_summary_and_visualizations()
+
+  # Click clear
+  clearAllBtn <- remDr$findElement('id', 'clear-all-button')
+  clearAllBtn$clickElement()
+
+  sleep_for(3)
 
 })
 
