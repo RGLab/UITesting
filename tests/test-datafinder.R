@@ -153,7 +153,7 @@ test_that("Manage Groups dropdown works", {
 })
 
 test_that("banner buttons are present", {
-  buttonText <- c("Visualize", "Analyze", "Access Data", "Open In RStudio")
+  buttonText <- c("Visualize", "Analyze", "Download", "Open In RStudio")
   buttonHref <- paste0(site_url,
                        c("/project/Studies/begin.view?pageId=visualize",
                          "/project/Studies/begin.view?pageId=analyze",
