@@ -1,5 +1,7 @@
 # ImmuneSpace UI Testing
 
+<!-- TEST -->
+
 | [Production](https://www.immunespace.org/) | [Test](https://test.immunespace.org/) |
 |-----|-----|
 | [![UITesting](https://github.com/RGLab/UITesting/workflows/UITesting/badge.svg?branch=master)](https://github.com/RGLab/UITesting/actions?query=branch:master) | [![UITesting](https://github.com/RGLab/UITesting/workflows/UITesting/badge.svg?branch=dev)](https://github.com/RGLab/UITesting/actions?query=branch:dev) |
@@ -112,6 +114,7 @@ Use the viewer to check out what is going on:
 - Open the viewer utility through the UI (search vncviewer)
 - Connect to 'localhost:5900'
 - enter the password given by Selenium - aka 'secret'
+
 
 ### Notes on running against a local development machine
 - Developing React Modules: Dev versions of a webpart will not be available in your dockerized test environment unless you map the npm dev server port (e.g. 3001) to that same port in the docker environment.  
