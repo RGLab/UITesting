@@ -8,6 +8,8 @@ context_of(file = "test-modules-da.R",
 
 test_connection(remDr, pageURL, "DataAccess: /Studies")
 
+sleep_for(5)
+
 datasets <- c("Demographics",
               "",
               "Enzyme-linked immunosorbent assay (ELISA)",
