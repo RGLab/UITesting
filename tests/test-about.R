@@ -9,7 +9,7 @@ test_connection(remDr, page_url, "Studies: /Studies")
 sleep_for(5)
 
 test_that("all webpart is present", {
-  test_presence_of_single_item('app')
+  test_presence_of_single_item('about-page')
 })
 
 
