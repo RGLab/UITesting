@@ -85,7 +85,7 @@ test_that("click About Us", {
   sleep_for(3)
 
   site_title <- remDr$getTitle()[[1]]
-  expect_equal(site_title, "News and Updates: /home")
+  expect_equal(site_title, "About: /home")
 
   remDr$goBack()
 })
@@ -111,7 +111,7 @@ test_that("can log in", {
   signin_button <- remDr$findElements("class", "submit-btn")
   expect_equal(length(signin_button), 1)
 
-  
+
   # wrong credentials
   id[[1]]$sendKeysToElement(list("wrong@email.com"))
   pwd[[1]]$sendKeysToElement(list("wrongPassword"))
