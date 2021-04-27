@@ -6,7 +6,7 @@ context_of(file = "test-modules-da.R",
            what = "Data Access Module",
            url = pageURL)
 
-test_connection(remDr, pageURL, "Studies: /Studies")
+test_connection(remDr, pageURL, "DataAccess: /Studies")
 
 sleep_for(5)
 
