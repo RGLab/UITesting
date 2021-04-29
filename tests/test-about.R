@@ -90,7 +90,7 @@ test_that("Software Updates tab has correct elements", {
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements('tag name', 'p')
-  expect_gt(paragraphs, 33)
+  expect_gt(length(paragraphs), 33)
 })
 
 test_that("R Session Info tab has correct elements", {
