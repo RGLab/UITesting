@@ -40,14 +40,12 @@ test_that("Data Processing tab has correct elements", {
   click_target_dropdown("Data Processing")
 
   assayOptions <- get_dropdown_options()
-  expect_length(assayOptions, 3)
+  expect_length(assayOptions, 1)
 
-  expectedAssayTitles <- c("Cytometry",
-                           "Gene Expression",
-                           "Immune Response")
+  expectedAssayTitles <- "Gene Expression"
   check_dropdown_titles(expectedAssayTitles, assayOptions)
 
-  assayOptions[[2]]$clickElement()
+  assayOptions[[1]]$clickElement()
 
   div <- remDr$findElement('id', 'gene-expression')
   expect_length(div, 1)
@@ -92,7 +90,7 @@ test_that("Software Updates tab has correct elements", {
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements('tag name', 'p')
-  expect_length(paragraphs, 33)
+  expect_gt(length(paragraphs), 33)
 })
 
 test_that("R Session Info tab has correct elements", {
