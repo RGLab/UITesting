@@ -55,7 +55,7 @@ test_that("grid is present", {
   expect_equal(length(grid), 1)
   headers <- grid[[1]]$findChildElements("tag", "th")
   headerText <- unlist(lapply(headers, function(x) x$getElementText()))
-  expect_equal(headerText[1:5], c("Participant ID", "Cohort", "Phenotype", "Gender", "Age Reported"))
+  expect_equal(headerText[1:6], c("", "Participant ID", "Cohort", "Phenotype", "Gender", "Age Reported"))
 
   # Check that there is data present
   rows <- grid[[1]]$findChildElements("tag", "tr")
