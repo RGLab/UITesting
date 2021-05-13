@@ -30,7 +30,6 @@ test_link <- function(element, linkText, linkTitle) {
   #   sleep_for(1)
   #   expect_match(remDr$getTitle()[[1]], pageTitle)
   # }
-
 }
 
 pageUrl <- paste0(site_url, "/project/Studies/begin.view?")
@@ -75,6 +74,4 @@ test_that("Footer links work", {
   )
 
   mapply(test_link, links, linkText, linkTitles)
-
 })
-

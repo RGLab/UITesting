@@ -344,43 +344,45 @@ test_filtering <- function() {
   sleep_for(2)
 }
 
-test_presence_of_single_item <- function(itemId){
+test_presence_of_single_item <- function(itemId) {
   el <- remDr$findElement("id", itemId)
   expect_length(el, 1)
 }
 
-test_presence_of_single_img <- function(el){
-  img <- el$findChildElement('tag name', 'img')
+test_presence_of_single_img <- function(el) {
+  img <- el$findChildElement("tag name", "img")
   expect_length(img, 1)
 
-  if(length(img) > 0){
-    imgSrc <- img$getElementAttribute('src')[[1]]
+  if (length(img) > 0) {
+    imgSrc <- img$getElementAttribute("src")[[1]]
     res <- httr::GET(imgSrc)
     expect_true(res$status_code == 200)
   }
 }
 
-navigate_to_link <- function(linkName){
-  ahref <- remDr$findElement('id', linkName)
+navigate_to_link <- function(linkName) {
+  ahref <- remDr$findElement("id", linkName)
   ahref$clickElement()
 }
 
-click_target_dropdown <- function(target){
+click_target_dropdown <- function(target) {
   dropdowns <- remDr$findElements("xpath", "//a[@class='dropdown-toggle']")
-  innerTexts <- sapply(dropdowns, function(x){ x$getElementText() })
-  targetDropdown <- dropdowns[ innerTexts == target ]
+  innerTexts <- sapply(dropdowns, function(x) {
+    x$getElementText()
+  })
+  targetDropdown <- dropdowns[innerTexts == target]
   targetDropdown[[1]]$clickElement()
 }
 
-get_dropdown_options <- function(){
+get_dropdown_options <- function() {
   openDropDownEl <- remDr$findElement("xpath", "//li[contains(@class, 'dropdown open')]")
   dropdownMenu <- openDropDownEl$findChildElement("class", "dropdown-menu")
-  options <- dropdownMenu$findChildElements('tag name', 'li')
+  options <- dropdownMenu$findChildElements("tag name", "li")
 }
 
-check_dropdown_titles <- function(expectedTitles, dropdownOptions){
-  actualTitles <- sapply(dropdownOptions, function(li){
-    ahref <- li$findChildElement('tag name', 'a')
+check_dropdown_titles <- function(expectedTitles, dropdownOptions) {
+  actualTitles <- sapply(dropdownOptions, function(li) {
+    ahref <- li$findChildElement("tag name", "a")
     innerText <- ahref$getElementText()[[1]]
   })
   expect_true(all.equal(actualTitles, expectedTitles))

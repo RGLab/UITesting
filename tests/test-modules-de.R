@@ -79,8 +79,10 @@ test_data_explorer <- function(applyFilter = FALSE) {
     sleep_for(1)
 
     plotType_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
-    expect_equal(plotType_list[[1]]$getElementText()[[1]],
-                 "Auto\nBoxplot\nViolin plot\nHeatmap\nLineplot")
+    expect_equal(
+      plotType_list[[1]]$getElementText()[[1]],
+      "Auto\nBoxplot\nViolin plot\nHeatmap\nLineplot"
+    )
 
     plotType_clear <- formItems[[2]]$findChildElements(using = "class", value = "x-form-clear-trigger")
     expect_equal(length(plotType_clear), 1)
@@ -166,10 +168,14 @@ test_data_explorer <- function(applyFilter = FALSE) {
     } else {
       headers_text <- headers[[1]]$getElementText()[[1]]
     }
-    expect_equal(headers_text,
-                 c("Participant ID", "Age Reported", "Gender", "Race", "Cohort",
-                   "Analyte", "Study Time Collected", "Study Time Collected Unit",
-                   "Value Preferred", "Unit Reported"))
+    expect_equal(
+      headers_text,
+      c(
+        "Participant ID", "Age Reported", "Gender", "Race", "Cohort",
+        "Analyte", "Study Time Collected", "Study Time Collected Unit",
+        "Value Preferred", "Unit Reported"
+      )
+    )
 
     if (applyFilter) {
       test_filtering()

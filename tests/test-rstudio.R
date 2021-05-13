@@ -1,9 +1,11 @@
 if (!exists("context_of")) source("initialize.R")
 
 pageURL <- paste0(site_url, "/rstudio/start.view?")
-context_of(file = "test-rstudio.R",
-           what = "RStudio",
-           url = pageURL)
+context_of(
+  file = "test-rstudio.R",
+  what = "RStudio",
+  url = pageURL
+)
 
 test_connection(remDr, pageURL, "Launch RStudio")
 

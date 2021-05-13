@@ -62,7 +62,8 @@ studies <- list(
   SDY887 = list(
     datasets = c(
       "Flow cytometry analyzed results",
-      "Hemagglutination inhibition (HAI)"),
+      "Hemagglutination inhibition (HAI)"
+    ),
     raw_files = c(
       "FCS control files",
       "FCS sample files"
@@ -103,8 +104,10 @@ test_section <- function(key, label) {
 
   if (key %in% names(studies[[sdy]])) {
     test_that(paste0("'", label, "' section shows correct information"), {
-      section <- remDr$findElements(using = "css selector",
-                                    value = paste0("[id^=", key, "ModuleHtmlView]"))
+      section <- remDr$findElements(
+        using = "css selector",
+        value = paste0("[id^=", key, "ModuleHtmlView]")
+      )
       expect_length(section, 1)
 
       if (length(section) == 1) {
@@ -138,16 +141,20 @@ test_overview <- function(sdy, public = FALSE) {
     expectedTitle <- paste0("Overview: /Studies/", sdy)
   }
 
-  context_of(file = "test-overview.R",
-             what = what,
-             url = pageURL)
+  context_of(
+    file = "test-overview.R",
+    what = what,
+    url = pageURL
+  )
 
   test_connection(remDr, pageURL, expectedTitle, public = public)
 
   if (!(public && ADMIN_MODE)) {
     test_that("'Study Overview' module is present", {
-      study_overview <- remDr$findElements(using = "css selector",
-                                           value = "[id*=StudyOverviewModuleHtmlView]")
+      study_overview <- remDr$findElements(
+        using = "css selector",
+        value = "[id*=StudyOverviewModuleHtmlView]"
+      )
       expect_length(study_overview, 1)
       expect_true(study_overview[[1]]$getElementText()[[1]] != "")
     })
