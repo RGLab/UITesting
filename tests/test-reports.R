@@ -1,9 +1,11 @@
 if (!exists("context_of")) source("initialize.R")
 
 pageURL <- paste0(site_url, "/project/Studies/SDY269/begin.view?pageId=Reports")
-context_of(file = "test-reports.R",
-           what = "Reports",
-           url = pageURL)
+context_of(
+  file = "test-reports.R",
+  what = "Reports",
+  url = pageURL
+)
 
 test_connection(remDr, pageURL, "Reports: /Studies/SDY269")
 

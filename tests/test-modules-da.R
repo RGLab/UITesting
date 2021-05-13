@@ -2,24 +2,28 @@ if (!exists("context_of")) source("initialize.R")
 
 
 pageURL <- paste0(site_url, "/project/Studies/begin.view?pageId=DataAccess")
-context_of(file = "test-modules-da.R",
-           what = "Data Access Module",
-           url = pageURL)
+context_of(
+  file = "test-modules-da.R",
+  what = "Data Access Module",
+  url = pageURL
+)
 
 test_connection(remDr, pageURL, "DataAccess: /Studies")
 
 sleep_for(5)
 
-datasets <- c("Demographics",
-              "",
-              "Enzyme-linked immunosorbent assay (ELISA)",
-              "Enzyme-Linked ImmunoSpot (ELISPOT)",
-              "Flow cytometry analyzed results",
-              "Hemagglutination inhibition (HAI)",
-              "Human leukocyte antigen (HLA) typing",
-              "Multiplex bead array asssay",
-              "Neutralizing antibody titer",
-              "Polymerisation chain reaction (PCR)")
+datasets <- c(
+  "Demographics",
+  "",
+  "Enzyme-linked immunosorbent assay (ELISA)",
+  "Enzyme-Linked ImmunoSpot (ELISPOT)",
+  "Flow cytometry analyzed results",
+  "Hemagglutination inhibition (HAI)",
+  "Human leukocyte antigen (HLA) typing",
+  "Multiplex bead array asssay",
+  "Neutralizing antibody titer",
+  "Polymerisation chain reaction (PCR)"
+)
 
 test_that("choose dataset button is present and functioning", {
   # Find and open "choose dataset" button
