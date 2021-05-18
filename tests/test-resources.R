@@ -8,6 +8,73 @@ test_connection(remDr, page_url, "Studies: /Studies")
 
 sleep_for(2)
 
+test_that("test navigating to link tabs", {
+  remDr$findElements("id", "headerUserDropdown")[[1]]$clickElement()
+ 
+  remDr$findElements("css", "li#headerUserDropdown ul.dropdown-menu.dropdown-menu-right li")[[9]]$clickElement()
+  site_title <- remDr$getTitle()[[1]]
+  expect_equal(site_title, "Welcome to ImmuneSpace")
+
+  remDr$navigate("http://10.107.229.250:8080/project/Studies/begin.view?pageId=Resources&tab=Reports")
+  site_title <- remDr$getTitle()[[1]]
+  expect_equal(site_title, "Sign In: /Studies")
+
+  remDr$findElements("id", "email")[[1]]$sendKeysToElement(list(ISR_LOGIN))
+  remDr$findElements("id", "password")[[1]]$sendKeysToElement(list(ISR_PWD))
+  remDr$findElements("css", "a.labkey-button.primary.signin-btn")[[1]]$clickElement()
+  sleep_for(5)
+  site_title <- remDr$getTitle()[[1]]
+  expect_equal(site_title, "Studies: /Studies")
+  current_url <- paste0(page_url, "&tab=Reports")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  
+})
+
+
+test_that("test clicking linkable tabs", {
+  navigate_to_link("Reports")
+  sleep_for(2)
+  current_url <- paste0(page_url, "&tab=Reports")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(unlist(remDr$findElements("css", "nav.navbar.navbar-default ul.nav.navbar-nav li")[[1]]$getElementAttribute("class")), "active")
+
+  navigate_to_link("Tools")
+  sleep_for(2)
+  current_url <- paste0(page_url, "&tab=Tools")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(unlist(remDr$findElements("css", "nav.navbar.navbar-default ul.nav.navbar-nav li")[[3]]$getElementAttribute("class")), "active")
+
+
+  navigate_to_link("ImmuneSpaceR")
+  sleep_for(2)
+  current_url <- paste0(page_url, "&tab=ImmuneSpaceR")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(unlist(remDr$findElements("css", "nav.navbar.navbar-default ul.nav.navbar-nav li")[[4]]$getElementAttribute("class")), "active")
+
+  remDr$findElements("css", "div#resources-page ul.nav.navbar-nav li.dropdown")[[1]]$clickElement()
+  sleep_for(1)
+  navigate_to_link("MostAccessed")
+  sleep_for(1)
+  current_url <- paste0(page_url, "&tab=MostAccessed")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(unlist(remDr$findElements("css", "nav.navbar.navbar-default ul.nav.navbar-nav li")[[2]]$getElementAttribute("class")), "active dropdown")
+
+
+  remDr$findElements("css", "div#resources-page ul.nav.navbar-nav li.dropdown")[[1]]$clickElement()
+  navigate_to_link("MostCited")
+  sleep_for(1)
+  current_url <- paste0(page_url, "&tab=MostCited")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$findElements("css", "div#resources-page ul.nav.navbar-nav li.dropdown")[[1]]$clickElement()
+  navigate_to_link("SimilarStudies")
+  sleep_for(1)
+  current_url <- paste0(page_url, "&tab=SimilarStudies")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+})
+
+
 test_that("all webpart is present", {
   test_presence_of_single_item('resources-page')
 })

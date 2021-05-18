@@ -8,6 +8,40 @@ test_connection(remDr, page_url, "About: /home")
 
 sleep_for(5)
 
+
+test_that("test clicking linkable tabs", {
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$findElements("id", "DataStandards")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataStandards")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$findElements("id", "DataReleases")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataReleases")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$findElements("id", "SoftwareUpdates")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=SoftwareUpdates")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$findElements("id", "RSessionInfo")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=RSessionInfo")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$findElements("css", "div#about-page ul.nav.navbar-nav li.dropdown")[[1]]$clickElement()
+  sleep_for(1)
+  remDr$findElements("id", "gene-expression")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=gene-expression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+})
+
 test_that("all webpart is present", {
   test_presence_of_single_item('about-page')
 })
