@@ -12,26 +12,34 @@ sleep_for(5)
 test_that("test clicking linkable tabs", {
   current_url <- paste0(page_url, "tab=About")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
-
+  expect_equal(remDr$findElements('css', 'div.tab-content div#About')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
   remDr$findElements("id", "DataStandards")[[1]]$clickElement()
   sleep_for(1)
   current_url <- paste0(page_url, "tab=DataStandards")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataStandards')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
 
   remDr$findElements("id", "DataReleases")[[1]]$clickElement()
   sleep_for(1)
   current_url <- paste0(page_url, "tab=DataReleases")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataReleases')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
 
   remDr$findElements("id", "SoftwareUpdates")[[1]]$clickElement()
   sleep_for(1)
   current_url <- paste0(page_url, "tab=SoftwareUpdates")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#SoftwareUpdates')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
 
   remDr$findElements("id", "RSessionInfo")[[1]]$clickElement()
   sleep_for(1)
   current_url <- paste0(page_url, "tab=RSessionInfo")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#RSessionInfo')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
 
   remDr$findElements("css", "div#about-page ul.nav.navbar-nav li.dropdown")[[1]]$clickElement()
   sleep_for(1)
@@ -39,7 +47,71 @@ test_that("test clicking linkable tabs", {
   sleep_for(1)
   current_url <- paste0(page_url, "tab=gene-expression")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#gene-expression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 
+
+})
+
+test_that("test forward and back buttons on linkable tabs", {
+  current_url <- paste0(page_url, "tab=gene-expression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goBack()
+  current_url <- paste0(page_url, "tab=RSessionInfo")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goBack()
+  current_url <- paste0(page_url, "tab=SoftwareUpdates")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goBack()
+  current_url <- paste0(page_url, "tab=DataReleases")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goBack()
+  current_url <- paste0(page_url, "tab=DataStandards")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goBack()
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goForward();
+  current_url <- paste0(page_url, "tab=DataStandards")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goForward();
+  current_url <- paste0(page_url, "tab=DataReleases")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goForward();
+  current_url <- paste0(page_url, "tab=SoftwareUpdates")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goForward();
+  current_url <- paste0(page_url, "tab=RSessionInfo")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goForward();
+  current_url <- paste0(page_url, "tab=gene-expression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+})
+
+test_that("test linking tabs from alternative url", {
+  remDr$navigate("https://www.google.com/")
+  expect_equal(unlist(remDr$getCurrentUrl()), "https://www.google.com/")
+
+  remDr$navigate(page_url);
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$goBack()
+  expect_equal(unlist(remDr$getCurrentUrl()), "https://www.google.com/")
+
+  remDr$goForward()
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
 })
 
 test_that("all webpart is present", {

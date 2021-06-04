@@ -15,7 +15,7 @@ test_that("test navigating to link tabs", {
   site_title <- remDr$getTitle()[[1]]
   expect_equal(site_title, "Welcome to ImmuneSpace")
 
-  remDr$navigate("http://10.107.229.250:8080/project/Studies/begin.view?pageId=Resources&tab=Reports")
+  remDr$navigate(paste0(site_url,"/project/Studies/begin.view?pageId=Resources&tab=Reports"))
   site_title <- remDr$getTitle()[[1]]
   expect_equal(site_title, "Sign In: /Studies")
 
