@@ -123,6 +123,36 @@ test_that("test linking tabs from alternative url", {
   expect_equal(remDr$findElements('css', 'div.tab-content div#SimilarStudies')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 })
 
+test_that("forward and back buttons", {
+  current_url <- paste0(page_url, "&tab=SimilarStudies")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  navigate_to_link("ImmuneSpaceR")
+  sleep_for(20)
+
+  current_url <- paste0(page_url, "&tab=ImmuneSpaceR")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(unlist(remDr$findElements("css", "nav.navbar.navbar-default ul.nav.navbar-nav li a#ImmuneSpaceR")[[1]]$getElementAttribute("aria-selected")), "true")
+  expect_equal(unlist(remDr$findElements("css", "div.tab-content div#ImmuneSpaceR")[[1]]$getElementAttribute("aria-hidden")), "false")
+
+  remDr$goBack()
+  sleep_for(5)
+
+  current_url <- paste0(page_url, "&tab=SimilarStudies")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#SimilarStudies')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goForward()
+  sleep_for(20)
+  current_url <- paste0(page_url, "&tab=ImmuneSpaceR")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(unlist(remDr$findElements("css", "nav.navbar.navbar-default ul.nav.navbar-nav li a#ImmuneSpaceR")[[1]]$getElementAttribute("aria-selected")), "true")
+  expect_equal(unlist(remDr$findElements("css", "div.tab-content div#ImmuneSpaceR")[[1]]$getElementAttribute("aria-hidden")), "false")
+
+  remDr$goBack()
+  sleep_for(5)
+})
+
 test_that("page refresh", {
   current_url <- paste0(page_url, "&tab=SimilarStudies")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
