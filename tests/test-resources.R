@@ -24,7 +24,7 @@ test_that("test navigating to link tabs", {
   remDr$findElements("css", "a.labkey-button.primary.signin-btn")[[1]]$clickElement()
   sleep_for(5)
   site_title <- remDr$getTitle()[[1]]
-  expect_equal(site_title, "Studies: /Studies")
+  expect_equal(site_title, "Resources: /Studies")
   current_url <- paste0(page_url, "&tab=Reports")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
   expect_equal(unlist(remDr$findElements("css", "div.tab-content div#Reports")[[1]]$getElementAttribute("aria-hidden")), "false")
