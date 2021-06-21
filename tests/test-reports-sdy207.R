@@ -1,9 +1,11 @@
 if (!exists("context_of")) source("initialize.R")
 
 pageURL <- paste0(site_url, "/reports/Studies/SDY207/runReport.view?reportId=module%3ASDY207%2Freports%2Fschemas%2Fstudy%2Ffcs_sample_files%2FCyTOF_Visualization.Rmd")
-context_of(file = "test-reports-sdy207.R",
-           what = "SDY207 Report",
-           url = pageURL)
+context_of(
+  file = "test-reports-sdy207.R",
+  what = "SDY207 Report",
+  url = pageURL
+)
 
 test_connection(remDr, pageURL, "CyTOF Visualization: /Studies/SDY207")
 
@@ -13,11 +15,15 @@ test_that("report is generated", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)
 
-  report_header <- remDr$findElements(using = "id",
-                                      value = "automated-gating-and-visualization-of-cytometry-time-of-flight-cytof-data")
+  report_header <- remDr$findElements(
+    using = "id",
+    value = "automated-gating-and-visualization-of-cytometry-time-of-flight-cytof-data"
+  )
   expect_equal(length(report_header), 1)
-  expect_equal(report_header[[1]]$getElementText()[[1]],
-               "Automated Gating and Visualization of Cytometry Time of Flight (CyTOF) Data")
+  expect_equal(
+    report_header[[1]]$getElementText()[[1]],
+    "Automated Gating and Visualization of Cytometry Time of Flight (CyTOF) Data"
+  )
 })
 
 test_that("report is producing 3D plot", {

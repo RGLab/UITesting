@@ -48,13 +48,12 @@ test_parameter <- function(param, formItem, paramConfig) {
 
 # Helper functions ---
 apply_params <- function(paramConfig) {
-
   parameters <- remDr$findElements("class", "ui-test-parameters")
   parameterItems <- parameters[[1]]$findChildElements("class", "ui-test-parameters-item")
   additionalOptions <- remDr$findElements("class", "ui-test-additional-options")
   if ("aggregateBy" %in% names(paramConfig)) {
     timebox <- parameterItems[[1]]$findChildElements("class", "ui-test-timebox")
-    timebox_options<- timebox[[1]]$findChildElements("class", "x-form-item")
+    timebox_options <- timebox[[1]]$findChildElements("class", "x-form-item")
     subject <- timebox_options[[1]]$findChildElements("css selector", "input[value=Subject]")
     timepoint <- timebox_options[[2]]$findChildElements("css selector", "input[value=Subject-Timepoint]")
     if (paramConfig$aggregateBy == "Subject") {
@@ -104,7 +103,7 @@ apply_params <- function(paramConfig) {
 
   if ("plottype" %in% names(paramConfig)) {
     plottype <- parameterItems[[4]]$findChildElements("class", "ui-test-plottype")
-    plottype_options<- plottype[[1]]$findChildElements("class", "x-form-item")
+    plottype_options <- plottype[[1]]$findChildElements("class", "x-form-item")
     PCA <- plottype_options[[1]]$findChildElements("css selector", "input[value=PCA]")
     tSNE <- plottype_options[[2]]$findChildElements("css selector", "input[value=tSNE]")
     UMAP <- plottype_options[[3]]$findChildElements("css selector", "input[value=UMAP]")
@@ -215,7 +214,7 @@ test_that("parameters are present and working", {
     length(timebox), 1,
     info = ""
   )
-  timebox_options<- timebox[[1]]$findChildElements("class", "x-form-item")
+  timebox_options <- timebox[[1]]$findChildElements("class", "x-form-item")
   expect_equal(
     length(timebox_options), 2,
     info = ""
@@ -260,7 +259,7 @@ test_that("parameters are present and working", {
     length(plottype), 1,
     info = ""
   )
-  plottype_options<- plottype[[1]]$findChildElements("class", "x-form-item")
+  plottype_options <- plottype[[1]]$findChildElements("class", "x-form-item")
   expect_equal(
     length(plottype_options), 3,
     info = ""
@@ -339,7 +338,7 @@ test_that("additional options are present", {
     length(imputation), 1,
     info = ""
   )
-  imputation_options<- imputation[[1]]$findChildElements("class", "x-form-item")
+  imputation_options <- imputation[[1]]$findChildElements("class", "x-form-item")
   expect_equal(
     length(imputation_options), 4,
     info = ""
@@ -376,7 +375,7 @@ test_that("additional options are present", {
     length(response), 1,
     info = ""
   )
-  response_options<- response[[1]]$findChildElements("class", "x-form-item")
+  response_options <- response[[1]]$findChildElements("class", "x-form-item")
   expect_equal(
     length(response_options), 2,
     info = ""
@@ -440,7 +439,6 @@ test_that("report is present", {
     length(plot), 1,
     info = ""
   )
-
 })
 
 test_that("report displays correct elements", {
@@ -466,22 +464,24 @@ test_that("report displays correct elements", {
   legend_text <- sapply(legends, function(x) x$getElementAttribute("data-unformatted")[[1]])
   expect_equal(
     legend_text,
-    c("Female", "Male", "Hispanic or Latino", "Not Hispanic or Latino", "Asian",
+    c(
+      "Female", "Male", "Hispanic or Latino", "Not Hispanic or Latino", "Asian",
       "Black or African American", "White", "LAIV group 2008", "TIV Group 2008",
-      "high responder", "low responder")
+      "high responder", "low responder"
+    )
   )
 
   lists <- labkey_knitr[[1]]$findChildElements("tag name", "ul")
   # should be three: parameters, general info, and dropdown
   expect_equal(
-    length(lists), 3)
+    length(lists), 3
+  )
 
   info_list <- lists[[2]]
   info <- info_list$findChildElements("tag", "li")
   expect_equal(
     length(info), 5
   )
-
 })
 
 test_that("reset button is working", {
@@ -552,20 +552,22 @@ test_that("Settings produce correct output", {
   legend_text <- sapply(legends, function(x) x$getElementAttribute("data-unformatted")[[1]])
   expect_equal(
     legend_text,
-    c("Female", "Male", "Hispanic or Latino", "Not Hispanic or Latino", "Asian",
+    c(
+      "Female", "Male", "Hispanic or Latino", "Not Hispanic or Latino", "Asian",
       "Black or African American", "White", "LAIV group 2008", "TIV Group 2008",
-      "0_Days", "7_Days")
+      "0_Days", "7_Days"
+    )
   )
 
   lists <- labkey_knitr[[1]]$findChildElements("tag name", "ul")
   # should be three: parameters, general info, and dropdown
   expect_equal(
-    length(lists), 3)
+    length(lists), 3
+  )
 
   info_list <- lists[[2]]
   info <- info_list$findChildElements("tag", "li")
   expect_equal(
     length(info), 9
   )
-
 })

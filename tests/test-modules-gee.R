@@ -3,9 +3,11 @@ if (!exists("context_of")) source("initialize.R")
 # test functions ----
 test_gee <- function(applyFilter = FALSE) {
   pageURL <- paste0(site_url, "/GeneExpressionExplorer/Studies/SDY269/begin.view")
-  context_of(file = "test-modules-gee.R",
-             what = paste0("Gene Expression Explorer (applyFilter = ", applyFilter, ")"),
-             url = pageURL)
+  context_of(
+    file = "test-modules-gee.R",
+    what = paste0("Gene Expression Explorer (applyFilter = ", applyFilter, ")"),
+    url = pageURL
+  )
 
   test_connection(remDr, pageURL, "Gene Expression Explorer: /Studies/SDY269")
 
@@ -48,8 +50,10 @@ test_gee <- function(applyFilter = FALSE) {
     sleep_for(1)
 
     timePoint_list <- remDr$findElements(using = "css selector", value = "div.x-combo-list[style*='visibility: visible']")
-    expect_equal(timePoint_list[[1]]$getElementText()[[1]],
-                 "0 days (2 cohorts)\n3 days (2 cohorts)\n7 days (2 cohorts)")
+    expect_equal(
+      timePoint_list[[1]]$getElementText()[[1]],
+      "0 days (2 cohorts)\n3 days (2 cohorts)\n7 days (2 cohorts)"
+    )
     timePoint_items <- timePoint_list[[1]]$findChildElements(using = "class", value = "x-combo-list-item")
     timePoint_items[[2]]$clickElement()
     sleep_for(1)
@@ -157,10 +161,14 @@ test_gee <- function(applyFilter = FALSE) {
     } else {
       headers_text <- headers[[1]]$getElementText()[[1]]
     }
-    expect_equal(headers_text,
-                 c("Participant ID", "Age Reported", "Gender", "Race",
-                   "Study Time Collected", "Study Time Collected Unit",
-                   "Virus", "Value Preferred"))
+    expect_equal(
+      headers_text,
+      c(
+        "Participant ID", "Age Reported", "Gender", "Race",
+        "Study Time Collected", "Study Time Collected Unit",
+        "Virus", "Value Preferred"
+      )
+    )
 
     if (applyFilter) {
       test_filtering()

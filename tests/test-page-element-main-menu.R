@@ -22,7 +22,7 @@ test_that("`Main Menu` tab shows options properly", {
     menu_options_a <- menu_options_ul[[1]]$findChildElements("css selector", "a")
     expect_equal(length(menu_options_a), 3)
 
-    link_names <- unlist(lapply(menu_options_a, function(x){
+    link_names <- unlist(lapply(menu_options_a, function(x) {
       txt <- x$getElementText()
     }))
 
