@@ -169,7 +169,7 @@ test_that("page refresh", {
   expect_equal(remDr$findElements('css', 'div.tab-content div#ImmuneSpaceR')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 
   remDr$refresh()
-  sleep_for(5)
+  sleep_for(10)
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
   expect_equal(remDr$findElements('css', 'div.tab-content div#ImmuneSpaceR')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 })
