@@ -9,11 +9,15 @@ test_that("report is generated", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)
 
-  report_header <- remDr$findElements(using = "id",
-                                      value = "abundance-of-plasmablasts-measured-by-multiparameter-flow-cytometry-in-sdy180")
+  report_header <- remDr$findElements(
+    using = "id",
+    value = "abundance-of-plasmablasts-measured-by-multiparameter-flow-cytometry-in-sdy180"
+  )
   expect_equal(length(report_header), 1)
-  expect_equal(report_header[[1]]$getElementText()[[1]],
-               "Abundance of plasmablasts measured by multiparameter flow cytometry in SDY180")
+  expect_equal(
+    report_header[[1]]$getElementText()[[1]],
+    "Abundance of plasmablasts measured by multiparameter flow cytometry in SDY180"
+  )
 })
 
 test_that("report is producing plot", {

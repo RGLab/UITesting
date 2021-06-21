@@ -1,9 +1,11 @@
 if (!exists("context_of")) source("initialize.R")
 
 pageURL <- paste0(site_url, "/GeneSetEnrichmentAnalysis/Studies/SDY269/begin.view")
-context_of(file = "test-modules-gsea.R",
-           what = "Gene Set Enrichment Analysis",
-           url = pageURL)
+context_of(
+  file = "test-modules-gsea.R",
+  what = "Gene Set Enrichment Analysis",
+  url = pageURL
+)
 
 test_connection(remDr, pageURL, "Gene Set Enrichment Analysis: /Studies/SDY269")
 
@@ -50,8 +52,10 @@ test_that("parameters are present", {
   sleep_for(1)
 
   combo_lists <- remDr$findElements(using = "class", value = "x-combo-list-inner")
-  expect_equal(combo_lists[[2]]$getElementText()[[1]],
-               "Blood transcription\nMSigDB c7\nG2 (Trial 8) Modules")
+  expect_equal(
+    combo_lists[[2]]$getElementText()[[1]],
+    "Blood transcription\nMSigDB c7\nG2 (Trial 8) Modules"
+  )
 
   modules_clear <- form_items[[2]]$findChildElements(using = "class", value = "x-form-clear-trigger")
   expect_equal(length(modules_clear), 1)

@@ -32,9 +32,11 @@ test_parameter <- function(param, formItem, paramConfig) {
 
 test_irp <- function(config) {
   pageURL <- paste0(site_url, "/ImmuneResponsePredictor/Studies/", config$study, "/begin.view")
-  context_of(file = "test-modules-irp.R",
-             what = paste0("Immune Response Predictor (", config$study, ")"),
-             url = pageURL)
+  context_of(
+    file = "test-modules-irp.R",
+    what = paste0("Immune Response Predictor (", config$study, ")"),
+    url = pageURL
+  )
 
   test_connection(
     remDr, pageURL, paste0("Immune Response Predictor: /Studies/", config$study)
@@ -69,13 +71,15 @@ test_irp <- function(config) {
     # parameters: dichotomize
     dich <- formItems[[5]]$findChildElements(using = "class", value = "ui-test-dichotomize")
     expect_equal(length(dich), 1,
-                 info = "'Dichotomize' checkbox is not present.")
+      info = "'Dichotomize' checkbox is not present."
+    )
     dich[[1]]$clickElement()
     sleep_for(3)
 
     dich_threshold <- formItems[[6]]$findChildElements(using = "class", value = "ui-test-dichotomize-value")
     expect_equal(length(dich_threshold), 1,
-                 info = "'Dichotomization threshold' input box is not present.")
+      info = "'Dichotomization threshold' input box is not present."
+    )
   })
 
   test_that("additional options are present", {
@@ -88,15 +92,18 @@ test_irp <- function(config) {
 
     AFC <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-foldchange")
     expect_equal(length(AFC), 1,
-                 info = "'Absolute fold change' checkbox is not present.")
+      info = "'Absolute fold change' checkbox is not present."
+    )
 
     AFC_threshold <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-foldchange-value")
     expect_equal(length(AFC_threshold), 1,
-                 info = "'Absolute fold change threshold' input box is not present.")
+      info = "'Absolute fold change threshold' input box is not present."
+    )
 
     GDE <- additionalOptions[[1]]$findChildElements(using = "class", value = "ui-test-falsediscoveryrate")
     expect_equal(length(GDE), 1,
-                 info = "'Use gene...' checkbox is not present.")
+      info = "'Use gene...' checkbox is not present."
+    )
 
     additionalOptions_header[[1]]$clickElement()
     sleep_for(3)
@@ -194,42 +201,75 @@ test_irp <- function(config) {
 
 
 # tests ----
-test_irp(list(study = "SDY269",
-              response = list(choice = 1,
-                              expected = c("Hemagglutination inhibition (HAI)")),
-              timepoint = list(choice = 3,
-                               expected = c("0 days (2 cohort_types)",
-                                            "3 days (2 cohort_types)",
-                                            "7 days (2 cohort_types)")),
-              training = list(choice = 2,
-                              expected = c("Select all",
-                                           "LAIV group 2008_PBMC",
-                                           "TIV Group 2008_PBMC")),
-              testing = list(choice = 2,
-                             expected = c("Select all",
-                                          "TIV Group 2008_PBMC"))))
+test_irp(list(
+  study = "SDY269",
+  response = list(
+    choice = 1,
+    expected = c("Hemagglutination inhibition (HAI)")
+  ),
+  timepoint = list(
+    choice = 3,
+    expected = c(
+      "0 days (2 cohort_types)",
+      "3 days (2 cohort_types)",
+      "7 days (2 cohort_types)"
+    )
+  ),
+  training = list(
+    choice = 2,
+    expected = c(
+      "Select all",
+      "LAIV group 2008_PBMC",
+      "TIV Group 2008_PBMC"
+    )
+  ),
+  testing = list(
+    choice = 2,
+    expected = c(
+      "Select all",
+      "TIV Group 2008_PBMC"
+    )
+  )
+))
 
-test_irp(list(study = "SDY180",
-              response = list(choice = 1,
-                              expected = c("Hemagglutination inhibition (HAI)",
-                                           "Neutralizing antibody titer")),
-              timepoint = list(choice = 2,
-                               expected = c("-7 days (3 cohort_types)",
-                                            "0 days (3 cohort_types)",
-                                            "1 day (3 cohort_types)",
-                                            "3 days (3 cohort_types)",
-                                            "7 days (3 cohort_types)",
-                                            "10 days (3 cohort_types)",
-                                            "14 days (2 cohort_types)",
-                                            "21 days (2 cohort_types)",
-                                            "28 days (3 cohort_types)")),
-              training = list(choice = 2,
-                              expected = c("Select all",
-                                           "Study group 1 2009-2010 Fluzone_Whole blood",
-                                           "Study group 1 Saline_Whole blood",
-                                           "Study group 2 2009-2010 Fluzone_Whole blood")),
-              testing = list(choice = 2,
-                             expected = c("Select all",
-                                          "Study group 1 Saline_Whole blood",
-                                          "Study group 2 2009-2010 Fluzone_Whole blood"))))
-
+test_irp(list(
+  study = "SDY180",
+  response = list(
+    choice = 1,
+    expected = c(
+      "Hemagglutination inhibition (HAI)",
+      "Neutralizing antibody titer"
+    )
+  ),
+  timepoint = list(
+    choice = 2,
+    expected = c(
+      "-7 days (3 cohort_types)",
+      "0 days (3 cohort_types)",
+      "1 day (3 cohort_types)",
+      "3 days (3 cohort_types)",
+      "7 days (3 cohort_types)",
+      "10 days (3 cohort_types)",
+      "14 days (2 cohort_types)",
+      "21 days (2 cohort_types)",
+      "28 days (3 cohort_types)"
+    )
+  ),
+  training = list(
+    choice = 2,
+    expected = c(
+      "Select all",
+      "Study group 1 2009-2010 Fluzone_Whole blood",
+      "Study group 1 Saline_Whole blood",
+      "Study group 2 2009-2010 Fluzone_Whole blood"
+    )
+  ),
+  testing = list(
+    choice = 2,
+    expected = c(
+      "Select all",
+      "Study group 1 Saline_Whole blood",
+      "Study group 2 2009-2010 Fluzone_Whole blood"
+    )
+  )
+))

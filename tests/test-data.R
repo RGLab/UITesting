@@ -65,7 +65,8 @@ page_url <- paste0(
   "/project/Studies/begin.view?pageId=study.DATA_ANALYSIS"
 )
 context_of(
-  "test-data.R", "Clinical and Assay Data", page_url, level = "project"
+  "test-data.R", "Clinical and Assay Data", page_url,
+  level = "project"
 )
 
 test_connection(remDr, page_url, "Clinical and Assay Data: /Studies")
