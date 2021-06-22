@@ -43,19 +43,19 @@ test_that("test clicking linkable tabs", {
 
   remDr$findElements("css", "div#about-page ul.nav.navbar-nav li.dropdown")[[1]]$clickElement()
   sleep_for(1)
-  remDr$findElements("id", "gene-expression")[[1]]$clickElement()
+  remDr$findElements("id", "GeneExpression")[[1]]$clickElement()
   sleep_for(1)
-  current_url <- paste0(page_url, "tab=gene-expression")
+  current_url <- paste0(page_url, "tab=GeneExpression")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
-  expect_equal(remDr$findElements('css', 'div.tab-content div#gene-expression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 
 
 })
 
 test_that("test forward and back buttons on linkable tabs", {
-  current_url <- paste0(page_url, "tab=gene-expression")
+  current_url <- paste0(page_url, "tab=GeneExpression")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
-  expect_equal(remDr$findElements('css', 'div.tab-content div#gene-expression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 
 
   remDr$goBack()
@@ -118,9 +118,9 @@ test_that("test forward and back buttons on linkable tabs", {
 
   remDr$goForward()
   sleep_for(1)
-  current_url <- paste0(page_url, "tab=gene-expression")
+  current_url <- paste0(page_url, "tab=GeneExpression")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
-  expect_equal(remDr$findElements('css', 'div.tab-content div#gene-expression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 
 })
 
@@ -148,11 +148,11 @@ test_that("test linking tabs from alternative url", {
   sleep_for(5)
   expect_equal(unlist(remDr$getCurrentUrl()), "https://www.google.com/")
 
-  remDr$navigate(paste0(page_url, "tab=gene-expression"));
+  remDr$navigate(paste0(page_url, "tab=GeneExpression"));
   sleep_for(1)
-  current_url <- paste0(page_url, "tab=gene-expression")
+  current_url <- paste0(page_url, "tab=GeneExpression")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
-  expect_equal(remDr$findElements('css', 'div.tab-content div#gene-expression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 
   remDr$goBack()
   sleep_for(5)
@@ -160,19 +160,19 @@ test_that("test linking tabs from alternative url", {
 
   remDr$goForward()
   sleep_for(1)
-  current_url <- paste0(page_url, "tab=gene-expression")
+  current_url <- paste0(page_url, "tab=GeneExpression")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
-  expect_equal(remDr$findElements('css', 'div.tab-content div#gene-expression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 })
 
 test_that("page refresh", {
-  current_url <- paste0(page_url, "tab=gene-expression")
+  current_url <- paste0(page_url, "tab=GeneExpression")
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
 
   remDr$refresh()
   sleep_for(5)
   expect_equal(unlist(remDr$getCurrentUrl()), current_url)
-  expect_equal(remDr$findElements('css', 'div.tab-content div#gene-expression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
 
   remDr$findElements("id", "SoftwareUpdates")[[1]]$clickElement()
   sleep_for(1)
@@ -223,7 +223,7 @@ test_that("Data Processing tab has correct elements", {
 
   assayOptions[[1]]$clickElement()
 
-  div <- remDr$findElement("id", "gene-expression")
+  div <- remDr$findElement("id", "GeneExpression")
   expect_length(div, 1)
 
   if (length(div) == 1) {
