@@ -8,6 +8,184 @@ test_connection(remDr, page_url, "About: /home")
 
 sleep_for(5)
 
+
+test_that("test clicking linkable tabs", {
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#About')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+  remDr$findElements("id", "DataStandards")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataStandards")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataStandards')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$findElements("id", "DataReleases")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataReleases")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataReleases')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$findElements("id", "SoftwareUpdates")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=SoftwareUpdates")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#SoftwareUpdates')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$findElements("id", "RSessionInfo")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=RSessionInfo")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#RSessionInfo')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$findElements("css", "div#about-page ul.nav.navbar-nav li.dropdown")[[1]]$clickElement()
+  sleep_for(1)
+  remDr$findElements("id", "GeneExpression")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=GeneExpression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+})
+
+test_that("test forward and back buttons on linkable tabs", {
+  current_url <- paste0(page_url, "tab=GeneExpression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$goBack()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=RSessionInfo")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#RSessionInfo')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$goBack()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=SoftwareUpdates")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#SoftwareUpdates')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$goBack()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataReleases")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataReleases')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$goBack()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataStandards")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataStandards')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+
+  remDr$goBack()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#About')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goForward()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataStandards")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataStandards')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goForward()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=DataReleases")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#DataReleases')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goForward()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=SoftwareUpdates")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#SoftwareUpdates')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goForward()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=RSessionInfo")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#RSessionInfo')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goForward()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=GeneExpression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+})
+
+test_that("test linking tabs from alternative url", {
+  remDr$navigate("https://www.google.com/")
+  expect_equal(unlist(remDr$getCurrentUrl()), "https://www.google.com/")
+
+  remDr$navigate(page_url)
+  sleep_for(5)
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#About')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goBack()
+  sleep_for(5)
+  expect_equal(unlist(remDr$getCurrentUrl()), "https://www.google.com/")
+
+  remDr$goForward()
+  sleep_for(5)
+  current_url <- paste0(page_url, "tab=About")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#About')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goBack()
+  sleep_for(5)
+  expect_equal(unlist(remDr$getCurrentUrl()), "https://www.google.com/")
+
+  remDr$navigate(paste0(page_url, "tab=GeneExpression"));
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=GeneExpression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$goBack()
+  sleep_for(5)
+  expect_equal(unlist(remDr$getCurrentUrl()), "https://www.google.com/")
+
+  remDr$goForward()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=GeneExpression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+})
+
+test_that("page refresh", {
+  current_url <- paste0(page_url, "tab=GeneExpression")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+
+  remDr$refresh()
+  sleep_for(5)
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#GeneExpression')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$findElements("id", "SoftwareUpdates")[[1]]$clickElement()
+  sleep_for(1)
+  current_url <- paste0(page_url, "tab=SoftwareUpdates")
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#SoftwareUpdates')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+
+  remDr$refresh()
+  sleep_for(5)
+  expect_equal(unlist(remDr$getCurrentUrl()), current_url)
+  expect_equal(remDr$findElements('css', 'div.tab-content div#SoftwareUpdates')[[1]]$getElementAttribute("aria-hidden")[[1]], "false")
+})
+
 test_that("all webpart is present", {
   test_presence_of_single_item("about-page")
 })
@@ -45,7 +223,7 @@ test_that("Data Processing tab has correct elements", {
 
   assayOptions[[1]]$clickElement()
 
-  div <- remDr$findElement("id", "gene-expression")
+  div <- remDr$findElement("id", "GeneExpression")
   expect_length(div, 1)
 
   if (length(div) == 1) {

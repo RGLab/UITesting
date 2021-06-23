@@ -17,7 +17,7 @@
 ### Install R packages
 
 ```R
-install.packages("testthat", "RSelenium", "XML", "digest", "jsonlite")
+install.packages(c("testthat", "RSelenium", "XML", "digest", "jsonlite"))
 ```
 
 ### Set environment variables
@@ -25,6 +25,11 @@ install.packages("testthat", "RSelenium", "XML", "digest", "jsonlite")
 In `.Renviron` file on your **home** directory:
 
 ```sh
+# Url for the server you want to point to: 
+DEV_HOST=https://test.immunespace.org
+# To run tests pointing at your local instance: 
+# DEV_HOST=http://<yourIPaddress>:8080
+
 # ImmuneSpace login info
 ISR_LOGIN=yourImmuneSpace@email.here
 ISR_PWD=yourImmuneSpacePasswordHere
