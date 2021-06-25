@@ -59,7 +59,8 @@ if (selenium_server == "SAUCELABS") {
     accessKey = SAUCE_ACCESS_KEY,
     tags = list(machine, server),
     public = "public restricted",
-    screenResolution = "1280x1024"
+    screenResolution = "1280x1024",
+    maxDuration = 10800
   )
 
   # Initiate a browser
