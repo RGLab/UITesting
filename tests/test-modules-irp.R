@@ -131,7 +131,7 @@ test_irp <- function(config) {
     labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
     expect_equal(length(labkey_knitr), 1)
 
-    report_header <- labkey_knitr[[1]]$findChildElements(using = "id", value = "predicted-response-vs.observed-response-per-participant")
+    report_header <- labkey_knitr[[1]]$findChildElements(using = "id", value = "predicted-response-vs.-observed-response-per-participant")
     expect_equal(length(report_header), 1)
 
     widget_data <- labkey_knitr[[1]]$findChildElements(using = "css selector", value = "script[data-for]")
