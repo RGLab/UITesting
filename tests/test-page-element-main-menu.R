@@ -20,13 +20,13 @@ test_that("`Main Menu` tab shows options properly", {
 
     menu_options_ul <- main_menu_tab[[1]]$findChildElements("css selector", "ul[id=list]")
     menu_options_a <- menu_options_ul[[1]]$findChildElements("css selector", "a")
-    expect_equal(length(menu_options_a), 3)
+    expect_equal(length(menu_options_a), 4)
 
     link_names <- unlist(lapply(menu_options_a, function(x) {
       txt <- x$getElementText()
     }))
 
-    expected_link_names <- c("Find Participants", "Resources", "About")
+    expected_link_names <- c("Find Participants", "Analyte Explorer", "Resources", "About")
     expect_equal(link_names, expected_link_names)
 
     main_menu_tab[[1]]$clickElement()
