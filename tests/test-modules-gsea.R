@@ -34,7 +34,7 @@ test_that("parameters are present", {
   combo_lists <- remDr$findElements(using = "class", value = "x-combo-list-inner")
   expect_equal(
     combo_lists[[1]]$getElementText()[[1]],
-    "LAIV group 2008_PBMC\nTIV Group 2008_PBMC"
+    "LAIV group 2008_PBMC (SDY269)\nTIV Group 2008_PBMC (SDY269)"
   )
 
   cohort_clear <- form_items[[1]]$findChildElements(using = "class", value = "x-form-clear-trigger")
@@ -85,7 +85,7 @@ test_that("selecting cohort is working", {
   cohort_input <- form_items[[1]]$findChildElements(using = "id", value = "cbCohort")
   expect_equal(
     cohort_input[[1]]$getElementAttribute("value")[[1]],
-    "TIV Group 2008_PBMC"
+    "TIV Group 2008_PBMC (SDY269)"
   )
 })
 
