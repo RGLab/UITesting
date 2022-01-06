@@ -120,7 +120,7 @@ test_that("Correct banner is present", {
 })
 
 test_that("Manage Groups dropdown works", {
-  bannerDropdowns <- remDr$findElements("css selector", "#data-finder-app-banner .immunespace-outer-dropdown")
+  bannerDropdowns <- remDr$findElements("css selector", "#data-finder-app-banner .df-outer-dropdown")
   buttonText <- c("Manage Groups")
 
   expect_equal(length(bannerDropdowns), 1)
@@ -166,7 +166,7 @@ test_that("banner buttons are present", {
     )
   )
 
-  bannerButtons <- remDr$findElements("css selector", "#data-finder-app-banner .immunespace-highlighted-button")
+  bannerButtons <- remDr$findElements("css selector", "#data-finder-app-banner .df-highlighted-button")
   expect_length(bannerButtons, 4)
   expect_equal(
     unlist(lapply(bannerButtons, function(x) x$getElementText())),
@@ -182,7 +182,7 @@ test_that("banner buttons are present", {
 # --------------- FILTERS --------------------------
 
 test_that("Filter dropdown works", {
-  filterDropdown <- remDr$findElement("css selector", "#data-finder-filters .immunespace-outer-dropdown")
+  filterDropdown <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
   expect_equal(filterDropdown$findChildElement("css selector", "button")$getElementText()[[1]], "Filters")
   filterContent <- filterDropdown$findChildElement("class", "dropdown-menu")
   expect_hidden_element(filterContent)
@@ -193,7 +193,7 @@ test_that("Filter dropdown works", {
 })
 
 test_that("Filter selector buttons are present", {
-  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .immunespace-outer-dropdown")
+  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
   filterDropdownButton$clickElement()
   filterDropdown <- remDr$findElement("css selector", "#data-finder-filters .dropdown-menu")
 
@@ -225,7 +225,7 @@ test_that("Filter selector buttons are present", {
 })
 
 test_that("Filter selector choices are present", {
-  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .immunespace-outer-dropdown")
+  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
   filterDropdownButton$clickElement()
   filterSets <- remDr$findElements("css selector", "#data-finder-filters .filter-dropdown-set")
 
@@ -245,7 +245,7 @@ test_that("Filter selector choices are present", {
 })
 
 test_that("Assay data selector works", {
-  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .immunespace-outer-dropdown")
+  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
   filterDropdownButton$clickElement()
   assaySelector <- remDr$findElement("class", "df-assay-data-selector")
   expect_length(assaySelector, 1)
@@ -390,7 +390,7 @@ getPlotValues <- function(plotName) {
 
 getBannerValues <- function() {
   bannerDiv <- remDr$findElement("id", "data-finder-app-banner")
-  ems <- bannerDiv$findChildElements("class", "immunespace-filter-indicator")
+  ems <- bannerDiv$findChildElements("class", "filter-indicator")
   innerTexts <- sapply(ems, function(em) {
     return(unlist(em$getElementText()))
   })
@@ -410,7 +410,7 @@ test_that("Outputs change when filters are applied", {
   expect_true(all(preSelectBannerValues == "No filters currently applied"))
 
   # select filters
-  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .immunespace-outer-dropdown")
+  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
   filterDropdownButton$clickElement()
   filterDropdown <- remDr$findElement("css selector", "#data-finder-filters .dropdown-menu")
 
@@ -486,7 +486,7 @@ test_that("Outputs change when assay filters are applied", {
 
   # Add filters
 
-  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .immunespace-outer-dropdown")
+  filterDropdownButton <- remDr$findElement("css selector", "#data-finder-filters .df-outer-dropdown")
   filterDropdownButton$clickElement()
 
   # ELISA at day 0
@@ -554,9 +554,9 @@ test_that("Load group works", {
   bannerButtons <- banner$findChildElements("class", "df-banner-button")
   manageDropdown <- bannerButtons[[1]]
   manageDropdown$clickElement()
-  loadDropdown <- manageDropdown$findChildElement("class", "immunespace-sub-dropdown")
+  loadDropdown <- manageDropdown$findChildElement("class", "df-sub-dropdown")
   loadDropdown$clickElement()
-  groups <- loadDropdown$findChildElements("class", "immunespace-dropdown-option")
+  groups <- loadDropdown$findChildElements("class", "df-dropdown-option")
   groupsText <- unlist(lapply(groups, function(group) {
     group$getElementText()
   }))
@@ -586,7 +586,7 @@ test_that("Load group works", {
 
 test_that("Banner is visible on other pages", {
   banner <- remDr$findElement("id", "data-finder-app-banner")
-  bannerButtons <- banner$findChildElements("class", "immunespace-highlighted-button")
+  bannerButtons <- banner$findChildElements("class", "df-highlighted-button")
   bannerButtons[[1]]$clickElement()
 
   sleep_for(2)
@@ -596,6 +596,6 @@ test_that("Banner is visible on other pages", {
 
   expect_visible_element(banner)
 
-  bannerButtons <- banner$findChildElements("class", "immunespace-highlighted-button")
+  bannerButtons <- banner$findChildElements("class", "df-highlighted-button")
   bannerButtons[[1]]$clickElement()
 })
