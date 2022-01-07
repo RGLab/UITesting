@@ -9,10 +9,13 @@ test_that("report is generated", {
   labkey_knitr <- remDr$findElements(using = "class", value = "labkey-knitr")
   expect_equal(length(labkey_knitr), 1)
 
-  report_header <- remDr$findElements(
+  report_div <- labkey_knitr[[1]]$findChildElements(
     using = "id",
     value = "abundance-of-plasmablasts-measured-by-multiparameter-flow-cytometry-in-sdy180"
   )
+  expect_equal(length(report_div), 1)
+
+  report_header <- report_div[[1]]$findChildElements("css selector", "h1")
   expect_equal(length(report_header), 1)
   expect_equal(
     report_header[[1]]$getElementText()[[1]],
