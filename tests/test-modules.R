@@ -22,3 +22,4 @@ test_that("'Active Modules' module is present", {
   irp_link <- remDr$findElements(using = "css selector", value = "a[href$='/ImmuneResponsePredictor/Studies/SDY269/begin.view']")
   expect_equal(length(irp_link), 1)
 })
+
