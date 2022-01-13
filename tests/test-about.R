@@ -201,6 +201,7 @@ test_that("About tab has correct elements", {
 test_that("Data Standards tab has correct elements", {
   tab <- remDr$findElement("id", "DataStandards")
   tab$clickElement()
+  sleep_for(1)
 
   div <- remDr$findElement("id", "DataStandards-content")
   expect_length(div, 1)
@@ -219,6 +220,7 @@ test_that("Data Processing tab has correct elements", {
   check_dropdown_titles(expectedAssayTitles, assayOptions)
 
   assayOptions[[1]]$clickElement()
+  sleep_for(1)
 
   div <- remDr$findElement("id", "GeneExpression")
   expect_length(div, 1)
@@ -232,6 +234,7 @@ test_that("Data Processing tab has correct elements", {
 test_that("Data Releases tab has correct elements", {
   tab <- remDr$findElement("id", "DataReleases")
   tab$clickElement()
+  sleep_for(1)
 
   div <- remDr$findElement("id", "DataReleases-content")
   expect_length(div, 1)
@@ -258,6 +261,7 @@ test_that("Data Releases tab has correct elements", {
 test_that("Software Updates tab has correct elements", {
   tab <- remDr$findElement("id", "SoftwareUpdates")
   tab$clickElement()
+  sleep_for(1)
 
   div <- remDr$findElement("id", "SoftwareUpdates-content")
   expect_length(div, 1)
@@ -269,6 +273,7 @@ test_that("Software Updates tab has correct elements", {
 test_that("R Session Info tab has correct elements", {
   tab <- remDr$findElement("id", "RSessionInfo")
   tab$clickElement()
+  sleep_for(1)
 
   # Rmd html output is appended as child and there is no 'id' of the div directly
   div <- remDr$findElement("class", "labkey-knitr")
@@ -277,10 +282,10 @@ test_that("R Session Info tab has correct elements", {
   codeChunks <- div$findChildElements("tag name", "code")
   expect_length(codeChunks, 2)
 
-  htmlWidget <- div$findChildElement("tag", "div")
-  expect_true(grepl("htmlwidget", htmlWidget$getElementAttribute("id")[[1]]))
+  htmlWidget <- div$findChildElements("css selector", "div.html-widget")
+  expect_length(htmlWidget, 1)
 
-  dataTable <- htmlWidget$findChildElement("tag", "table")
+  dataTable <- htmlWidget[[1]]$findChildElement("tag", "table")
   tableHeaders <- dataTable$findChildElements("tag", "th")
   expect_length(tableHeaders, 5)
 
