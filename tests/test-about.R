@@ -195,8 +195,13 @@ test_that("About tab has correct elements", {
   
   div <- remDr$findElement("id", "About-content")
   expect_length(div, 1)
+
+  if (length(div) == 1) {
+    img <- remDr$findElement("xpath", "//img[@src='/AboutPage/images/flow.png']")
+    expect_length(img, 1)
+  }
   
-  title <- div$findChildElements("tag name", "h1")
+  title <- div$findChildElements("tag name", "h2")
   expect_length(title, 1)
   expect_equal(title[[1]]$getElementText()[[1]], "About ImmuneSpace")
 
@@ -207,7 +212,7 @@ test_that("About tab has correct elements", {
   expect_equal(paragraphs[[3]]$getElementText()[[1]], "ImmuneSpace provides multiple ways to interact with, visualize, and analyze data. Each study contains tabs to view raw data, run common analyses, and look at custom reports. All the analyses make use of the R statistical language, leveraging Rserve to improve performance and knitr to enable full reproducibility.")
   expect_equal(paragraphs[[4]]$getElementText()[[1]], "Support:")
   expect_equal(paragraphs[[5]]$getElementText()[[1]], "Connect with us via Slack slack workspace")
-  expect_equal(paragraphs[[6]]$getElementText()[[1]], "You can also reach the team at immunespace@gmail.com")
+  expect_equal(paragraphs[[6]]$getElementText()[[1]], "You can also reach the team at ops@immunespace.org")
 
   test_presence_of_single_img(div)
 })
@@ -221,7 +226,7 @@ test_that("Data Standards tab has correct elements", {
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements("tag name", "p")
-  expect_length(paragraphs, 13)
+  expect_length(paragraphs, 12)
 })
 
 test_that("Data Processing tab has correct elements", {
@@ -281,7 +286,8 @@ test_that("Software Updates tab has correct elements", {
   expect_length(div, 1)
 
   paragraphs <- div$findChildElements("tag name", "p")
-  expect_gt(length(paragraphs), 33)
+  expect_length(paragraphs, 26)
+  #expect_gt(length(paragraphs), 33)
 })
 
 test_that("R Session Info tab has correct elements", {
