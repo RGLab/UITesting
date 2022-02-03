@@ -20,7 +20,11 @@ test_that("correct tabs are present", {
 test_that("Data Resource report is present", {
   tab_div <- remDr$findElement("id", "lk-nav-tabs-separate")
   tabs <- tab_div$findChildElements("tag", "li")
+  # Click "Data Resource" tab
   tabs[[2]]$clickElement()
+
+  # Make sure both reports have loaded
+  sleep_for(20, length(remDr$findElements("class", "labkey-knitr")) > 1)
   expect_equal(remDr$getTitle()[[1]],
                "Data Resource: /HIPC/IS2")
   reports <- remDr$findElements("class", "labkey-knitr")
