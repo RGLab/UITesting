@@ -10,6 +10,10 @@ context_of(
 test_connection(remDr, pageURL, "Overview: /HIPC/IS2")
 
 test_that("correct tabs are present", {
+
+  # Tabs are different on TEST because reports are in development
+  # TODO: don't skip once reports are finalized
+  skip_if(grepl("test", site_url))
   tab_div <- remDr$findElement("id", "lk-nav-tabs-separate")
   tabs <- tab_div$findChildElements("tag", "li")
   expect_length(tabs, 2)
