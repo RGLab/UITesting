@@ -23,7 +23,7 @@ test_that("Available studies respect Data Finder filters", {
   conditionDropdownButton$clickElement()
 
   conditionOptions <- remDr$findElements("css selector", ".filter-dropdown-set > * div#Condition input[name='Condition']")
-  conditionOptions[[9]]$clickElement() #influenza
+  conditionOptions[[9]]$clickElement() # influenza
   conditionDropdownButton$clickElement()
 
   # select "Female" from "Gender" filter
@@ -32,7 +32,7 @@ test_that("Available studies respect Data Finder filters", {
   genderDropdownButton$clickElement()
 
   genderOptions <- remDr$findElements("css selector", ".filter-dropdown-set > * div#Gender input[name='Gender']")
-  genderOptions[[1]]$clickElement() #female
+  genderOptions[[1]]$clickElement() # female
   genderDropdownButton$clickElement()
 
   sleep_for(5)

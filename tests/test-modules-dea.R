@@ -25,5 +25,3 @@ test_that("Results table is present", {
   dea_table <- remDr$findElements("css selector", "#de-results table.labkey-data-region")
   expect_equal(length(dea_table), 1)
 })
-
-
