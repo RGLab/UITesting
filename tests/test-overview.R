@@ -212,7 +212,9 @@ test_that("data link is present", {
   current_window_id <- remDr$getCurrentWindowHandle()
   data_link <- remDr$findElements(using = "id", "privateSdyLink")
   expect_length(data_link, 1)
-  expect_equal(data_link[[1]]$getElementText()[[1]],
-               "PROCEED TO STUDY DATA (LOGIN REQUIRED)")
+  expect_equal(
+    data_link[[1]]$getElementText()[[1]],
+    "PROCEED TO STUDY DATA (LOGIN REQUIRED)"
+  )
   expect_match(data_link[[1]]$getElementAttribute("href")[[1]], "/project/HIPC/IS2/begin.view")
 })

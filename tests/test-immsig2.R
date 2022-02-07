@@ -29,14 +29,20 @@ test_that("Data Resource report is present", {
 
   # Make sure both reports have loaded
   sleep_for(20, length(remDr$findElements("class", "labkey-knitr")) > 1)
-  expect_equal(remDr$getTitle()[[1]],
-               "Data Resource: /HIPC/IS2")
+  expect_equal(
+    remDr$getTitle()[[1]],
+    "Data Resource: /HIPC/IS2"
+  )
   reports <- remDr$findElements("class", "labkey-knitr")
   expect_length(reports, 2)
   report_titles <- remDr$findElements("class", "panel-title")
   expect_length(report_titles, 2)
   report_title_text <- unlist(lapply(report_titles, function(t) t$getElementText()))
-  expect_equal(report_title_text,
-               c("Data Downloads",
-                 "Manuscript Figures and Code"))
+  expect_equal(
+    report_title_text,
+    c(
+      "Data Downloads",
+      "Manuscript Figures and Code"
+    )
+  )
 })
