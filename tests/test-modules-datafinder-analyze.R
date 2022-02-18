@@ -51,9 +51,9 @@ test_that("Available studies respect Data Finder filters", {
 
   # check that the appropriate number of studies are displayed
   dr_studies <- remDr$findElement("css selector", "div.studies-DimensionReduction")
-  expect_equal(dr_studies$getElementText()[[1]], "34 available studies:\nSDY34, SDY56, SDY61, SDY63, SDY67, SDY112, SDY113, SDY241, SDY269, SDY270, SDY305, SDY312, SDY314, SDY315, SDY395, SDY400, SDY404, SDY406, SDY472, SDY478, SDY514, SDY515, SDY519, SDY520, SDY522, SDY640, SDY887, SDY1086, SDY1119, SDY1276, SDY1466, SDY1468, SDY1469, SDY1471")
+  expect_equal(dr_studies$getElementText()[[1]], "34 available studies:\nSDY34, SDY56, SDY61, SDY63, SDY67, SDY112, SDY113, SDY202, SDY241, SDY269, SDY270, SDY305, SDY311, SDY312, SDY314, SDY315, SDY395, SDY400, SDY404, SDY406, SDY472, SDY478, SDY514, SDY515, SDY519, SDY520, SDY522, SDY640, SDY887, SDY1086, SDY1119, SDY1276, SDY1466, SDY1468, SDY1469, SDY1471")
   dr_study_links <- remDr$findElements("css selector", "div.studies-DimensionReduction > a")
-  expect_length(dr_study_links[], 34)
+  expect_length(dr_study_links[], 36)
 
   gee_studies <- remDr$findElement("css selector", "div.studies-GeneExpressionExplorer")
   expect_equal(gee_studies$getElementText()[[1]], "19 available studies:\nSDY56, SDY61, SDY63, SDY67, SDY112, SDY113, SDY269, SDY270, SDY305, SDY312, SDY315, SDY400, SDY404, SDY406, SDY520, SDY522, SDY640, SDY1119, SDY1276")
