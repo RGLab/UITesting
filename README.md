@@ -1,6 +1,6 @@
 # ImmuneSpace UI Testing
 
-| [Production](https://www.immunespace.org/) | [Test](https://test.immunespace.org/) |
+| [Production](https://datatools.immunespace.org/) | [Test](https://datatools-dev.immunespace.org/) |
 |-----|-----|
 | [![UITesting](https://github.com/RGLab/UITesting/workflows/UITesting/badge.svg?branch=main)](https://github.com/RGLab/UITesting/actions?query=branch:main) | [![UITesting](https://github.com/RGLab/UITesting/workflows/UITesting/badge.svg?branch=dev)](https://github.com/RGLab/UITesting/actions?query=branch:dev) |
 
@@ -26,7 +26,7 @@ In `.Renviron` file on your **home** directory:
 
 ```sh
 # Url for the server you want to point to: 
-DEV_HOST=https://test.immunespace.org
+DEV_HOST=https://datatools-dev.immunespace.org
 # To run tests pointing at your local instance: 
 # DEV_HOST=http://<yourIPaddress>:8080
 
@@ -57,13 +57,13 @@ Install Docker Community Edition (CE) following the instructions from their webs
 To run chrome browser:
 
 ```sh
-docker run -d -p 127.0.0.1:4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome:latest
+docker run -d -p 127.0.0.1:4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome:2.53.1
 ```
 
 Or to run FireFox browser:
 
 ```sh
-docker run -d -p 127.0.0.1:4444:4444 -v /dev/shm:/dev/shm selenium/standalone-firefox:latest
+docker run -d -p 127.0.0.1:4444:4444 -v /dev/shm:/dev/shm selenium/standalone-firefox:2.53.1
 ```
 
 

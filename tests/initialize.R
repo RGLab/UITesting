@@ -20,7 +20,7 @@ selenium_server <- ifelse(
 )
 
 machine <- ifelse(Sys.getenv("GITHUB_ACTIONS") == "true", "GHA", "LOCAL")
-server <- ifelse(basename(Sys.getenv("GITHUB_REF")) == "main", "www", "test")
+server <- ifelse(basename(Sys.getenv("GITHUB_REF")) == "main", "datatools", "datatools-dev")
 
 if (machine == "LOCAL" & Sys.getenv("DEV_HOST") != "") {
   site_url <- Sys.getenv("DEV_HOST")
